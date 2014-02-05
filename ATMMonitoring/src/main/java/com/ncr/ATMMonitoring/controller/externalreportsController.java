@@ -15,13 +15,13 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.ncr.ATMMonitoring.pojo.User;
 import com.ncr.ATMMonitoring.service.UserService;
 
-@Controller
+//@Controller
 public class externalreportsController {  
-    @Autowired
+//    @Autowired
     private UserService userService;
    
 
-    @RequestMapping(value = "/externalreports", method = RequestMethod.GET)
+//    @RequestMapping(value = "/externalreports", method = RequestMethod.GET)
     public void requestTerminalsUpdate(Map<String, Object> map, HttpServletRequest request, Principal principal) {
 		
     	String userMsg = "";
