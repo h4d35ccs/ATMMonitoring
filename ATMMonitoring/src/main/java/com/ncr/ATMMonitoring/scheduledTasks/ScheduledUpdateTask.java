@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ncr.ATMMonitoring.dao.ScheduledUpdateDAO;
 import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
@@ -54,6 +55,7 @@ public class ScheduledUpdateTask {
 	 * runs execute the current updates.
 	 */
 	@Scheduled(cron = CRON_CONF)
+	@Transactional
 	public void checkCurrentUpdates() {
 
 		Set<String> ips = new HashSet<String>();
