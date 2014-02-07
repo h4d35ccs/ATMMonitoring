@@ -216,10 +216,10 @@ function onChartDrawed(chart) {
         var googleChart = eval("new " + googleChartType[widget.type] + "(graph)");
         var options = {
             'region': widget.region,
-            'displayMode': widget.displayMode,
-            'resolution': widget.resolution
+            'displayMode': 'markers'
         };
         googleChart.draw(chartData, options);
+        google.visualization.events.addListener(googleChart, 'ready', fixGeoMapRectElements($(chart)));
         chart.find(".content").removeClass('loading')
     });
 
@@ -362,7 +362,7 @@ function onChangedColumns(newColumns) {
 var transforms = {
     "chartsHiddenMenu": [ { tag: 'li', class: 'on', id: "${id}", html: "${title}" } ],
     "chartsVisibleMenu": [ { tag: 'li', class: 'off', id: "${id}", html: "${title}" } ],
-    "charts": [ { tag: 'li', class: 'chart ui-state-default', id: "${id}",
+    "charts": [ { tag: 'li', class: 'chart ui-state-default ${type}', id: "${id}",
                   children: [
                       { tag: 'span', class: 'title', html:'${description}' },
                       { tag: 'div', class: 'content loading',
@@ -379,13 +379,20 @@ var transforms = {
                                                   			  { tag: 'li', children: [ { tag: 'a', class: 'editWidget iframe_medium chart_iframe', href: (editChartUrl + '${id}'), html: strings['label.widget.edit'] } ] },
                                                               { tag: 'li', class: 'privilegedOption' , children: 
                                                               		[ 
-                                                              			{ tag: 'input', class: 'addToLibrary', type:'checkbox', 'data-checked' : "${libraryWidget}" , html: strings['widget.add.to.library'] },
-                                                              			{ tag: 'span', class:'hide iframe_medium chart_iframe', href: (addWidgetToLibraryUrl + '/${id}')} 
+                                                              			{ tag: 'label', children: 
+                                                                            [
+                                                                                { tag: 'input', class: 'addToLibrary', type:'checkbox', 'data-checked' : "${libraryWidget}" , html: strings['widget.add.to.library'] },
+                                                              			        { tag: 'span', class:'hide iframe_medium chart_iframe', href: (addWidgetToLibraryUrl + '/${id}')} 
+                                                                            ]
+                                                                        }   
+
                                                               		] 
                                                               },
                                                               { tag: 'li', class: 'privilegedOption' , children: 
                                                               		[ 
-                                                              			{ tag: 'input', class: 'setAsDefault', type:'checkbox', 'data-checked' : "${defaultWidget}" , html: strings['widget.set.as.default'] } 
+                                                                        { tag: 'label', children: 
+                                                                            [ { tag: 'input', class: 'setAsDefault', type:'checkbox', 'data-checked' : "${defaultWidget}" , html: strings['widget.set.as.default'] } ]
+                                                                        }
                                                               		] 
                                                               },
                                                               { tag: 'li', children: [ { tag: 'a', class: 'delete', html: strings['label.widget.delete'] } ] }
@@ -442,4 +449,24 @@ function hideEditWidgetsLibraryOptions() {
 function initButtonsIframe(selectorPrefix) {
 	//init edit links. This function is stored on menu.js
 	return initIframes(selectorPrefix);
+}
+
+//WORKARROUND http://code.google.com/p/google-visualization-api-issues/issues/detail?id=598
+function fixGeoMapRectElements(chartElementContent) {
+	return function() {
+		var element = findProblematicElement(chartElementContent)
+		fixChart(chartElementContent);
+		element.parent().bind("DOMNodeInserted", function(event) {
+			fixChart(chartElementContent);
+		});
+	}
+	
+	function fixChart(chart) {
+		var element = findProblematicElement(chart)
+		element.attr( 'fill', 'url(' + document.location + element.attr( 'fill' ).substring( 4 ) );
+	}
+	
+	function findProblematicElement(chart) {
+		return chart.find('g rect[fill*="url(#"]');
+	}
 }

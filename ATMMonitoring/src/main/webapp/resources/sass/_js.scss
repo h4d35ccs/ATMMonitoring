@@ -114,3 +114,34 @@
         }
     }
 }
+// HELP
+#helpLayout {
+    width:200%;
+    height:100%; 
+    overflow:hidden;
+    position: absolute; 
+}
+
+#helpLayout .contentFrame {
+    width:50%; 
+    float:left;
+}
+
+
+#helpLayout .contentFrame span.goHelp {
+    position: absolute;
+    height: 25px;
+    width: 50%;
+    z-index: 3;
+    top: 0;
+    .info {
+    width: 25px;
+    height: 25px;
+    background: url("../images/icons/icon_info.png") no-repeat top left;
+    padding-left: 0;
+    overflow: hidden;
+    cursor: help;
+    display: block;
+    float: right;
+    }
+}

@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
      * @see com.ncr.ATMMonitoring.service.UserService#getUserByUsername(java.lang.String)
      */
     @Override
-//    @Transactional(readOnly=true)
+    @Transactional(readOnly=true)
     public User getUserByUsername(String username) {
 	return userDAO.getUserByUsername(username);
     }

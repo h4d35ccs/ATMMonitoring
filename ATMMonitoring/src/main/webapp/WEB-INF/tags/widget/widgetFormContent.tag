@@ -33,28 +33,6 @@
 			</c:forEach>
 		</select>		
 	</div>
-	
-	<div class="row">
-		<label for="resolution"><spring:message code="widget.resolution.title"/></label>
-		<select id="resolution" name="resolution" size="1">
-			<c:forEach items="${resolutionTypes}" var="resolutionType">
-				<option value="${resolutionType.name()}" ${resolutionType == widget.resolution ? 'selected' : '' }>
-					<spring:message code="ResolutionType.${resolutionType.name()}"/>
-				</option>
-			</c:forEach>
-		</select>		
-	</div>
-	
-	<div class="row">
-		<label for="displayMode"><spring:message code="widget.displayMode.title"/></label>
-		<select id="displayMode" name="displayMode" size="1">
-			<c:forEach items="${displayModeTypes}" var="displayModeType">
-				<option value="${displayModeType.name()}" ${displayModeType == widget.displayMode ? 'selected' : '' }>
-					<spring:message code="DisplayModeType.${displayModeType.name()}"/>
-				</option>
-			</c:forEach>
-		</select>		
-	</div>
 </div>
 
 <div class="row">
@@ -128,18 +106,28 @@ $(function() {
 	
 	function init() {
 		chartTypeRadios.change(function(event) {
-			var selectedValue = $(this).val()
-			showChartTypeFields(selectedValue);
-			applyQueryTypeSelectRestrictions(selectedValue);
+			var selectedRadio = $(this);
+			onRadioChanged(selectedRadio);
 		});
 		
-		var selectedRadioValue = chartTypeRadios.filter(':checked').val()
+		var selectedRadio = chartTypeRadios.filter(':checked');
+		onRadioChanged(selectedRadio);
+	}
+	
+	function onRadioChanged(selectedRadio) {
+		var selectedRadioValue = selectedRadio.val()
+		addSelectedClass(selectedRadio)
 		showChartTypeFields(selectedRadioValue);
 		applyQueryTypeSelectRestrictions(selectedRadioValue);
 	}
 	
 	function addSelectHiddenValueToForm(value) {
 		chartTypeFieldSelects.parent
+	}
+	
+	function addSelectedClass(selectedRadio) {
+		chartTypeRadios.parent().removeClass('current');
+		selectedRadio.parent().addClass('current')
 	}
 	
 	function showChartTypeFields(chartType) {
