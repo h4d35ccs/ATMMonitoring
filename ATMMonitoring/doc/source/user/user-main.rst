@@ -17,6 +17,21 @@ Once the user logs into the application will see this basic layout where the use
 
 The user will have three basic operation areas, to the left will have the menu bar, where are offered the different available operations, including the help section located at the bottom of the menu bar. On top will have an option bar, where the user can select the language in which the application will show the messages, and log out. In the middle is the working area, where the different operations will appear.
 
+Navigation Path
+----------------
+
+You can see always in which section you are, just by looking at the top left corner of the working area, there is shown the section or subsection where you are and the path you have follow.  The path is made using the following pattern: *Section > subsection1 > subsection2*. Each time you navigate to a subsection an arrow ( > )is added to the path. 
+
+Sometimes, while performing an operation, you will be redirected to a subsection of the page, to return to the previous section click on the name of the desired subsection 
+
+.. figure:: resources/help/es/images/navegationBack.png
+	:align: center
+
+	Navigation Path
+
+In the image above, is shown that the user is in the *New Query* subsection ( it does not have a hyperlink), and to get there he has navigate through *Terminals* section  and then *My Queries* subsection. If the user wants to return to *Terminals* only have to click on the name and will be redirected to that section.
+
+.. note:: Is strongly recommended to avoid the use of the back button of the browser and use the Navigation Path instead to return to a previous section.
 
 Mobile Layout
 -------------
@@ -44,6 +59,7 @@ Once pressed the menu button, the options will appear as shown below and the whi
 	
 	Mobile Menu displayed
 
+.. note:: The `Navigation Path`_ is also visible in the mobile layout, it will be visible on top of the working area
 
 Menu Bar
 --------

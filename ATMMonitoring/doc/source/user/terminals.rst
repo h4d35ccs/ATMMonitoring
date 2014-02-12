@@ -2,13 +2,13 @@
 Terminals
 *********
 
-We can access Terminals page through the link Scheduler the side menu.
+We can access Terminals page through the link Scheduler the left menu.
 
 .. figure:: resources/help/es/images/terminalsLeftButton.png
 	:align: center
 	:width: 40pt
 
-	Link to *Terminals* in the side menu.
+	Link to *Terminals* in the left menu.
 
 In the Terminal section is possible to see the list of ATM ( or terminals)that are a  result from a query, each user can create his own query and execute them in this area. 
 From the list is possible to see the details of each ATM machine, export the list to a csv file or view in a map the location of each ATM Machine

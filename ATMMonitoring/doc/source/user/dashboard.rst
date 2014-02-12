@@ -2,13 +2,13 @@
 Dashboard
 *********
 
-We can access Dashboard page through the link Scheduler the side menu.
+We can access Dashboard page through the link Scheduler the left menu.
 
 .. figure:: resources/help/es/images/dashboardLeftButton.png
 	:align: center
 	:width: 40pt
 
-	Link to *Dahsboard* in the side menu.
+	Link to *Dahsboard* in the left menu.
 
 The dashboard is the main area  of the application, will be the first screen that you see, here is posible to see a summary of saved queries results, making  easier to see the information related to them.
 

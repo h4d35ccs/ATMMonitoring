@@ -2,13 +2,13 @@
 Reports
 *******
 
-We can access Report page through the link Scheduler the side menu.
+We can access Report page through the link Scheduler the left menu.
 
 .. figure:: resources/help/es/images/reportsLeftButton.png
 	:align: center
 	:width: 40pt
 
-	Link to *Reports* in the side menu.
+	Link to *Reports* in the left menu.
 
 The report area allows an user to see a pre generated report, to select a desired report, just click on it and you will be able to see in detail the report
 
