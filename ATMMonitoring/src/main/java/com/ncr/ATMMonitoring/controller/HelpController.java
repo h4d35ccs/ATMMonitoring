@@ -51,7 +51,7 @@ public class HelpController {
 	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
 	}
 	map.put("userMsg", userMsg);
-	return "redirect:/help/dashboard";
+	return "redirect:/resources/help/"+locale+"/user-main.html";
     }
 
     /**

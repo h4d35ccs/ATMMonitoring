@@ -20,7 +20,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class LoginController {
 
-    /**
+    
+	/**
+	 * Render a page for redirect on the client to the correct login page.
+	 * Is used for avoid login page on iframes
+	 * @return The request result
+	 */
+	@RequestMapping(value = "/preLogin", method = RequestMethod.GET)
+    public String preLogin() {
+		return "preLogin";
+    }
+	
+	/**
      * Index URL.
      * 
      * @return the petition response
@@ -62,8 +73,4 @@ public class LoginController {
 	map.put("error", true);
 	return "login";
     }
-    
-    @RequestMapping(value = "/imAlive", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void imAlive() {  }
 }

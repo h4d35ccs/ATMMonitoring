@@ -114,7 +114,8 @@
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole(${helpAccessAllowedRoles})">
 	                <li class="help">
-	                    <a href="help"><span><spring:message code="label.menu.help"/></span></a>
+	                    <a onclick="window.open('help',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=1')";>
+	                    <span><spring:message code="label.menu.help"/></span></a>
 	                </li>
                 </sec:authorize>
             </ul>

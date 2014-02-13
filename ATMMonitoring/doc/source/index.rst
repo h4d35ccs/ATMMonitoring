@@ -56,7 +56,7 @@ Documentation:
    installation/install-main.rst
    architecture/architecture.rst
    developer/javadoc.rst
-   user/user-main.rst
+   user/source/en/user-main.rst
 
 
 

@@ -43,10 +43,10 @@ public interface ScheduledUpdateService {
      */
     public List<ScheduledUpdate> listMonthlyScheduledUpdates();
 
-//    /**
-//     * Check current updates.
-//     */
-//    public void checkCurrentUpdates();
+    /**
+     * Check current updates.
+     */
+    public void checkCurrentUpdates();
 
     /**
      * Exists scheduled update.

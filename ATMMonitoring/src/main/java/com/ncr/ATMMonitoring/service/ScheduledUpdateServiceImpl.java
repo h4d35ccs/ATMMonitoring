@@ -77,35 +77,35 @@ public class ScheduledUpdateServiceImpl implements ScheduledUpdateService {
 	scheduledUpdateDAO.removeScheduledUpdate(id);
     }
 
-//    /* (non-Javadoc)
-//     * @see com.ncr.ATMMonitoring.service.ScheduledUpdateService#checkCurrentUpdates()
-//     */
-//    @Override
-//    @Scheduled(cron = "0 * * * * *")
-//    public void checkCurrentUpdates() {
-//	logger.info("Checking scheduled updates...");
-//	Calendar currentDate = Calendar.getInstance();
-//	List<ScheduledUpdate> updates = scheduledUpdateDAO
-//		.listValidScheduledUpdates(currentDate);
-//	for (ScheduledUpdate update : updates) {
-//	    if (update.getQuery() == null) {
-//		logger.info("General update found for instant "
-//			+ DateFormat.getDateTimeInstance(DateFormat.SHORT,
-//				DateFormat.SHORT).format(currentDate.getTime()));
-//		socketService.updateAllTerminalsSocket();
-//		return;
-//	    }
-//	}
-//	Set<String> ips = new HashSet<String>();
-//	for (ScheduledUpdate update : updates) {
-//	    List<Terminal> terminals = queryService.executeQuery(update
-//		    .getQuery());
-//	    for (Terminal terminal : terminals) {
-//		ips.add(terminal.getIp());
-//	    }
-//	}
-//	socketService.updateTerminalsSocket(ips);
-//    }
+    /* (non-Javadoc)
+     * @see com.ncr.ATMMonitoring.service.ScheduledUpdateService#checkCurrentUpdates()
+     */
+    @Override
+    @Scheduled(cron = "0 * * * * *")
+    public void checkCurrentUpdates() {
+	logger.info("Checking scheduled updates...");
+	Calendar currentDate = Calendar.getInstance();
+	List<ScheduledUpdate> updates = scheduledUpdateDAO
+		.listValidScheduledUpdates(currentDate);
+	for (ScheduledUpdate update : updates) {
+	    if (update.getQuery() == null) {
+		logger.info("General update found for instant "
+			+ DateFormat.getDateTimeInstance(DateFormat.SHORT,
+				DateFormat.SHORT).format(currentDate.getTime()));
+		socketService.updateAllTerminalsSocket();
+		return;
+	    }
+	}
+	Set<String> ips = new HashSet<String>();
+	for (ScheduledUpdate update : updates) {
+	    List<Terminal> terminals = queryService.executeQuery(update
+		    .getQuery());
+	    for (Terminal terminal : terminals) {
+		ips.add(terminal.getIp());
+	    }
+	}
+	socketService.updateTerminalsSocket(ips);
+    }
 
     /* (non-Javadoc)
      * @see com.ncr.ATMMonitoring.service.ScheduledUpdateService#existsScheduledUpdate(com.ncr.ATMMonitoring.pojo.ScheduledUpdate)
