@@ -45,10 +45,10 @@ public class UPSGetXMLTask {
 	private IOFileFilter fileFilter;
 	
 	//will run at 0 minutes every hour every day
-		private static final String CRON_CONF = "30 * * * * *";
+	private static final String CRON_CONF = "30 * * * * *";
 	
-//	@Autowired
-//	private UPSService upsService;
+	@Autowired
+	private UPSService upsService;
 
 	/**
 	 * Scheduled task that checks the folder for xml, and call the service to
@@ -59,6 +59,7 @@ public class UPSGetXMLTask {
 		
 		List<String> filesPath = new ArrayList<String>();
 		logger.info("reading folder: "+this.xmlfolder);
+		//TODO check why is entering the if when the folder is empty
 		//only execute the get if is a directory and is not empty
 		if (this.xmlfolder.exists() && this.xmlfolder.isDirectory() && this.xmlfolder.list().length > 0) {
 			logger.info("Starting the XML folder check");
@@ -76,7 +77,7 @@ public class UPSGetXMLTask {
 			}
 			logger.info("Obtained files: " + filesPath);
 			//call the service
-//			this.upsService.storeUPSinfo(filesPath);
+			this.upsService.storeUPSinfo(filesPath);
 
 		} else if (!this.xmlfolder.isDirectory()) {
 

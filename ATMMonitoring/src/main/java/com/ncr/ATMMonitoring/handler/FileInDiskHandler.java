@@ -236,6 +236,14 @@ public class FileInDiskHandler {
 			}
 		}
 	}
+	
+	/**
+	 * Returns a new Instance
+	 * @return FileInDiskHandler
+	 */
+	public static FileInDiskHandler getInstance(){
+		return new FileInDiskHandler();
+	}
 
 	/**
 	 * Returns a {@link File} from the given path
@@ -265,4 +273,13 @@ public class FileInDiskHandler {
 			logger.warn(logMsg);
 		}
 	}
+	
+	/**
+	 * private constructor
+	 */
+	private FileInDiskHandler(){
+		
+	}
+	
+
 }
