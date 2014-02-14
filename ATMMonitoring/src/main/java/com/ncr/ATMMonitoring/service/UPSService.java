@@ -4,6 +4,7 @@
 package com.ncr.ATMMonitoring.service;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,22 +16,36 @@ import java.util.List;
 
 public interface UPSService {
 	/**
-	 * Generates the XML files, extract the information and store it in the database
+	 * Generates the XML files, extract the information and store it in the database<br>
+	 * will return the list of not processed (parsed) files, empty if all was processed
 	 * @param xmlFiles List<String> with valid file paths
+	 * @return List<String> with the not processed files
 	 */
-	void storeUPSinfo(List<String> xmlFiles);
+	List<String> storeUPSinfo(List<String> xmlFiles);
 
 	/**
-	 * Generates the XML file, extract the information and store it in the database
+	 * Generates the XML file, extract the information and store it in the database<br>
+	 * Return true if the file was processed by the parser
 	 * @param xmlFile InputStream with a valid XML file
+	 * @return boolean true if the file was parsed, false otherwise
 	 */
-	void storeUPSinfo(InputStream xmlFile);
-
+	boolean storeUPSinfo(InputStream xmlFile);
+	
 	/**
 	 * Generates the XML files, extract the information and store it in the database
-	 * @param xmlFiles String with a valid file path
+	 *  will return the List of not processed (parsed) files, empty if all was processed
+	 * @param xmlFiles Collection<InputStream> with valid inputstreams
+	 * @return List<InputStream> with the not processed files
 	 */
-	void storeUPSinfo(String xmlFile);
+	List<InputStream> storeUPSinfo(Collection<InputStream> xmlFiles);
+
+	/**
+	 * Generates the XML files, extract the information and store it in the database<br>
+	 * Return true if the file was processed by the parser
+	 * @param xmlFiles String with a valid file path
+	 * @return boolean true if the file was parsed, false otherwise
+	 */
+	boolean storeUPSinfo(String xmlFile);
 
 	/**
 	 * Deletes the information related to an UPS
