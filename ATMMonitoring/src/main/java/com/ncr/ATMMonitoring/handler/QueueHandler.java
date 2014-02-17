@@ -17,11 +17,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ncr.ATMMonitoring.handler.exception.FileHandlerException;
 import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
 
 /**
@@ -30,7 +32,10 @@ import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
  * {@link QueueHandler#loadQueue()} method, then execute the operations (add,
  * remove) and finally save the status using {@link QueueHandler#save()}. If the
  * save method is not called, the actual status of the queue will not be save in
- * disk<br>
+ * disk, except if the destroy method is called<br>
+ * Inside Spring context, the method {@link QueueHandler#loadQueue()} is called
+ * after the construction of the bean. ( using {@link PostConstruct}) for that
+ * reason is not needed to be called if this class is being autowired<br>
  * This class need that the properties <b>config.queue.filestore.path</b> and
  * <b>config.queue.file.name</b> are configured as follows<br>
  * <ul>
@@ -51,13 +56,13 @@ public class QueueHandler {
 	private Set<String> terminalsIpQueue;
 	// holds the system path where the queue is stored
 
-	@Value("${config.queue.filestore.path}")
+	@Value("${config.queue.filestore}")
 	private String filestorePath;
-	@Value("${config.queue.file.name}")
+	@Value("${config.queue.name}")
 	private String queueName;
 
 	/**
-	 * Returns the queue Object, this method perform the deserialization process
+	 * Loads the queue Object, this method perform the deserialization process
 	 * 
 	 * @return Set<String>
 	 * @throws QueueHandlerException
@@ -65,6 +70,7 @@ public class QueueHandler {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
+	@PostConstruct
 	public synchronized void loadQueue() throws QueueHandlerException {
 
 		FileInputStream fis = null;
@@ -80,13 +86,15 @@ public class QueueHandler {
 			logger.info("Queue Loaded: " + this.terminalsIpQueue);
 
 		} catch (ClassNotFoundException e) {
-			// its impossible to throw a CNFE with Set<String> that's the reason
-			// why this try-catch is "swallowing" the exception
+			logger.error(QueueHandlerException.GENERAL_ERROR, e);
+			throw new QueueHandlerException(
+					QueueHandlerException.GENERAL_ERROR, e);
 
 		} catch (FileNotFoundException e) {
-			//if can not find the file asumes that the queue must be created
+			// if can not find the file assumes that the queue must be created
 			logger.info("Creating new Queue");
-			this.terminalsIpQueue = Collections.synchronizedSet(new LinkedHashSet<String>());
+			this.terminalsIpQueue = Collections
+					.synchronizedSet(new LinkedHashSet<String>());
 		} catch (IOException e) {
 			logger.error(QueueHandlerException.READ_IO_ERROR, e);
 			throw new QueueHandlerException(
@@ -97,7 +105,9 @@ public class QueueHandler {
 					QueueHandlerException.GENERAL_ERROR, e);
 		} finally {
 			try {
-				in.close();
+				if (in != null) {
+					in.close();
+				}
 			} catch (IOException e) {
 				logger.warn("can not close the resouce", e);
 			}
@@ -118,11 +128,9 @@ public class QueueHandler {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
-			fos = new FileOutputStream(returnQueuePath());
+			fos = new FileOutputStream(this.returnQueuePath());
 			out = new ObjectOutputStream(fos);
 			out.writeObject(this.terminalsIpQueue);
-			// written
-
 			logger.info("Queue status was written in disk");
 
 		} catch (FileNotFoundException e) {
@@ -146,22 +154,30 @@ public class QueueHandler {
 		}
 
 	}
-	
+
 	/***
-	 * Clean the queue and then delete the file from the filesystem
-	 * @throws QueueHandlerException if can not delete the file or remove all the elements
+	 * Clean the queue and then delete the file from the filesystem<Br>
+	 * It is not necessary to call {@link QueueHandler#save()} after calling
+	 * this method
+	 * 
+	 * @throws QueueHandlerException
+	 *             if can not delete the file or remove all the elements
 	 */
-	public synchronized void destroy() throws QueueHandlerException{
+	public synchronized void destroy() throws QueueHandlerException {
 		String path = this.returnQueuePath();
 		try {
 			this.removeAll();
-			FileUtils.forceDelete(new File(path));
-		} catch (IOException e) {
+			File queue = new File(path);
+			// only deletes the file if exists
+			if (queue.exists()) {
+				FileInDiskHandler.delete(path);
+			}
+		} catch (FileHandlerException e) {
 			logger.error(QueueHandlerException.DESTROY_ERROR, e);
 			throw new QueueHandlerException(
 					QueueHandlerException.DESTROY_ERROR, e);
 		}
-		
+
 	}
 
 	/**
@@ -188,7 +204,7 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void addAll(Collection<String> ips) throws QueueHandlerException  {
+	public void addAll(Collection<String> ips) throws QueueHandlerException {
 		this.checkNullQueue();
 		// make sure that a valid ip is being added
 		for (String ip : ips) {
@@ -260,12 +276,57 @@ public class QueueHandler {
 	}
 
 	/**
+	 * Retrieves and removes the head of this queue, or returns null if this
+	 * queue is empty.
+	 * 
+	 * @return String
+	 */
+	public String poll() {
+		String firstIp = null;
+		if (this.terminalsIpQueue.iterator().hasNext()) {
+			firstIp = this.terminalsIpQueue.iterator().next();
+			this.removeElement(firstIp);
+		}
+
+		return firstIp;
+	}
+
+	/**
+	 * Retrieves, but does not remove, the head of this queue. Null if the queue
+	 * is empty
+	 * 
+	 * @return
+	 */
+	public String element() {
+		String firstIp = null;
+		if (this.terminalsIpQueue.iterator().hasNext()) {
+			firstIp = this.terminalsIpQueue.iterator().next();
+		}
+
+		return firstIp;
+	}
+
+	/**
+	 * Retrieves, but does not remove, the head of this queue, or returns null
+	 * if this queue is empty.
+	 * 
+	 * @return
+	 */
+	public String peek() {
+		String firstIp = null;
+		if (!this.terminalsIpQueue.isEmpty()) {
+			firstIp = this.terminalsIpQueue.iterator().next();
+		}
+		return firstIp;
+	}
+
+	/**
 	 * Returns the full qualified path where the queue is saved or read
 	 * 
 	 * @return String
 	 */
 	private String returnQueuePath() {
-		String path = filestorePath + filestorePath;
+		String path = this.filestorePath + this.queueName;
 		logger.debug("filepath:" + path);
 		return path;
 	}
@@ -295,7 +356,8 @@ public class QueueHandler {
 	private void validateipString(String ip) throws QueueHandlerException {
 
 		String ipv4Regex = "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$";
-		//http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
+		// http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
+		// yes the regex is scary...
 		String ipv6Regex = "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|"
 				+ "([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|"
 				+ "([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|"

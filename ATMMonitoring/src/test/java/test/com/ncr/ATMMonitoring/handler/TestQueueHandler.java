@@ -5,10 +5,14 @@ package test.com.ncr.ATMMonitoring.handler;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,18 +21,26 @@ import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
 
 /**
  * @author Otto Abreu
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations ="classpath:applicationContext.xml")
+@ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class TestQueueHandler {
 
 	@Autowired
 	private QueueHandler qh;
-	
-	
+	@Value("${config.queue.filestore}")
+	private String filestorePath;
+	@Value("${config.queue.name}")
+	private String queueName;
+
+	private static String IPV4VALUE = "200.35.1.10";
+	private static String IPV6VALUE = "2607:f0d0:1002:51::4";
+	private static String IPV6VALUE2 = "2607:f0d0:1002:0051:0000:0000:0000:0004";
+	private static String IPV6VALUE_LOOPBACK = "2607:f0d0:1002:51::4/64";
+
 	@After
-	public void tearDown(){
+	public void tearDown() {
 		try {
 			this.qh.destroy();
 		} catch (QueueHandlerException e) {
@@ -36,76 +48,144 @@ public class TestQueueHandler {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#loadQueue()}.
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#add(java.lang.String)}.
 	 */
 	@Test
-	public void testLoadQueue() {
-		try {
-			qh.loadQueue();
-			assertTrue(qh.isEmpty());
-		} catch (QueueHandlerException e) {
-			fail(e.getMessage());
+	public void testAdd() {
+		this.qh.add(IPV4VALUE);
+		this.qh.add(IPV6VALUE);
+		this.qh.add(IPV6VALUE2);
+		this.qh.add(IPV6VALUE_LOOPBACK);
+		this.qh.save();
+	}
+
+	@Test(expected = QueueHandlerException.class)
+	public void testAddNoIP() {
+		this.qh.add("hola");
+		this.qh.add("200.35.1");
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#addAll(java.util.Collection)}
+	 * .
+	 */
+	@Test
+	public void testAddAll() {
+		this.addIps();
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#isEmpty()}.
+	 */
+	@Test
+	public void testIsEmpty() {
+		assertTrue(this.qh.isEmpty());
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeAll()}.
+	 */
+	@Test
+	public void testRemoveAll() {
+		this.addIps();
+		this.qh.save();
+		this.qh.removeAll();
+		assertTrue(this.qh.isEmpty());
+		this.qh.save();
+		// i make sure that we save an empty queue
+		this.qh.loadQueue();
+		assertTrue(this.qh.isEmpty());
+	}
+	/**
+	 * Verify that the order of the elements is the same as they where added
+	 */
+	@Test
+	public void testPreserveOrderOfElements() {
+		this.addIps();
+		this.qh.save();
+		ArrayList<String> listIp = this.listIp();
+		for(String ip: listIp){
+			String ipElement = this.qh.poll();
+			if(!ipElement.equals(ip)){
+
+				fail("The queue does not have the same order, retreived = "+ipElement+ " expected= "+ip);
+			}
 		}
 	}
-	
+
+	/**
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeElement(java.lang.String)}
+	 * .
+	 */
 	@Test
-	public void testLoadExistingQueue() {
+	public void testRemoveElement() {
+		this.addIps();
+		this.qh.save();
+		this.qh.removeElement(IPV4VALUE);
+		this.qh.save();
+		assertTrue(!(this.qh.peek().equals(IPV4VALUE)));
+		// i make sure that we save the queue without the element
+		this.qh.loadQueue();
+		assertTrue(!(this.qh.peek().equals(IPV4VALUE)));
 		
 	}
 
 	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#add(java.lang.String)}.
-	 */
-	@Test
-	public void testAdd() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testAddNoIP() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#addAll(java.util.Collection)}.
-	 */
-	@Test
-	public void testAddAll() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#isEmpty()}.
-	 */
-	@Test
-	public void testIsEmpty() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeAll()}.
-	 */
-	@Test
-	public void testRemoveAll() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeElement(java.lang.String)}.
-	 */
-	@Test
-	public void testRemoveElement() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeElements(java.util.Collection)}.
+	 * Test method for
+	 * {@link com.ncr.ATMMonitoring.handler.QueueHandler#removeElements(java.util.Collection)}
+	 * .
 	 */
 	@Test
 	public void testRemoveElements() {
-		fail("Not yet implemented");
+		this.addIps();
+		this.qh.save();
+		ArrayList<String> listIp =  new ArrayList<String>();
+		listIp.add(IPV4VALUE);
+		listIp.add(IPV6VALUE_LOOPBACK);
+		this.qh.removeElements(listIp);
+		String ip = this.qh.poll();
+		while(ip != null ){
+			if(ip.equals(IPV4VALUE) || ip.equals(IPV6VALUE_LOOPBACK) ){
+				fail("the queue do not remove the elements");
+			}
+			ip = this.qh.poll();
+		}
+		
+	}
+	
+	/**
+	 * Verifies that the queue is erased from the fileSystem
+	 */
+	@Test
+	public void testDestroy(){
+		this.addIps();
+		this.qh.save();
+		this.qh.destroy();
+		File queueInFileSystem = new File(this.filestorePath + this.queueName);
+		assertFalse(queueInFileSystem.exists());
+		
+		
+	}
+	
+	private void addIps(){
+		
+		this.qh.addAll(this.listIp());
+	}
+	
+	private ArrayList<String> listIp(){
+		ArrayList<String> listIp =  new ArrayList<String>();
+		listIp.add(IPV4VALUE);
+		listIp.add(IPV6VALUE);
+		listIp.add(IPV6VALUE2);
+		
+		return listIp;
 	}
 
 }

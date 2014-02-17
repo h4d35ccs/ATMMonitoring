@@ -8,7 +8,7 @@ package com.ncr.ATMMonitoring.handler.exception;
  * @author Otto Abreu
  *
  */
-public class QueueHandlerException extends Exception {
+public class QueueHandlerException extends RuntimeException {
 
 	/**
 	 * 
