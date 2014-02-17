@@ -9,8 +9,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ncr.ATMMonitoring.dao.UpsDAO;
 import com.ncr.ATMMonitoring.handler.FileInDiskHandler;
 import com.ncr.ATMMonitoring.handler.exception.FileHandlerException;
 import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
@@ -18,6 +21,7 @@ import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
 import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
 import com.ncr.ATMMonitoring.parser.exception.ParserException;
 import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.pojo.Ups;
 
 /**
  * Concrete class that implements {@link UPSService}
@@ -26,17 +30,16 @@ import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
  * 
  */
 @Service
+@Transactional
 public class UPSServiceImp implements UPSService {
 
 	// logger
 	private static final Logger logger = Logger.getLogger(UPSServiceImp.class);
 
-	/**
-	 */
-	public UPSServiceImp() {
+	@Autowired
+	private UpsDAO upsDao;
 
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -173,23 +176,40 @@ public class UPSServiceImp implements UPSService {
 	 */
 	@Override
 	public void deleteUPS(int id) {
-		// TODO implement when the dao is ready
-
+		
+		this.upsDao.removeUps(id);
+		logger.info("removed ups with id: "+id);
 	}
 
 	/**
-	 * 
-	 * @param xmlFiles
-	 * @return
+	 * Save the ups info in the Database
+	 * @param xmlFiles UPSInfo
 	 */
 
 	private void handleParserSucess(UPSInfo file) {
+
+		
+		
+		String seriesNumber = file.getSeriesNumber();
+		Ups ups = this.getEntity(file);
+		//verify if is an update or a new information
+		Ups toUpdate = this.upsDao.getUpsBySerialNumber(seriesNumber);
+		
+		if(toUpdate == null){
+			logger.info("adding new UPS to the Database with series number: "+seriesNumber);	
+			this.upsDao.addUps(ups);
+			
+		}else{
+			logger.info("Updating ups with: "+seriesNumber+" and id: "+toUpdate.getId());	
+			ups.setId(toUpdate.getId());
+			this.upsDao.updateUps(ups);
+		}
+		
 		if (file.getExtraInfo() != null) {
-			// TODO calls the class/method responsible to handdle this part of
+			// TODO calls the class/method responsible to handle this part of
 			// the object
 		}
-		// TODO generates Entities
-		// TODO calls the dao
+		
 	}
 
 	/**
@@ -210,5 +230,24 @@ public class UPSServiceImp implements UPSService {
 		xmlInfo = chainBuilder.parse(xml);
 		logger.debug("parsed " + xmlInfo);
 		this.handleParserSucess(xmlInfo);
+	}
+	
+	/**
+	 * Fills the entity with the data from the DTO
+	 * @param info UPSInfo
+	 * @return Ups
+	 */
+	private Ups getEntity(UPSInfo info) {
+
+		Ups ups = new Ups(info.getIp(), info.getFirmware(),
+				info.getRunningStatus(), info.getChargePercentage(),
+				info.getExpensePercentage(), info.getAlarmMsg(),
+				info.getUpsType(), info.getUpsModel(), info.getSeriesNumber(),
+				info.getRunningTimeMilisec(), info.getAutonomyMilisec(),
+				info.getNumPosition(), info.getAudFmo(),
+				info.getGeneralStatusMsg(), info.getLastExecutionDate(),
+				info.getOriginalXML());
+		return ups;
+
 	}
 }
