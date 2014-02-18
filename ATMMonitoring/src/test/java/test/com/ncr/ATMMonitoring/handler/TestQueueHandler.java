@@ -3,12 +3,16 @@
  */
 package test.com.ncr.ATMMonitoring.handler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +30,9 @@ import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class TestQueueHandler {
-
+	
+	static private Logger logger = Logger.getLogger(TestQueueHandler.class);
+	
 	@Autowired
 	private QueueHandler qh;
 	@Value("${config.queue.filestore}")
@@ -42,11 +48,17 @@ public class TestQueueHandler {
 	@After
 	public void tearDown() {
 		try {
+		
 			this.qh.destroy();
 		} catch (QueueHandlerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Before
+	public void setUp(){
+		this.qh.loadQueue();
 	}
 
 	/**
@@ -107,14 +119,16 @@ public class TestQueueHandler {
 	 */
 	@Test
 	public void testPreserveOrderOfElements() {
+		
 		this.addIps();
 		this.qh.save();
-		ArrayList<String> listIp = this.listIp();
+		LinkedHashSet<String> listIp = this.listIp();
 		for(String ip: listIp){
 			String ipElement = this.qh.poll();
 			if(!ipElement.equals(ip)){
-
+				
 				fail("The queue does not have the same order, retreived = "+ipElement+ " expected= "+ip);
+				
 			}
 		}
 	}
@@ -146,7 +160,7 @@ public class TestQueueHandler {
 	public void testRemoveElements() {
 		this.addIps();
 		this.qh.save();
-		ArrayList<String> listIp =  new ArrayList<String>();
+		LinkedHashSet<String> listIp =  new LinkedHashSet<String>();
 		listIp.add(IPV4VALUE);
 		listIp.add(IPV6VALUE_LOOPBACK);
 		this.qh.removeElements(listIp);
@@ -154,6 +168,7 @@ public class TestQueueHandler {
 		while(ip != null ){
 			if(ip.equals(IPV4VALUE) || ip.equals(IPV6VALUE_LOOPBACK) ){
 				fail("the queue do not remove the elements");
+				
 			}
 			ip = this.qh.poll();
 		}
@@ -170,22 +185,42 @@ public class TestQueueHandler {
 		this.qh.destroy();
 		File queueInFileSystem = new File(this.filestorePath + this.queueName);
 		assertFalse(queueInFileSystem.exists());
+	}
+	/**
+	 * Assures that the queue only have one element without duplicates
+	 */
+	@Test
+	public void testAddDuplicated(){
+		this.addIps();
+		this.qh.save();
+		this.qh.add(IPV4VALUE);
+		int count = 0;
 		
+		String ip = this.qh.poll();
 		
+		while(ip != null){
+			
+			if(ip.equals(IPV4VALUE)){
+				count++;
+			}
+			 ip = this.qh.poll();
+		}
+		assertTrue(count == 1);
 	}
 	
 	private void addIps(){
-		
 		this.qh.addAll(this.listIp());
+	
+		
 	}
 	
-	private ArrayList<String> listIp(){
-		ArrayList<String> listIp =  new ArrayList<String>();
+	private LinkedHashSet<String> listIp(){
+		LinkedHashSet<String> listIp =  new LinkedHashSet<String>();
 		listIp.add(IPV4VALUE);
 		listIp.add(IPV6VALUE);
 		listIp.add(IPV6VALUE2);
-		
 		return listIp;
 	}
+	
 
 }

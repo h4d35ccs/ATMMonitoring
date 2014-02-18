@@ -80,31 +80,48 @@ public class ScheduledUpdateServiceImpl implements ScheduledUpdateService {
     /* (non-Javadoc)
      * @see com.ncr.ATMMonitoring.service.ScheduledUpdateService#checkCurrentUpdates()
      */
-    @Override
-    @Scheduled(cron = "0 * * * * *")
+
     public void checkCurrentUpdates() {
-	logger.info("Checking scheduled updates...");
-	Calendar currentDate = Calendar.getInstance();
-	List<ScheduledUpdate> updates = scheduledUpdateDAO
-		.listValidScheduledUpdates(currentDate);
-	for (ScheduledUpdate update : updates) {
-	    if (update.getQuery() == null) {
-		logger.info("General update found for instant "
-			+ DateFormat.getDateTimeInstance(DateFormat.SHORT,
-				DateFormat.SHORT).format(currentDate.getTime()));
-		socketService.updateAllTerminalsSocket();
-		return;
-	    }
-	}
-	Set<String> ips = new HashSet<String>();
-	for (ScheduledUpdate update : updates) {
-	    List<Terminal> terminals = queryService.executeQuery(update
-		    .getQuery());
-	    for (Terminal terminal : terminals) {
-		ips.add(terminal.getIp());
-	    }
-	}
-	socketService.updateTerminalsSocket(ips);
+
+
+		Set<String> ips = new HashSet<String>();
+		Calendar currentDate = Calendar.getInstance();
+		String logMsg = "No Updates founds";
+				
+		logger.info("Checking scheduled updates...");
+
+		List<ScheduledUpdate> updates = scheduledUpdateDAO
+				.listValidScheduledUpdates(currentDate);
+		logger.info("updates found: "+updates.size());
+		for (ScheduledUpdate update : updates) {
+
+			if (update.getQuery() == null) {
+				logger.info("General update found for instant "
+						+ DateFormat.getDateTimeInstance(DateFormat.SHORT,
+								DateFormat.SHORT).format(currentDate.getTime()));
+
+				this.socketService.updateAllTerminalsSocket();
+				return;
+			}
+		}
+
+		for (ScheduledUpdate update : updates) {
+
+			List<Terminal> terminals = queryService.executeQuery(update
+					.getQuery());
+
+			for (Terminal terminal : terminals) {
+				ips.add(terminal.getIp());
+			}
+		}
+		
+		if(!ips.isEmpty()){
+			logMsg = "Updates founds: "+ips;
+			this.socketService.updateTerminalsSocket(ips);
+		}
+		
+		logger.info(logMsg);
+	
     }
 
     /* (non-Javadoc)

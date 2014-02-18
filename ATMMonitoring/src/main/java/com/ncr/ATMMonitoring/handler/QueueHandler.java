@@ -10,14 +10,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.TimeZone;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,9 +33,6 @@ import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
  * remove) and finally save the status using {@link QueueHandler#save()}. If the
  * save method is not called, the actual status of the queue will not be save in
  * disk, except if the destroy method is called<br>
- * Inside Spring context, the method {@link QueueHandler#loadQueue()} is called
- * after the construction of the bean. ( using {@link PostConstruct}) for that
- * reason is not needed to be called if this class is being autowired<br>
  * This class need that the properties <b>config.queue.filestore.path</b> and
  * <b>config.queue.file.name</b> are configured as follows<br>
  * <ul>
@@ -52,8 +49,8 @@ import com.ncr.ATMMonitoring.handler.exception.QueueHandlerException;
 public class QueueHandler {
 
 	private final static Logger logger = Logger.getLogger(QueueHandler.class);
-	// the "queue" of ips linkedHashSet remembers the order
-	private Set<String> terminalsIpQueue;
+	// the "queue" of ips
+	private Queue<String> terminalsIpQueue;
 	// holds the system path where the queue is stored
 
 	@Value("${config.queue.filestore}")
@@ -64,25 +61,21 @@ public class QueueHandler {
 	/**
 	 * Loads the queue Object, this method perform the deserialization process
 	 * 
-	 * @return Set<String>
+	 * 
 	 * @throws QueueHandlerException
 	 *             if can 't execute the operation
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	@PostConstruct
 	public synchronized void loadQueue() throws QueueHandlerException {
 
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 
-		Set<String> queue = null;
-
 		try {
 			fis = new FileInputStream(returnQueuePath());
 			in = new ObjectInputStream(fis);
-			queue = (Set<String>) in.readObject();
-			this.terminalsIpQueue = Collections.synchronizedSet(queue);
+			this.terminalsIpQueue = (Queue<String>) in.readObject();
 			logger.info("Queue Loaded: " + this.terminalsIpQueue);
 
 		} catch (ClassNotFoundException e) {
@@ -92,17 +85,19 @@ public class QueueHandler {
 
 		} catch (FileNotFoundException e) {
 			// if can not find the file assumes that the queue must be created
-			logger.info("Creating new Queue");
-			this.terminalsIpQueue = Collections
-					.synchronizedSet(new LinkedHashSet<String>());
+			logger.info("Creating new Queue, no queue file found in: "
+					+ returnQueuePath());
+			this.terminalsIpQueue = new ConcurrentLinkedQueue<String>();
 		} catch (IOException e) {
 			logger.error(QueueHandlerException.READ_IO_ERROR, e);
 			throw new QueueHandlerException(
 					QueueHandlerException.READ_IO_ERROR, e);
 		} catch (Exception e) {
-			logger.error(QueueHandlerException.GENERAL_ERROR, e);
-			throw new QueueHandlerException(
-					QueueHandlerException.GENERAL_ERROR, e);
+			logger.error(QueueHandlerException.GENERAL_ERROR + e.getMessage(),
+					e);
+			throw new QueueHandlerException(QueueHandlerException.GENERAL_ERROR
+					+ e.getMessage(), e);
+
 		} finally {
 			try {
 				if (in != null) {
@@ -128,10 +123,12 @@ public class QueueHandler {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
-			fos = new FileOutputStream(this.returnQueuePath());
-			out = new ObjectOutputStream(fos);
-			out.writeObject(this.terminalsIpQueue);
-			logger.info("Queue status was written in disk");
+			if (this.terminalsIpQueue != null) {
+				fos = new FileOutputStream(this.returnQueuePath());
+				out = new ObjectOutputStream(fos);
+				out.writeObject(this.terminalsIpQueue);
+				logger.info("Queue status was written in disk");
+			}
 
 		} catch (FileNotFoundException e) {
 			logger.error(QueueHandlerException.FILE_PATH_NOT_FOUND, e);
@@ -166,7 +163,8 @@ public class QueueHandler {
 	public synchronized void destroy() throws QueueHandlerException {
 		String path = this.returnQueuePath();
 		try {
-			this.removeAll();
+			this.terminalsIpQueue = null;
+
 			File queue = new File(path);
 			// only deletes the file if exists
 			if (queue.exists()) {
@@ -188,11 +186,17 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void add(String ip) throws QueueHandlerException {
+	public synchronized void add(String ip) throws QueueHandlerException {
+
 		this.checkNullQueue();
+		ip = ip.trim();
 		this.validateipString(ip);
-		this.terminalsIpQueue.add(ip);
-		logger.debug("added:" + ip);
+		if (!this.terminalsIpQueue.contains(ip)) {
+			this.terminalsIpQueue.add(ip);
+			logger.debug("added:" + ip);
+
+		}
+
 	}
 
 	/**
@@ -204,18 +208,25 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void addAll(Collection<String> ips) throws QueueHandlerException {
+	public synchronized void addAll(Collection<String> ips)
+			throws QueueHandlerException {
 		this.checkNullQueue();
 		// make sure that a valid ip is being added
 		for (String ip : ips) {
 			try {
+				ip = ip.trim();
 				this.validateipString(ip);
+				if (!this.terminalsIpQueue.contains(ip)) {
+					this.terminalsIpQueue.add(ip);
+				}
+
 			} catch (QueueHandlerException e) {
 				// will try to add all and only exclude those who are not ips
 				logger.warn(e.getMessage());
 			}
+
 		}
-		this.terminalsIpQueue.addAll(ips);
+
 		logger.debug("added:" + ips);
 	}
 
@@ -240,7 +251,7 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void removeAll() throws QueueHandlerException {
+	public synchronized void removeAll() throws QueueHandlerException {
 		this.checkNullQueue();
 		this.terminalsIpQueue.clear();
 		logger.debug("queue clean: " + this.terminalsIpQueue.isEmpty());
@@ -255,7 +266,8 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void removeElement(String ip) throws QueueHandlerException {
+	public synchronized void removeElement(String ip)
+			throws QueueHandlerException {
 		this.checkNullQueue();
 		this.terminalsIpQueue.remove(ip);
 	}
@@ -269,7 +281,7 @@ public class QueueHandler {
 	 * @throws QueueHandlerException
 	 *             if the queue is null
 	 */
-	public void removeElements(Collection<String> ips)
+	public synchronized void removeElements(Collection<String> ips)
 			throws QueueHandlerException {
 		this.checkNullQueue();
 		this.terminalsIpQueue.removeAll(ips);
@@ -281,12 +293,12 @@ public class QueueHandler {
 	 * 
 	 * @return String
 	 */
-	public String poll() {
-		String firstIp = null;
-		if (this.terminalsIpQueue.iterator().hasNext()) {
-			firstIp = this.terminalsIpQueue.iterator().next();
-			this.removeElement(firstIp);
-		}
+	public synchronized String poll() {
+		String firstIp = this.terminalsIpQueue.poll();
+		// if (this.terminalsIpQueue.iterator().hasNext()) {
+		// firstIp = this.terminalsIpQueue.iterator().next();
+		// this.removeElement(firstIp);
+		// }
 
 		return firstIp;
 	}
@@ -298,10 +310,10 @@ public class QueueHandler {
 	 * @return
 	 */
 	public String element() {
-		String firstIp = null;
-		if (this.terminalsIpQueue.iterator().hasNext()) {
-			firstIp = this.terminalsIpQueue.iterator().next();
-		}
+		String firstIp = this.terminalsIpQueue.element();
+		// if (this.terminalsIpQueue.iterator().hasNext()) {
+		// firstIp = this.terminalsIpQueue.iterator().next();
+		// }
 
 		return firstIp;
 	}
@@ -313,11 +325,34 @@ public class QueueHandler {
 	 * @return
 	 */
 	public String peek() {
-		String firstIp = null;
-		if (!this.terminalsIpQueue.isEmpty()) {
-			firstIp = this.terminalsIpQueue.iterator().next();
-		}
+		String firstIp = this.terminalsIpQueue.peek();
+		// if (!this.terminalsIpQueue.isEmpty()) {
+		// firstIp = this.terminalsIpQueue.iterator().next();
+		// }
 		return firstIp;
+	}
+
+	/**
+	 * Returns a copy of this queue, if the queue is null will return null,
+	 * empty otherwise
+	 * 
+	 * @return Queue<String>
+	 */
+	public Queue<String> viewQueue() {
+		if (this.terminalsIpQueue != null) {
+			return new LinkedList<String>(this.terminalsIpQueue);
+		}
+		return null;
+	}
+
+	/**
+	 * returns the size of the queue
+	 * 
+	 * @return
+	 */
+	public int size() {
+		this.checkNullQueue();
+		return this.terminalsIpQueue.size();
 	}
 
 	/**
@@ -381,6 +416,12 @@ public class QueueHandler {
 					+ ip);
 		}
 
+	}
+	
+	public static void main(String[] pepe){
+		Calendar currentDate = Calendar.getInstance();
+		currentDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+		System.out.println(currentDate.getTime());
 	}
 
 }

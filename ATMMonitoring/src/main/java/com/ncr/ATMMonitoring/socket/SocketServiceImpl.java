@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.ncr.ATMMonitoring.handler.QueueHandler;
 import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.Terminal;
 import com.ncr.ATMMonitoring.service.QueryService;
@@ -38,9 +39,11 @@ public class SocketServiceImpl implements SocketService {
     static private Logger logger = Logger.getLogger(SocketServiceImpl.class
 	    .getName());
 
-    /** The ips waiting to be requested their data. */
-    private Set<String> awaitingIps = Collections
-	    .synchronizedSet(new HashSet<String>());
+//    /** The ips waiting to be requested their data. */
+//    private Set<String> awaitingIps = Collections
+//	    .synchronizedSet(new HashSet<String>());
+    
+    
 
     /** The max number of threads. */
     @Value("${config.maxNumberUpdateThreads}")
@@ -86,6 +89,9 @@ public class SocketServiceImpl implements SocketService {
     @Autowired
     private QueryService queryService;
     
+	@Autowired
+	private QueueHandler queueHandler;
+    
     /** The request thread manager. */
     private RequestThreadManager requestThreadManager;
 
@@ -116,7 +122,9 @@ public class SocketServiceImpl implements SocketService {
      */
     @Override
     public void updateTerminalSocket(Terminal terminal) {
-	awaitingIps.add(terminal.getIp());
+//	awaitingIps.add(terminal.getIp());
+    	logger.debug("adding ip: "+terminal.getIp());
+    	this.addToQueue(terminal.getIp(), null);
     }
 
     /* (non-Javadoc)
@@ -124,15 +132,19 @@ public class SocketServiceImpl implements SocketService {
      */
     @Override
     public void updateTerminalSocket(String ip) {
-	awaitingIps.add(ip);
+//	awaitingIps.add(ip);
+    	this.addToQueue(ip, null);
     }
+    
 
     /* (non-Javadoc)
      * @see com.ncr.ATMMonitoring.socket.SocketService#updateTerminalsSocket(java.util.Collection)
      */
     @Override
     public void updateTerminalsSocket(Collection<String> ips) {
-	awaitingIps.addAll(ips);
+//	awaitingIps.addAll(ips);
+    	logger.debug("adding collection: "+ips);
+    	this.addToQueue(null, ips);
     }
 
     /* (non-Javadoc)
@@ -154,10 +166,15 @@ public class SocketServiceImpl implements SocketService {
      * @see com.ncr.ATMMonitoring.socket.SocketService#processAwaitingIps()
      */
     @Override
-    @Scheduled(cron = "30 * * * * *")
+//    @Scheduled(cron = "30 * * * * *")
     public void processAwaitingIps() {
 	logger.info("Checking the IPs waiting for update...");
-	if (awaitingIps.isEmpty()) {
+//	if (awaitingIps.isEmpty()) {
+//	    return;
+//	}
+	this.queueHandler.loadQueue();
+	if(this.queueHandler.isEmpty()){
+		logger.info("Nothing in the queue, no ip to process");
 	    return;
 	}
 	if ((requestThreadManager != null) && requestThreadManager.isAlive()) {
@@ -165,13 +182,13 @@ public class SocketServiceImpl implements SocketService {
 	    return;
 	}
 	logger.info("Processing the IPs waiting for update...");
-	Set<String> aux;
-	synchronized (awaitingIps) {
-	    aux = new HashSet<String>(awaitingIps);
-	    awaitingIps.clear();
-	}
+//	Set<String> aux;
+//	synchronized (awaitingIps) {
+//	    aux = new HashSet<String>(awaitingIps);
+//	    awaitingIps.clear();
+//	}
 	requestThreadManager = new RequestThreadManager(maxThreads,
-		maxTerminals, timeOut, agentPort, sleepTime, maxTime, this, aux);
+		maxTerminals, timeOut, agentPort, sleepTime, maxTime, this, queueHandler);
 	requestThreadManager.start();
     }
 
@@ -204,5 +221,29 @@ public class SocketServiceImpl implements SocketService {
      */
     public String getOldHashSeed() {
 	return oldHashSeed;
+    }
+    /**
+     * Adds elements to the queue
+     * @param ip
+     * @param ips
+     */
+    private void addToQueue(String ip, Collection<String> ips){
+    	this.queueHandler.loadQueue();
+    	boolean added = false;
+    	
+    	if(ips != null && !ips.isEmpty()){
+    		
+    		this.queueHandler.addAll(ips);
+    		added = true;
+    		
+    	}else if(ip != null){
+    		
+    		this.queueHandler.add(ip);
+    		added = true;
+    	}
+    	if(added){
+    		
+    		this.queueHandler.save();
+    	}
     }
 }

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -46,6 +47,8 @@ public class RequestThread extends Thread {
     /** The ips to request. */
     private Set<String> ips;
     
+    private Set<String> ipsNotProcessed;
+    
     /** The agent port. */
     private int agentPort;
     
@@ -73,6 +76,8 @@ public class RequestThread extends Thread {
 	this.agentPort = agentPort;
 	this.timeOut = timeOut;
 	this.parent = parent;
+	// in the begining there is none ip processed that why i initialize this set equal to the ips
+	this.ipsNotProcessed = new LinkedHashSet<String>(this.ips);
     }
 
     /**
@@ -233,17 +238,33 @@ public class RequestThread extends Thread {
      * @see java.lang.Thread#run()
      */
     public void run() {
-	for (String ip : ips) {
+    	
+     	for (String ip : ips) {
 	    try {
 		requestDataJson(ip);
+		// i remove from the not processed ip set
+		this.ipsNotProcessed.remove(ip);
 	    } catch (Exception e) {
 		logger.warn(
 			"Couldn't update terminal with IP"
 				+ ip
 				+ ". Ip will be requested again in next request phase...",
 			e);
-		parent.handleIpError(ip);
+		if(!ip.equals("195.99.12.150")){
+			parent.handleIpError(ip);
+		}
+		
 	    }
 	}
     }
+    
+    /**
+     * Returns the ips that were not processed
+     * @return  Set<String>
+     */
+	public Set<String> getIpsNotProcessed() {
+		return ipsNotProcessed;
+	}
+
+	
 }

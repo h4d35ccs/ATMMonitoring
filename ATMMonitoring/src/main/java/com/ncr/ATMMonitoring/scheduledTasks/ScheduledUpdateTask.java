@@ -16,6 +16,7 @@ import com.ncr.ATMMonitoring.dao.ScheduledUpdateDAO;
 import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
 import com.ncr.ATMMonitoring.pojo.Terminal;
 import com.ncr.ATMMonitoring.service.QueryService;
+import com.ncr.ATMMonitoring.service.ScheduledUpdateService;
 import com.ncr.ATMMonitoring.socket.SocketService;
 
 /**
@@ -33,22 +34,15 @@ public class ScheduledUpdateTask {
 	/* atributes* */
 	
 	//will run at 0 minutes every hour every day
-	private static final String CRON_CONF = "30 * * * * *";
+	private static final String CRON_CONF = "59 * * * * *";
 
 	
 	/* *********Injected objects**** */
 
-	/* The socket service. */
 	@Autowired
-	private SocketService socketService;
+	private ScheduledUpdateService scheduledUpdateService;
+	
 
-	/* The query service. */
-	@Autowired
-	private QueryService queryService;
-
-	/* The scheduled update dao. */
-	@Autowired
-	private ScheduledUpdateDAO scheduledUpdateDAO;
 
 	/**
 	 * Method that checks if there are some Scheduled updates to execute and if there are some, 
@@ -56,37 +50,9 @@ public class ScheduledUpdateTask {
 	 */
 	@Scheduled(cron = CRON_CONF)
 	@Transactional
-	public void checkCurrentUpdates() {
-
-		Set<String> ips = new HashSet<String>();
-		Calendar currentDate = Calendar.getInstance();
-
-		logger.info("Checking scheduled updates...:)");
-
-		List<ScheduledUpdate> updates = scheduledUpdateDAO
-				.listValidScheduledUpdates(currentDate);
-
-		for (ScheduledUpdate update : updates) {
-
-			if (update.getQuery() == null) {
-				logger.info("General update found for instant "
-						+ DateFormat.getDateTimeInstance(DateFormat.SHORT,
-								DateFormat.SHORT).format(currentDate.getTime()));
-
-				this.socketService.updateAllTerminalsSocket();
-				return;
-			}
-		}
-
-		for (ScheduledUpdate update : updates) {
-
-			List<Terminal> terminals = queryService.executeQuery(update
-					.getQuery());
-
-			for (Terminal terminal : terminals) {
-				ips.add(terminal.getIp());
-			}
-		}
-		this.socketService.updateTerminalsSocket(ips);
+	public void callToCheckCurrentUpdates() {
+		logger.info("Calling service for checking Current Updates ");
+		this.scheduledUpdateService.checkCurrentUpdates();
+		logger.info("Calling service done");
 	}
 }
