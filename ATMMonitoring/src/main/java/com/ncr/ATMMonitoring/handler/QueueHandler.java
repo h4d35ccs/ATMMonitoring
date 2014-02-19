@@ -10,15 +10,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.TimeZone;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -127,7 +126,7 @@ public class QueueHandler {
 				fos = new FileOutputStream(this.returnQueuePath());
 				out = new ObjectOutputStream(fos);
 				out.writeObject(this.terminalsIpQueue);
-				logger.info("Queue status was written in disk");
+				logger.info("Queue status was written in disk "+this.terminalsIpQueue);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -189,12 +188,14 @@ public class QueueHandler {
 	public synchronized void add(String ip) throws QueueHandlerException {
 
 		this.checkNullQueue();
-		ip = ip.trim();
-		this.validateipString(ip);
-		if (!this.terminalsIpQueue.contains(ip)) {
-			this.terminalsIpQueue.add(ip);
-			logger.debug("added:" + ip);
-
+		if(!StringUtils.isEmpty(ip)){
+			ip = ip.trim();
+			this.validateipString(ip);
+			if (!this.terminalsIpQueue.contains(ip)) {
+				this.terminalsIpQueue.offer(ip);
+				logger.debug("added:" + ip);
+	
+			}
 		}
 
 	}
@@ -214,10 +215,12 @@ public class QueueHandler {
 		// make sure that a valid ip is being added
 		for (String ip : ips) {
 			try {
-				ip = ip.trim();
-				this.validateipString(ip);
-				if (!this.terminalsIpQueue.contains(ip)) {
-					this.terminalsIpQueue.add(ip);
+				if(!StringUtils.isEmpty(ip)){
+					ip = ip.trim();	
+					this.validateipString(ip);
+					if (!this.terminalsIpQueue.contains(ip)) {
+						this.terminalsIpQueue.offer(ip);
+					}			
 				}
 
 			} catch (QueueHandlerException e) {
@@ -418,10 +421,4 @@ public class QueueHandler {
 
 	}
 	
-	public static void main(String[] pepe){
-		Calendar currentDate = Calendar.getInstance();
-		currentDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-		System.out.println(currentDate.getTime());
-	}
-
 }

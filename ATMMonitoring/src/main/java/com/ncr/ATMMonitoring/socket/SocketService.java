@@ -82,4 +82,10 @@ public interface SocketService {
      * @return the old configurable hash seed
      */
     public String getOldHashSeed();
+    
+    /**
+     * Load the actual queue and extract one ip from the queue and saves the status
+     * @return String
+     */
+    public String getIpToProcess();
 }
