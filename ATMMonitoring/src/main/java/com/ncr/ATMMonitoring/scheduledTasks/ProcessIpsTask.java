@@ -17,7 +17,7 @@ import com.ncr.ATMMonitoring.socket.SocketService;
 @Component
 public class ProcessIpsTask {
 
-	/** The logger. */
+	/* The logger. */
 	static private Logger logger = Logger.getLogger(ProcessIpsTask.class);
 
 	@Autowired
