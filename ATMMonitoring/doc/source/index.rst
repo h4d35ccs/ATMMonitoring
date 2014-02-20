@@ -15,7 +15,7 @@ It also has its own queries engine that allows us to execute a series of restric
 
 
 Features Summary
-----------------
+%%%%%%%%%%%%%%%%
 
 - Full management of ATM data with a complete data model that includes all hardware and software components, and other meta-entities such as installation or location.
 
@@ -26,6 +26,21 @@ Features Summary
 - Allows to plan the ATM data updates weekly or monthly, can be based on a query to limit updates to a subset of machines.
 
 .. [1] *The agent developed jointly with the server application must be installed in the ATMs.*
+
+Comunication Agent-Server
+---------------------------
+
+Communication is established through SSL Sockets, without using the full SSL support, leaving at side the authentication by certificates.
+
+Authentication
+%%%%%%%%%%%%%%
+
+Method involves an exchange of tokens between client and server. We start from a random string generated in the server, then is sent  to the agent. The hash of this string along with two more string hashes resident in the agent (configurable value),  are concatenated and the hash is recalculated to send it  to the server. The server calculates the hash of the same way with configurable strings ,  the server posses two configurable strings, one named  "current" and other "legacy" and are use to compare to what the agent has sent. If the hashes are equal, are considered authenticated and the communication between them continues. If it does not, the server calculates the hash but with the string "legacy". If neither matches, the hash from the agent shall not be considered properly authenticated and communication will be cut. If they match with “legacy”, the agent will send the configurable string "current" to be updated in the agent and both ends of the communication are considered authenticated.
+
+Encryption
+%%%%%%%%%%
+
+It is done by using a file called "keystore" (SSL stores the certificates and the necessary encryption algorithms in this file) that will be distributed along with the agent, due it can not be guaranteed that all ATMs can generate locally that file because not all the Java Virtual Machine implementations seem to have proper support for it. The keystore password is saved in the properties of the agent.
 
 Agent collected Information
 ---------------------------
@@ -45,6 +60,17 @@ The NCR HSAM Agent performs the following actions:
 	* *Request Sender for notifying the server* that an update has been completed and a data update can be requested after a manual or scheduled demand for updating, or after refreshing the ATMinformation the first time the agent starts up.
 
 To know more about the information gathered by the agent please see the :doc:`Agent Collected Information <collected-info>`
+
+Agent Autoupdate
+-----------------
+The agent has the ability to perform an autoupdate, this means if a new version of the agent is released, it will be downloaded  and restart itself. This way it is not necessary to reinstall  the agent in each ATM each time a new version is released. The process is as follow:
+
+	#. The agent starts. 
+	#. An update was detected. 
+	#. The update is downloaded, then the MD5 is checked (if it fails, it will try again until N times), then it will unzip and move / copy / merge files. 
+	#. For therunning agent waits until it frees its resources ( to avoid a forced stop)
+	#. Execute the downloaded agent. If all goes well, delete the old one, and if not, restore it and launch again.
+	#. if the new version is being executed, it will not detect a new update, unless the agent was downgraded, it will start again the process;
 
 Documentation:
 --------------
