@@ -63,14 +63,28 @@ To know more about the information gathered by the agent please see the :doc:`Ag
 
 Agent Autoupdate
 -----------------
-The agent has the ability to perform an autoupdate, this means if a new version of the agent is released, it will be downloaded  and restart itself. This way it is not necessary to reinstall  the agent in each ATM each time a new version is released. The process is as follow:
+The agent has the ability to perform an autoupdate, this means if a new version of the agent is released, it will be downloaded  and restart itself. This way it is not necessary to reinstall  the agent in each ATM each time a new version is released. 
 
-	#. The agent starts. 
-	#. An update was detected. 
-	#. The update is downloaded, then the MD5 is checked (if it fails, it will try again until N times), then it will unzip and move / copy / merge files. 
-	#. For therunning agent waits until it frees its resources ( to avoid a forced stop)
-	#. Execute the downloaded agent. If all goes well, delete the old one, and if not, restore it and launch again.
-	#. if the new version is being executed, it will not detect a new update, unless the agent was downgraded, it will start again the process;
+This process is made by an independent and separate piece of code that contains some methods that can initiate the Agent, to get latest version, stop and free the resources that the executing agent have taken. To check for updates,it is needed to configure a text file where the autoupdate can find the latest version, the MD5 of the file to download and the URL where to find the newest version.The text file will have three lines where the information will be, the first one holds the latest version, the second one the URL where the newest version is, and finally the MD5 of the file to be downloaded.
+
+The autoupdate checks every N (configurable value) seconds if a new version have being released, to do so it reads the first line of the text  file named before, and compare the obtained value with the result of the execution of the method in charge of obtaining the current running version. If a new version is detected, the new JAR will be downloaded from the URL present in the text file. After the new file is downloaded, the current executing JAR version is moved to an temporary folder. Then checks if the MD5 of the downloaded file matches with the obtained one from the text file. 
+
+If the MD5 of the file does not match, the autopdate will retry the process N times ( configurable parameter), if the MD5 matches, and no error were detected in the process, it will stop the old version, start the new one and delete the old version from the temporary folder. If an error occurs during the start process, the new JAR will be deleted and the old version will be moved from the temporary folder and will start.
+
+In cases where unexpected errors occurs, the process just will retry in the next cycle in  a normal way, also the autoupdate have  a very explicative log where is posible to see almost all that have happen in the process, this log is independent from the Agent log
+
+It is possible to avoid the autoupdate process by a configurable parameter, this will only execute the current version of the Agent 
+
+
+The process can be summarized as follow:
+
+	#. The autoupdate starts
+	#. The autoupdate starts the agent version present in the classpath. 
+	#. Checks for an Update and an update was detected. 
+	#. The new file is downloaded, then the MD5 is checked (if it fails, it will try again until N times), then it will unzip and move / copy / merge files. 
+	#. For the running agent waits until it frees its resources ( to avoid a forced stop).
+	#. Execute the downloaded agent after the runing one is stoped. If all goes well, delete the old one, and if not, restore it and launch again the previous version.
+	#. If the new version is being executed, it will not detect a new update, unless the agent was downgraded, it will start again the process.
 
 Documentation:
 --------------
