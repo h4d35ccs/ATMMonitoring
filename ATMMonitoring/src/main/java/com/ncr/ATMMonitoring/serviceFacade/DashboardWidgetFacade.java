@@ -31,16 +31,7 @@ public interface DashboardWidgetFacade {
 	 * Constant used to set an widget as not visible HIDE = false;;
 	 */
 	boolean HIDE = false;
-	/**
-	 * COPY_WIDGETS = true;
-	 */
-	boolean COPY_WIDGETS = true;
-
-	/**
-	 * RETURN_DEFAULTS = true;
-	 */
-	boolean RETURN_DEFAULTS = false;
-
+	
 	/**
 	 * Constant used to mark as default SET_WIDGET_AS_DEFAULT = true;
 	 */
@@ -61,6 +52,15 @@ public interface DashboardWidgetFacade {
 	 * "invisible";
 	 */
 	String INVISIBLE_WIDGETS = "invisible";
+	/**
+	 * indicate that all the category widgets will be retrieved
+	 */
+	boolean GET_ALL_CATEGORY_WIDGETS = true;
+
+	/**
+	 * indicate that will find all library widgets by category
+	 */
+	boolean GET_LIBRARY_BYCATEGORY = false;
 
 	/**
 	 * Return the dashboard associated to the given user. If the user does not
@@ -74,12 +74,17 @@ public interface DashboardWidgetFacade {
 
 	/**
 	 * Modifies the position of the widget inside the dashboard
-	 * @param username  String with the username
-	 * @param widgetId  int with a valid widget id
-	 * @param oldPosition old position in the dashboard
-	 * @param newPosition new position in the dashboard
+	 * 
+	 * @param username
+	 *            String with the username
+	 * @param widgetId
+	 *            int with a valid widget id
+	 * @param oldPosition
+	 *            old position in the dashboard
+	 * @param newPosition
+	 *            new position in the dashboard
 	 */
-	  void updateWidgetPosition(String username ,int  widgetId, int oldPosition,
+	void updateWidgetPosition(String username, int widgetId, int oldPosition,
 			int newPosition);
 
 	/**
@@ -116,37 +121,38 @@ public interface DashboardWidgetFacade {
 	 *            int
 	 */
 	void changeDashboardColumms(String username, int columns);
+
 	/**
 	 * Execute a query for the given widget
+	 * 
 	 * @param username
 	 * @param widgetId
 	 * @param locale
-	 * @return List<?> 
+	 * @return List<?>
 	 */
-	public List<?> executeQueryForWidget(String username,int widgetId, Locale locale);
-	
-	/**
-	 * Associates the widgets that matches the given ids with the given user
-	 * 
-	 * @param username
-	 *            String with the username
-	 * @param widgetsId
-	 *            List<Integer> with valid widget id
-	 */
-	void addWidgetToUser(String username, List<Integer> widgetsId);
+	public List<?> executeQueryForWidget(String username, int widgetId,
+			Locale locale);
 
 	/**
-	 * TODO finish the javadoc <br>
-	 * To specify if the method will return a widget
-	 * {@link DashboardWidgetFacade#COPY_WIDGETS}, to
-	 * {@link DashboardWidgetFacade#FIND_ACTUAL}
+	 * Associates one custom widget or widgets from the library to the given
+	 * user<br>
+	 * If the param widget is present, this method will associate the given
+	 * widget to the user<br>
+	 * If the param widgetsId is present will associate the given library
+	 * widgets id to the user
 	 * 
 	 * @param username
 	 *            String with the username
-	 * @param copyWidgets
-	 * @return List<Widget>
+	 * @param widget
+	 *            the widget to be added
+	 * 
+	 * @param widgetsId
+	 *            List<Integer> list with valid ids with widgets from the
+	 *            library
+	 * 
 	 */
-	List<Widget> findAndCopyDefaultWidgets(String username, boolean copyWidgets);
+	void addWidgetToUser(String username, Widget widget, List<Integer> widgetsId);
+
 
 	/**
 	 * Remove the association between the user and the widget
@@ -156,10 +162,10 @@ public interface DashboardWidgetFacade {
 	 * @param username
 	 *            String with the username
 	 */
-	void removeWidgetFromUser(List<Integer> widgetsId, String username);
+	void removeWidgetFromUser(int widgetsId, String username);
 
 	/**
-	 * TODO finish the javadoc <br>
+	 * Updates the status of a widget marking it as default or not
 	 * To specify if the method will mark a widget as default please use
 	 * {@link DashboardWidgetFacade#SET_WIDGET_AS_DEFAULT}, to remove the
 	 * default mark {@link DashboardWidgetFacade#SET_WIDGET_AS_NO_DEFAULT}
@@ -175,7 +181,7 @@ public interface DashboardWidgetFacade {
 
 	/**
 	 * Returns if the user has an association with the given widget (true) or if
-	 * the asociation does not exist (false)
+	 * the association does not exist (false)
 	 * 
 	 * @param widgetsId
 	 *            int with a valid widget id
@@ -184,6 +190,18 @@ public interface DashboardWidgetFacade {
 	 * @return boolean
 	 */
 	boolean userHasWidget(int widgetId, String username);
+
+	/**
+	 * Returns if the user has an association with the given widget (true) or if
+	 * the association does not exist (false)
+	 * 
+	 * @param widget
+	 *            valid widget
+	 * @param username
+	 *            String with the username
+	 * @return
+	 */
+	boolean userHasWidget(Widget widget, String username);
 
 	/**
 	 * Returns the widget that matches the given id
@@ -206,10 +224,15 @@ public interface DashboardWidgetFacade {
 			int categoryId);
 
 	/**
+	 * Retrieves all the Category by category or just all<br>
+	 * to specify the param fechtype please use
+	 * {@link DashboardWidgetFacade#GET_ALL_CATEGORY_WIDGETS} for retrieving all
+	 * the WidgetCategory with no restrictions, otherwise use
+	 * {@link DashboardWidgetFacade#GET_LIBRARY_BYCATEGORY} to retrieve only by
+	 * category
 	 * 
 	 * @return List<WidgetCategory>
 	 */
-	List<WidgetCategory> findLibraryWidgetByCategory();
-	
+	List<WidgetCategory> findAllCategoryWidgets(boolean fetchType);
 
 }

@@ -19,6 +19,7 @@ import com.ncr.ATMMonitoring.pojo.Widget;
 import com.ncr.ATMMonitoring.pojo.WidgetCategory;
 import com.ncr.ATMMonitoring.service.DashboardService;
 import com.ncr.ATMMonitoring.service.UserService;
+import com.ncr.ATMMonitoring.service.WidgetCategoryService;
 import com.ncr.ATMMonitoring.service.WidgetService;
 import com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade;
 
@@ -36,6 +37,9 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 	private WidgetService widgetService;
 	@Autowired
 	private UserService userService;
+	/* The widget category service */
+	@Autowired
+	private WidgetCategoryService widgetCategoryService;
 
 	/* The logger. */
 	static private Logger logger = Logger
@@ -56,41 +60,42 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 		return dashboard;
 	}
 
-/*
- * (non-Javadoc)
- * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#updateWidgetPosition(java.lang.String, int, int, int)
- */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * updateWidgetPosition(java.lang.String, int, int, int)
+	 */
 	@Override
-	public void updateWidgetPosition(String username ,int  widgetId, int oldPosition,
-			int newPosition) {
-		
+	public void updateWidgetPosition(String username, int widgetId,
+			int oldPosition, int newPosition) {
+
 		User loggedUser = this.getLoggedUser(username);
 		Widget widget = this.widgetService.findWidgetById(widgetId);
-		
+
 		boolean userOwnsWidget = this.widgetService.isWidgetOwnedByUser(widget,
 				loggedUser);
-		
-		if(userOwnsWidget && oldPosition != newPosition ){
-			
+
+		if (userOwnsWidget && oldPosition != newPosition) {
+
 			Dashboard dashboard = loggedUser.getDashboard();
 			List<Widget> widgets = dashboard.getVisibleWidgets();
-			
-			logger.debug("Moving widget " + widget.getId()
-					+ " from position " + oldPosition + " to "
-					+ newPosition);
-			
+
+			logger.debug("Moving widget " + widget.getId() + " from position "
+					+ oldPosition + " to " + newPosition);
+
 			logger.debug("old widget list: " + widgets);
-			
+
 			if (oldPosition < newPosition) {
-				Collections.rotate(widgets.subList(oldPosition, newPosition + 1),
-						-1);
+				Collections.rotate(
+						widgets.subList(oldPosition, newPosition + 1), -1);
 			} else {
-				Collections
-						.rotate(widgets.subList(newPosition, oldPosition + 1), 1);
+				Collections.rotate(
+						widgets.subList(newPosition, oldPosition + 1), 1);
 			}
-			
+
 			logger.debug("new widget list: " + widgets);
-			
+
 			for (int i = 0; i < widgets.size(); i++) {
 				Widget widgetUpdating = (Widget) widgets.get(i);
 				widgetUpdating.setOrder(i + 1);
@@ -99,23 +104,28 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 		}
 
 	}
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#hideShowWidget(int, java.lang.String, boolean)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#hideShowWidget
+	 * (int, java.lang.String, boolean)
 	 */
 	@Override
 	public void hideShowWidget(int widgetId, String username, boolean hideShow) {
-		
+
 		User loggedUser = this.getLoggedUser(username);
 		Widget widget = this.widgetService.findWidgetById(widgetId);
 		int order = 0;
-		
+
 		boolean userOwnsWidget = this.widgetService.isWidgetOwnedByUser(widget,
 				loggedUser);
-		
+
 		if (userOwnsWidget) {
-			logger.debug("Showing widget: " + hideShow+"widget id: "+widget.getId());
-			
+			logger.debug("Showing widget: " + hideShow + "widget id: "
+					+ widget.getId());
+
 			if (hideShow == VISIBLE) {
 
 				List<Widget> widgets = loggedUser.getDashboard().getWidgets();
@@ -129,109 +139,194 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 		}
 
 	}
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#changeDashboardColumms(java.lang.String, int)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * changeDashboardColumms(java.lang.String, int)
 	 */
 	@Override
-	public void changeDashboardColumms(String username, int columns ){
-		
+	public void changeDashboardColumms(String username, int columns) {
+
 		User loggedUser = this.getLoggedUser(username);
 		Dashboard dashboard = loggedUser.getDashboard();
 		dashboard.setColumns(columns);
 		this.dashboardService.saveDashboard(dashboard);
 	}
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#getVisiblesAndInvisiblesWidgets(java.lang.String)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * getVisiblesAndInvisiblesWidgets(java.lang.String)
 	 */
 	@Override
 	public Map<String, List<Widget>> getVisiblesAndInvisiblesWidgets(
 			String username) {
-		
+
 		User loggedUser = this.getLoggedUser(username);
 		Dashboard dashboard = loggedUser.getDashboard();
 		List<Widget> visibleWidgets = dashboard.getVisibleWidgets();
 		List<Widget> hiddenWidgets = dashboard.getWidgets();
 		hiddenWidgets.removeAll(visibleWidgets);
-		
-		Map<String, List<Widget>> widgetList = new HashMap<String, List<Widget>>(2);
+
+		Map<String, List<Widget>> widgetList = new HashMap<String, List<Widget>>(
+				2);
 		widgetList.put(VISIBLE_WIDGETS, visibleWidgets);
 		widgetList.put(INVISIBLE_WIDGETS, hiddenWidgets);
 		return widgetList;
 	}
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#executeQueryForWidget(java.lang.String, int, java.util.Locale)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * executeQueryForWidget(java.lang.String, int, java.util.Locale)
 	 */
 	@Override
-	public List<?> executeQueryForWidget(String username,int widgetId, Locale locale){
-		
+	public List<?> executeQueryForWidget(String username, int widgetId,
+			Locale locale) {
+
 		List<?> queryResults = null;
 		User loggedUser = this.getLoggedUser(username);
 		Widget widget = this.widgetService.findWidgetById(widgetId);
 		boolean userOwnsWidget = this.widgetService.isWidgetOwnedByUser(widget,
 				loggedUser);
-		
+
 		if (userOwnsWidget) {
 			logger.debug("Found widget: " + widget.getId());
-		
-			 queryResults = widgetService.executeQuery(widget,
-					locale);
+
+			queryResults = widgetService.executeQuery(widget, locale);
 		}
 		return queryResults;
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#addWidgetToUser
+	 * (java.lang.String, com.ncr.ATMMonitoring.pojo.Widget, java.util.List)
+	 */
 	@Override
-	public void addWidgetToUser(String username, List<Integer> widgetsId) {
-		// TODO Auto-generated method stub
+	public void addWidgetToUser(String username, Widget widget,
+			List<Integer> widgetsId) {
 
+		User loggedUser = this.getLoggedUser(username);
+		if (widget != null) {
+
+			widgetService.createWidgetForUser(widget, loggedUser);
+		}
+		if (widgetsId != null && !widgetsId.isEmpty()) {
+			widgetService.addWidgetsFromLibrary(widgetsId, loggedUser);
+		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * removeWidgetFromUser(int, java.lang.String)
+	 */
 	@Override
-	public List<Widget> findAndCopyDefaultWidgets(String username,
-			boolean copyWidgets) {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeWidgetFromUser(int widgetId, String username) {
+		User loggedUser = this.getLoggedUser(username);
+		this.widgetService.deleteWidgetFromUser(widgetId, loggedUser);
 	}
 
-	@Override
-	public void removeWidgetFromUser(List<Integer> widgetsId, String username) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * updateWidgetDefaultStatus(int, java.lang.String, boolean)
+	 */
 	@Override
 	public void updateWidgetDefaultStatus(int widgetId, String username,
 			boolean setAsDefault) {
-		// TODO Auto-generated method stub
+
+		User loggedUser = this.getLoggedUser(username);
+		this.widgetService.setWidgetDefault(widgetId, loggedUser, setAsDefault);
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#userHasWidget
+	 * (int, java.lang.String)
+	 */
 	@Override
 	public boolean userHasWidget(int widgetId, String username) {
-		// TODO Auto-generated method stub
-		return false;
+
+		boolean hasWidget = false;
+		User loggedUser = this.getLoggedUser(username);
+		Widget widget = this.getWidget(widgetId);
+
+		if (widget != null) {
+			hasWidget = this.widgetService.isWidgetOwnedByUser(widget,
+					loggedUser);
+		}
+		return hasWidget;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#userHasWidget
+	 * (com.ncr.ATMMonitoring.pojo.Widget, java.lang.String)
+	 */
+	@Override
+	public boolean userHasWidget(Widget widget, String username) {
+		User loggedUser = this.getLoggedUser(username);
+		return this.widgetService.isWidgetOwnedByUser(widget, loggedUser);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#getWidget(int)
+	 */
 	@Override
 	public Widget getWidget(int widgetId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.widgetService.findWidgetById(widgetId);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * addOrRemoveWidgetToLibrary(int, java.lang.String, int)
+	 */
 	@Override
 	public void addOrRemoveWidgetToLibrary(int widgetId, String username,
 			int categoryId) {
-		// TODO Auto-generated method stub
+		User loggedUser = this.getLoggedUser(username);
+		this.widgetService.addOrRemoveWidgetToLibrary(widgetId, loggedUser,
+				categoryId);
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade#
+	 * findAllCategoryWidgets(boolean)
+	 */
 	@Override
-	public List<WidgetCategory> findLibraryWidgetByCategory() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<WidgetCategory> findAllCategoryWidgets(boolean fetchType) {
+		List<WidgetCategory> categoryWidgets = null;
+
+		if (fetchType == GET_ALL_CATEGORY_WIDGETS) {
+			categoryWidgets = this.widgetCategoryService.findAll();
+		} else {
+			categoryWidgets = this.widgetService.findLibraryWidgetsByCategory();
+		}
+		return categoryWidgets;
+
 	}
 
 	/**
@@ -243,7 +338,5 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 	private User getLoggedUser(String username) {
 		return this.userService.getUserByUsername(username);
 	}
-
-	
 
 }

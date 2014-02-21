@@ -37,9 +37,9 @@ public class DashboardController extends GenericController{
 	static private Logger logger = Logger.getLogger(DashboardController.class
 			.getName());
 	
-	private static final String SESSION_KEY_WIDGET_LIST = "widgets";
+	public static final String SESSION_KEY_WIDGET_LIST = "widgets";
 	
-	private static final String SESSION_KEY_DASHBOARD= "userDashboard";
+	public static final String SESSION_KEY_DASHBOARD= "userDashboard";
 
 	// /** The user service. */
 	// @Autowired
@@ -304,6 +304,17 @@ public class DashboardController extends GenericController{
 			this.dashboardWidgets.changeDashboardColumms(principal.getName(), columns);
 			this.clearSession(request, SESSION_KEY_DASHBOARD);
 		}
+	}
+	
+	/**
+	 * Show new widget form
+	 * 
+	 * @return the petition response
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/dashboard/newWidget")
+	public String newWidget(HttpServletRequest request) {
+		this.clearSession(request, DashboardController.SESSION_KEY_WIDGET_LIST);
+		return "widget/newWidget";
 	}
 
 	// Private Methods
