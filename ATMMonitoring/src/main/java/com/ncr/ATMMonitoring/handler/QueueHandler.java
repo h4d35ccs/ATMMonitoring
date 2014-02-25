@@ -126,7 +126,8 @@ public class QueueHandler {
 				fos = new FileOutputStream(this.returnQueuePath());
 				out = new ObjectOutputStream(fos);
 				out.writeObject(this.terminalsIpQueue);
-				logger.info("Queue status was written in disk "+this.terminalsIpQueue);
+				logger.info("Queue status was written in disk "
+						+ this.terminalsIpQueue);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -188,13 +189,13 @@ public class QueueHandler {
 	public synchronized void add(String ip) throws QueueHandlerException {
 
 		this.checkNullQueue();
-		if(!StringUtils.isEmpty(ip)){
+		if (!StringUtils.isEmpty(ip)) {
 			ip = ip.trim();
 			this.validateipString(ip);
 			if (!this.terminalsIpQueue.contains(ip)) {
 				this.terminalsIpQueue.offer(ip);
 				logger.debug("added:" + ip);
-	
+
 			}
 		}
 
@@ -215,12 +216,12 @@ public class QueueHandler {
 		// make sure that a valid ip is being added
 		for (String ip : ips) {
 			try {
-				if(!StringUtils.isEmpty(ip)){
-					ip = ip.trim();	
+				if (!StringUtils.isEmpty(ip)) {
+					ip = ip.trim();
 					this.validateipString(ip);
 					if (!this.terminalsIpQueue.contains(ip)) {
 						this.terminalsIpQueue.offer(ip);
-					}			
+					}
 				}
 
 			} catch (QueueHandlerException e) {
@@ -307,10 +308,11 @@ public class QueueHandler {
 	}
 
 	/**
-	 * Retrieves, but does not remove, the head of this queue. Null if the queue
-	 * is empty
+	 * Retrieves, but does not remove, the head of this queue. This method
+	 * differs from peek only in that it throws an exception if this queue is
+	 * empty.
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String element() {
 		String firstIp = this.terminalsIpQueue.element();
@@ -420,5 +422,5 @@ public class QueueHandler {
 		}
 
 	}
-	
+
 }
