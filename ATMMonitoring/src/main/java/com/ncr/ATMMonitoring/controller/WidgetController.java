@@ -47,11 +47,11 @@ public class WidgetController extends GenericController{
 	static private Logger logger = Logger.getLogger(WidgetController.class
 			.getName());
 
-	/** The query service */
+	/* The query service */
 //	@Autowired
 //	private QueryService queryService;
 
-	/** The widget service. */
+	/* The widget service. */
 	// @Autowired
 	// private WidgetService widgetService;
 	//
