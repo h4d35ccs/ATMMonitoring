@@ -1,27 +1,16 @@
 package com.ncr.ATMMonitoring.scheduledTasks;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ncr.ATMMonitoring.dao.ScheduledUpdateDAO;
-import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
-import com.ncr.ATMMonitoring.pojo.Terminal;
-import com.ncr.ATMMonitoring.service.QueryService;
 import com.ncr.ATMMonitoring.service.ScheduledUpdateService;
-import com.ncr.ATMMonitoring.socket.SocketService;
 
 /**
  * Class that execute a scheduled task related to check if there are some Scheduled updates to execute
- * @author Jorge López Fernández (lopez.fernandez.jorge@gmail.com)
+ * @author Otto Abreu
  * 
  */
 @Component
