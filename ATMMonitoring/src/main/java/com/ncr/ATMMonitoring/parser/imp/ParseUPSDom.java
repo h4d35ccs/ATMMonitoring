@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
@@ -23,15 +24,22 @@ import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
 /**
  * Class that define a parse based on w3c DOM<br>
  * Holds the common logic to parse a XML based on DOM parser<br>
- * <b><i>Do not call the parser directly, call {@link ParseUPSChainBuilder#parse(InputStream)}</i></b>
+ * <b><i>Do not call the parser directly, call
+ * {@link ParseUPSChainBuilder#parse(InputStream)}</i></b>
  * 
  * @author ottoabreu
  * 
  */
 public abstract class ParseUPSDom extends ParseUPSXML {
 
+	// document root element
+	private Element rootElement;
+	// XML in document format
+	private Document doc;
+
 	/**
-	 * Generate a {@link Document} from the {@link InputStream}
+	 * Generate a {@link Document} from the {@link InputStream}<br>
+	 * Call this method before performing anything in the parser
 	 * 
 	 * @param xmlFile
 	 *            {@link InputStream} with the XML
@@ -42,19 +50,20 @@ public abstract class ParseUPSDom extends ParseUPSXML {
 	 *             if can not read the file while executing the
 	 *             {@link DocumentBuilder#parse(java.io.File)}
 	 */
-	protected Document getDocument(InputStream xmlFile) throws ParserException,
-			XMLNotReadableException {
+	private void loadXML() throws ParserException, XMLNotReadableException {
 
-		Document upsXml = null;
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+
 		try {
 
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			upsXml = dBuilder.parse(xmlFile);
-			upsXml.getDocumentElement().normalize();
+			logger.debug("inputstream: "+this.getXmlFile());
+			this.doc = dBuilder.parse(this.getXmlFile());
+			this.doc.getDocumentElement().normalize();
 
 		} catch (ParserConfigurationException e) {
-			throw new ParserException(ParserException.PARSER_CONFIGURATION_ERROR, e);
+			throw new ParserException(
+					ParserException.PARSER_CONFIGURATION_ERROR, e);
 		} catch (SAXException e) {
 			throw new XMLNotReadableException(
 					XMLNotReadableException.PARSE_ERROR, e);
@@ -66,8 +75,8 @@ public abstract class ParseUPSDom extends ParseUPSXML {
 					+ e.getMessage(), e);
 		}
 
-		return upsXml;
 	}
+	
 
 	/**
 	 * Returns the XML in String format
@@ -76,11 +85,43 @@ public abstract class ParseUPSDom extends ParseUPSXML {
 	 *            Document
 	 * @return String
 	 */
-	protected String getStringFromDoc(Document doc) {
-		DOMImplementationLS domImplementation = (DOMImplementationLS) doc
+	protected String getStringFromDoc() {
+		DOMImplementationLS domImplementation = (DOMImplementationLS) this.doc
 				.getImplementation();
 		LSSerializer lsSerializer = domImplementation.createLSSerializer();
-		return lsSerializer.writeToString(doc);
+		return lsSerializer.writeToString(this.doc);
+	}
+
+	/**
+	 * Returns the root element, can return null if the Inputstream has not bean
+	 * set
+	 * 
+	 * @return Element
+	 * @throws XMLNotReadableException
+	 * @throws ParserException
+	 */
+	protected Element getRootElement() throws ParserException,
+			XMLNotReadableException {
+
+		if (this.rootElement == null) {
+
+			this.rootElement = this.getDoc().getDocumentElement();
+		}
+		return rootElement;
+	}
+
+	/**
+	 * Returns the {@link Document}
+	 * 
+	 * @return Document
+	 * @throws XMLNotReadableException
+	 * @throws ParserException
+	 */
+	protected Document getDoc() throws ParserException, XMLNotReadableException {
+		if (this.doc == null) {
+			this.loadXML();
+		}
+		return doc;
 	}
 
 }

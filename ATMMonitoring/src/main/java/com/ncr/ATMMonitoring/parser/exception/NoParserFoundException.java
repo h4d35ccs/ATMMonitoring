@@ -18,6 +18,11 @@ public class NoParserFoundException extends Exception {
 	 * ;
 	 */
 	public static final String NO_PARSER_FOUND = "The given XML can not be processed by any parser present in the classpath, check the configured parsers or add a new one to the classpath, file:  \n";
+	
+	/**
+	 * NO_PARSERS_FOUND = "The builder can not find parsers in the classpath, imposible to begin the process";
+	 */
+	public static final String NO_PARSERS_FOUND = "The builder can not find parsers in the classpath, imposible to begin the process";
 	/**
 	 * 
 	 */

@@ -12,12 +12,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
+import com.ncr.ATMMonitoring.parser.annotation.UPSParser;
 import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
 import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
 import com.ncr.ATMMonitoring.parser.exception.ParserException;
@@ -45,11 +45,13 @@ import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
  * &nbsp;&nbsp;&lt;FECHA_ULTIMA_EJECUCION&gt;&lt;/FECHA_ULTIMA_EJECUCION&gt;<br>
  * &lt;PK-C1-UPSS&gt;<br>
  * 
- * <b><i>Do not call the parser directly, call {@link ParseUPSChainBuilder#parse(InputStream)}</i></b>
+ * <b><i>Do not call the parser directly, call
+ * {@link ParseUPSChainBuilder#parse(InputStream)}</i></b>
  * 
  * @author ottoabreu
  * 
  */
+@UPSParser(priority = UPSParser.HIGH_PRIORITY)
 public class ParseEmersonUPS extends ParseUPSDom {
 	// root element
 	private static final String ROOT_ELEMENT = "PK-C1-UPS";
@@ -88,166 +90,156 @@ public class ParseEmersonUPS extends ParseUPSDom {
 	private static final String AUD_FMO_ELEMENT_DATE_FORMAT = "dd/MM/yyyy";
 
 	private static final String LAST_EXECUTION_ELEMENT_DATE_FORMAT = "dd/MM/yyyy";
-	// document root element
-	private Element rootElement;
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.ncr.ATMMonitoring.parser.ParseUPSXML#parseXML(java.io.InputStream)
+	 * com.ncr.ATMMonitoring.parser.ParseUPSXML#applyParser(java.io.InputStream)
 	 */
 	@Override
-	public UPSInfo parseXML(InputStream xmlFile) throws ParserException,
+	protected UPSInfo applyParser() throws ParserException,
 			XMLNotReadableException, NoParserFoundException {
 
-		Document doc = this.getDocument(xmlFile);
-		this.rootElement = doc.getDocumentElement();
 		UPSInfo info = null;
+
 		try {
+			info = new UPSInfo();
 
-			if (this.canParseXML()) {
-				info = new UPSInfo();
-				NodeList content = rootElement.getChildNodes();
+			NodeList content = this.getRootElement().getChildNodes();
 
-				for (int i = 0; i < content.getLength(); i++) {
+			for (int i = 0; i < content.getLength(); i++) {
 
-					Node nNode = content.item(i);
+				Node nNode = content.item(i);
 
-					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
-						Element eElement = (Element) nNode;
+					Element eElement = (Element) nNode;
 
-						String elementValue = eElement.getTextContent();
-						if (eElement.getNodeName().equalsIgnoreCase(
-								NUM_POSITION_ELEMENT)) {
+					String elementValue = eElement.getTextContent();
+					if (eElement.getNodeName().equalsIgnoreCase(
+							NUM_POSITION_ELEMENT)) {
 
-							info.setNumPosition(elementValue);
+						info.setNumPosition(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								IP_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							IP_ELEMENT)) {
 
-							info.setIp(elementValue);
+						info.setIp(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								FIRMWARE_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							FIRMWARE_ELEMENT)) {
 
-							info.setFirmware(elementValue);
+						info.setFirmware(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								UPS_STATUS_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							UPS_STATUS_ELEMENT)) {
 
-							info.setRunningStatus(elementValue);
+						info.setRunningStatus(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								CHARGE_PERCENTAGE_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							CHARGE_PERCENTAGE_ELEMENT)) {
 
-							float chargePercentage = Float
-									.parseFloat(elementValue);
-							info.setChargePercentage(chargePercentage);
+						float chargePercentage = Float.parseFloat(elementValue);
+						info.setChargePercentage(chargePercentage);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								EXPENSE_PERCENTAGE_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							EXPENSE_PERCENTAGE_ELEMENT)) {
 
-							float expensePercentage = Float
-									.parseFloat(elementValue);
-							info.setExpensePercentage(expensePercentage);
+						float expensePercentage = Float
+								.parseFloat(elementValue);
+						info.setExpensePercentage(expensePercentage);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								ALARMS_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							ALARMS_ELEMENT)) {
 
-							info.setAlarmMsg(elementValue);
+						info.setAlarmMsg(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								NAME_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							NAME_ELEMENT)) {
 
-							info.setUpsType(elementValue);
+						info.setUpsType(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								MODEL_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							MODEL_ELEMENT)) {
 
-							info.setUpsModel(elementValue);
+						info.setUpsModel(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								SERIES_NUMBER_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							SERIES_NUMBER_ELEMENT)) {
 
-							info.setSeriesNumber(elementValue);
+						info.setSeriesNumber(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								RUNNING_TIME_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							RUNNING_TIME_ELEMENT)) {
 
-							long runningTime = this.parseTime(elementValue);
-							info.setRunningTimeMilisec(runningTime);
+						long runningTime = this.parseTime(elementValue);
+						info.setRunningTimeMilisec(runningTime);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								AUTONOMY_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							AUTONOMY_ELEMENT)) {
 
-							long autonomy = this.parseTime(elementValue);
+						long autonomy = this.parseTime(elementValue);
 
-							info.setAutonomyMilisec(autonomy);
+						info.setAutonomyMilisec(autonomy);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								AUD_FMO_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							AUD_FMO_ELEMENT)) {
 
-							Date audFmo = this.parseDate(elementValue,
-									AUD_FMO_ELEMENT_DATE_FORMAT);
-							info.setAudFmo(audFmo);
+						Date audFmo = this.parseDate(elementValue,
+								AUD_FMO_ELEMENT_DATE_FORMAT);
+						info.setAudFmo(audFmo);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								GENERAL_STATUS_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							GENERAL_STATUS_ELEMENT)) {
 
-							info.setGeneralStatusMsg(elementValue);
+						info.setGeneralStatusMsg(elementValue);
 
-						} else if (eElement.getNodeName().equalsIgnoreCase(
-								LAST_EXECUTION_ELEMENT)) {
+					} else if (eElement.getNodeName().equalsIgnoreCase(
+							LAST_EXECUTION_ELEMENT)) {
 
-							Date lastExcecutionDate = this.parseDate(
-									elementValue,
-									LAST_EXECUTION_ELEMENT_DATE_FORMAT);
-							info.setLastExecutionDate(lastExcecutionDate);
-						}
-
+						Date lastExcecutionDate = this.parseDate(elementValue,
+								LAST_EXECUTION_ELEMENT_DATE_FORMAT);
+						info.setLastExecutionDate(lastExcecutionDate);
 					}
+
 				}
-
-				String xml = this.getStringFromDoc(doc);
-				info.setOriginalXML(xml);
-
-			} else {
-				this.callNextParser(xmlFile);
 			}
+
+			String xml = this.getStringFromDoc();
+			info.setOriginalXML(xml);
+			logger.debug("Parsed xml: " + info);
 		} catch (ParseException e) {
 			throw new XMLNotReadableException(
 					XMLNotReadableException.PARSE_ELEMENT_ERROR, e);
 		} catch (DOMException e) {
 			throw new XMLNotReadableException(
 					XMLNotReadableException.PARSE_ELEMENT_ERROR, e);
-		} catch (NoParserFoundException e) {
-			throw e;
 		} catch (Exception e) {
 			throw new ParserException(ParserException.GENERAL_ERROR, e);
 		}
 
 		return info;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.ncr.ATMMonitoring.parser.ParseUPSXML#canParseXML()
 	 */
 	@Override
-	protected boolean canParseXML() {
+	protected boolean canParseXML() throws ParserException,
+			XMLNotReadableException {
 		boolean willParse = false;
-
-		if (this.rootElement != null
-				&& this.rootElement.getNodeName()
+		if (this.getRootElement() != null
+				&& this.getRootElement().getNodeName()
 						.equalsIgnoreCase(ROOT_ELEMENT)) {
 			willParse = true;
-		}
+			logger.debug("Root element:" + this.getRootElement());
+		} 
+
 		return willParse;
 	}
-
 
 	/**
 	 * Return the time in long from the String \d* Dias \d* Hor. \d*Min.<br>
