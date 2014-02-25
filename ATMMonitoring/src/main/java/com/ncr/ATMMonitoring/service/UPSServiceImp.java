@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ncr.ATMMonitoring.dao.UpsDAO;
 import com.ncr.ATMMonitoring.handler.FileInDiskHandler;
-import com.ncr.ATMMonitoring.handler.exception.FileHandlerException;
 import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
 import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
 import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
@@ -39,7 +38,6 @@ public class UPSServiceImp implements UPSService {
 	@Autowired
 	private UpsDAO upsDao;
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,27 +50,10 @@ public class UPSServiceImp implements UPSService {
 
 		for (String file : xmlFiles) {
 
-			try {
-
-				InputStream xml = FileInDiskHandler.getFileInputStream(file);
-
-				this.parseFile(xml);
-
-			} catch (FileHandlerException e) {
-				logger.error("Can not get the Inputstream of file: " + file, e);
-				errors.add(file);
-			} catch (ParserException e) {
-				logger.error("Can not parse the file: " + file
-						+ " due an error: ", e);
-				errors.add(file);
-			} catch (XMLNotReadableException e) {
-				logger.error("Can not Read the file: " + file, e);
-				errors.add(file);
-			} catch (NoParserFoundException e) {
-				logger.error("The file " + file
-						+ " can not be processed by any configured parser ", e);
+			if (!this.storeUPSinfo(file)) {
 				errors.add(file);
 			}
+
 		}
 		logger.info("XML parsing process end normally: " + errors.isEmpty());
 		return errors;
@@ -91,19 +72,7 @@ public class UPSServiceImp implements UPSService {
 
 		for (InputStream is : xmlFiles) {
 
-			try {
-
-				this.parseFile(is);
-
-			} catch (ParserException e) {
-				logger.error("Can not parse the inputstream due an error: ", e);
-				errors.add(is);
-			} catch (XMLNotReadableException e) {
-				logger.error("Can not Read the file (inputstream)", e);
-			} catch (NoParserFoundException e) {
-				logger.error(
-						"The file can not be processed by any configured parser ",
-						e);
+			if (!this.storeUPSinfo(is)) {
 				errors.add(is);
 			}
 		}
@@ -150,21 +119,10 @@ public class UPSServiceImp implements UPSService {
 	public boolean storeUPSinfo(String xmlFile) {
 		boolean parsed = false;
 
-		try {
+		InputStream xml = FileInDiskHandler.getFileInputStream(xmlFile);
+		parsed = this.storeUPSinfo(xml);
 
-			InputStream xml = FileInDiskHandler.getFileInputStream(xmlFile);
-			this.parseFile(xml);
-
-			parsed = true;
-		} catch (ParserException e) {
-			logger.error("Can not parse the file: " + xmlFile
-					+ " due an error: ", e);
-		} catch (XMLNotReadableException e) {
-			logger.error("Can not Read the file: " + xmlFile, e);
-		} catch (NoParserFoundException e) {
-			logger.error("The file " + xmlFile
-					+ " can not be processed by any configured parser ", e);
-		}
+		parsed = true;
 		logger.info("XML parsing process end normally: " + parsed);
 		return parsed;
 	}
@@ -176,40 +134,42 @@ public class UPSServiceImp implements UPSService {
 	 */
 	@Override
 	public void deleteUPS(int id) {
-		
+
 		this.upsDao.removeUps(id);
-		logger.info("removed ups with id: "+id);
+		logger.info("removed ups with id: " + id);
 	}
 
 	/**
 	 * Save the ups info in the Database
-	 * @param xmlFiles UPSInfo
+	 * 
+	 * @param xmlFiles
+	 *            UPSInfo
 	 */
 
 	private void handleParserSucess(UPSInfo file) {
 
-		
-		
 		String seriesNumber = file.getSeriesNumber();
 		Ups ups = this.getEntity(file);
-		//verify if is an update or a new information
+		// verify if is an update or a new information
 		Ups toUpdate = this.upsDao.getUpsBySerialNumber(seriesNumber);
-		
-		if(toUpdate == null){
-			logger.info("adding new UPS to the Database with series number: "+seriesNumber);	
+
+		if (toUpdate == null) {
+			logger.info("adding new UPS to the Database with series number: "
+					+ seriesNumber);
 			this.upsDao.addUps(ups);
-			
-		}else{
-			logger.info("Updating ups with: "+seriesNumber+" and id: "+toUpdate.getId());	
+
+		} else {
+			logger.info("Updating ups with: " + seriesNumber + " and id: "
+					+ toUpdate.getId());
 			ups.setId(toUpdate.getId());
 			this.upsDao.updateUps(ups);
 		}
-		
+
 		if (file.getExtraInfo() != null) {
 			// TODO calls the class/method responsible to handle this part of
 			// the object
 		}
-		
+
 	}
 
 	/**
@@ -231,10 +191,12 @@ public class UPSServiceImp implements UPSService {
 		logger.debug("parsed " + xmlInfo);
 		this.handleParserSucess(xmlInfo);
 	}
-	
+
 	/**
 	 * Fills the entity with the data from the DTO
-	 * @param info UPSInfo
+	 * 
+	 * @param info
+	 *            UPSInfo
 	 * @return Ups
 	 */
 	private Ups getEntity(UPSInfo info) {
