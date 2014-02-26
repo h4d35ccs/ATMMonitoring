@@ -103,6 +103,8 @@ Apache Tomcat
 Install the product (please verify the *Host Manager* is also selected during the process). `<http://tomcat.apache.org/download­70.cgi>`_.
 The Tomcat service can be automatically started by changing the “Startup type” property to *Automatic*.
 
+.. warning:: The Tomcat version must be 7
+
 
 PostgreSQL
 ----------
