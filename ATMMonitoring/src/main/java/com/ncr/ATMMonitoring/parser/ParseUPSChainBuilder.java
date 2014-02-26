@@ -6,7 +6,9 @@ package com.ncr.ATMMonitoring.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -107,14 +109,22 @@ public class ParseUPSChainBuilder {
 	 * @throws IOException
 	 */
 	private static List<Class<? extends ParseUPSXML>> findParsersClasses() {
-		// i filter by the priority
-		// Reflections reflections = new Reflections(OTHER_PARSERS_PACKAGE);
+	
+		// gets the classpath 
+		Collection<URL> classpathUrls = ClasspathHelper
+				.forClassLoader(ParseUPSChainBuilder.class.getClassLoader());
+		classpathUrls.addAll(ClasspathHelper
+				.forClassLoader(ParseUPSChainBuilder.class.getClassLoader().getParent()));
+		
+		logger.debug("all the classpath: "+classpathUrls);
+		
 		Reflections reflections = new Reflections(
-				new ConfigurationBuilder().setUrls(ClasspathHelper
-						.forJavaClassPath()));
+				new ConfigurationBuilder().setUrls(classpathUrls));
+		
 		Set<Class<? extends Object>> subTypes = reflections
 				.getTypesAnnotatedWith(UPSParser.class);
-
+		logger.debug("all the classes: "+subTypes);
+		
 		@SuppressWarnings("unchecked")
 		List<Class<? extends ParseUPSXML>> parsersClass = (List<Class<? extends ParseUPSXML>>) CollectionUtils
 				.select(subTypes, new Predicate() {
@@ -246,7 +256,7 @@ public class ParseUPSChainBuilder {
 		// holds all the classes marked as high priority
 		List<Class<? extends ParseUPSXML>> organized = new ArrayList<Class<? extends ParseUPSXML>>();
 		// holds all the classes marked with default priority
-		// is final because i want to used inside an Anonymous class
+		// is final because i want to used it inside an Anonymous class
 		final List<Class<? extends ParseUPSXML>> normalPriority = new ArrayList<Class<? extends ParseUPSXML>>();
 		// i separate the high from the defautl
 		List<Class<? extends ParseUPSXML>> highPriority = (List<Class<? extends ParseUPSXML>>) CollectionUtils
