@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,9 +50,13 @@ public class UPSServiceImp implements UPSService {
 		List<String> errors = new ArrayList<String>();
 
 		for (String file : xmlFiles) {
-
-			if (!this.storeUPSinfo(file)) {
+			try {
+				if (!this.storeUPSinfo(file)) {
+					errors.add(file);
+				}
+			} catch (HibernateException e) {
 				errors.add(file);
+				logger.error("The UPS processing found an Database error while saving the info of one XML",e);
 			}
 
 		}
@@ -72,8 +77,13 @@ public class UPSServiceImp implements UPSService {
 
 		for (InputStream is : xmlFiles) {
 
-			if (!this.storeUPSinfo(is)) {
+			try {
+				if (!this.storeUPSinfo(is)) {
+					errors.add(is);
+				}
+			} catch (HibernateException e) {
 				errors.add(is);
+				logger.error("The UPS processing found an Database error while saving the info of one XML",e);
 			}
 		}
 
@@ -105,7 +115,7 @@ public class UPSServiceImp implements UPSService {
 			logger.error("The file " + xmlFile
 					+ " can not be processed by any configured parser ", e);
 		}
-		logger.info("XML parsing process end normally: " + parsed);
+
 		return parsed;
 	}
 
@@ -121,9 +131,6 @@ public class UPSServiceImp implements UPSService {
 
 		InputStream xml = FileInDiskHandler.getFileInputStream(xmlFile);
 		parsed = this.storeUPSinfo(xml);
-
-		parsed = true;
-		logger.info("XML parsing process end normally: " + parsed);
 		return parsed;
 	}
 
@@ -149,18 +156,20 @@ public class UPSServiceImp implements UPSService {
 	private void handleParserSucess(UPSInfo file) {
 
 		String seriesNumber = file.getSeriesNumber();
+		String model = file.getUpsModel();
 		Ups ups = this.getEntity(file);
 		// verify if is an update or a new information
-		Ups toUpdate = this.upsDao.getUpsBySerialNumber(seriesNumber);
+		Ups toUpdate = this.upsDao.getUpsBySerialNumberAndModel(seriesNumber,
+				model);
 
 		if (toUpdate == null) {
 			logger.info("adding new UPS to the Database with series number: "
-					+ seriesNumber);
+					+ seriesNumber + " and model: " + model);
 			this.upsDao.addUps(ups);
 
 		} else {
-			logger.info("Updating ups with: " + seriesNumber + " and id: "
-					+ toUpdate.getId());
+			logger.info("Updating ups with: " + seriesNumber + " model: "
+					+ model + " and id: " + toUpdate.getId());
 			ups.setId(toUpdate.getId());
 			this.upsDao.updateUps(ups);
 		}
@@ -169,7 +178,6 @@ public class UPSServiceImp implements UPSService {
 			// TODO calls the class/method responsible to handle this part of
 			// the object
 		}
-
 	}
 
 	/**
@@ -185,10 +193,7 @@ public class UPSServiceImp implements UPSService {
 	private void parseFile(InputStream xml) throws ParserException,
 			XMLNotReadableException, NoParserFoundException {
 
-		UPSInfo xmlInfo = null;
-		ParseUPSChainBuilder chainBuilder = ParseUPSChainBuilder.getInstance();
-		xmlInfo = chainBuilder.parse(xml);
-		logger.debug("parsed " + xmlInfo);
+		UPSInfo xmlInfo = ParseUPSChainBuilder.parse(xml);
 		this.handleParserSucess(xmlInfo);
 	}
 
@@ -201,14 +206,23 @@ public class UPSServiceImp implements UPSService {
 	 */
 	private Ups getEntity(UPSInfo info) {
 
-		Ups ups = new Ups(info.getIp(), info.getFirmware(),
-				info.getRunningStatus(), info.getChargePercentage(),
-				info.getExpensePercentage(), info.getAlarmMsg(),
-				info.getUpsType(), info.getUpsModel(), info.getSeriesNumber(),
-				info.getRunningTimeMilisec(), info.getAutonomyMilisec(),
-				info.getNumPosition(), info.getAudFmo(),
-				info.getGeneralStatusMsg(), info.getLastExecutionDate(),
-				info.getOriginalXML());
+		Ups ups = new Ups();
+		ups.setIp(info.getIp());
+		ups.setFirmware(info.getFirmware());
+		ups.setRunningStatus(info.getRunningStatus());
+		ups.setChargePercentage(info.getChargePercentage());
+		ups.setExpensePercentage(info.getExpensePercentage());
+		ups.setAlarmMsg(info.getAlarmMsg());
+		ups.setType(info.getUpsType());
+		ups.setModel(info.getUpsModel());
+		ups.setSeriesNumber(info.getSeriesNumber());
+		ups.setRunningTimeMilisec(info.getRunningTimeMilisec());
+		ups.setAutonomyMilisec(info.getAutonomyMilisec());
+		ups.setNumPosition(info.getNumPosition());
+		ups.setAudFmo(info.getAudFmo());
+		ups.setGeneralStatusMsg(info.getGeneralStatusMsg());
+		ups.setLastExecutionDate(info.getLastExecutionDate());
+		ups.setOriginalXML(info.getOriginalXML());
 		return ups;
 
 	}
