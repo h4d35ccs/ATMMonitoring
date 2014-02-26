@@ -42,6 +42,12 @@ public class ParseUPSChainBuilderTest {
 	private static final String LINK3XML = "<link2></link2>";
 
 	private static final String LINKXML_NO_PARSER = "<link50></link50>";
+	
+	private static final String XMLUPS_SAX = "<PK-C2-UPS>"
+			+ "<NUMPUESTO>C1</NUMPUESTO>"
+			+ "<IP_UPS>32.20.205.103</IP_UPS> "
+			+ "<FIRMWARE_UPS>2.70.030702</FIRMWARE_UPS> "
+			+"</PK-C2-UPS>";
 
 	private InputStream upsInputStream;
 
@@ -50,6 +56,8 @@ public class ParseUPSChainBuilderTest {
 	private InputStream link3InputStream;
 
 	private InputStream link4InputStream;
+	
+	private InputStream saxParserInputStream;
 
 	@Before
 	public void setUp() throws Exception {
@@ -59,7 +67,7 @@ public class ParseUPSChainBuilderTest {
 		this.link3InputStream = new ByteArrayInputStream(LINK3XML.getBytes());
 		this.link4InputStream = new ByteArrayInputStream(
 				LINKXML_NO_PARSER.getBytes());
-
+		this.saxParserInputStream = new ByteArrayInputStream(XMLUPS_SAX.getBytes());
 	}
 
 	@After
@@ -68,6 +76,8 @@ public class ParseUPSChainBuilderTest {
 		this.upsInputStream = null;
 		this.link2InputStream = null;
 		this.link3InputStream = null;
+		this.link4InputStream = null;
+		this.saxParserInputStream = null;
 		logger.debug("----------Test ends------------------");
 
 	}
@@ -78,6 +88,7 @@ public class ParseUPSChainBuilderTest {
 			this.testParser(link2InputStream);
 			this.testParser(link3InputStream);
 			this.testParser(upsInputStream);
+			this.testParser(saxParserInputStream);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
