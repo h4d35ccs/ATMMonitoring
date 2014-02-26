@@ -25,7 +25,7 @@ public class ProcessIpsTask {
 	private SocketService socketService;
 	
 	//will run at 0 minutes every hour every day
-	private static final String CRON_CONF = "30 * * * * *";
+	private static final String CRON_CONF = "0 * * * * *";
 	/**
 	 * Method that calls the service in order to start the ATM update process 
 	 */

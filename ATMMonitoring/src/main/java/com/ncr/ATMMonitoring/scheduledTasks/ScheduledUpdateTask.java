@@ -23,7 +23,7 @@ public class ScheduledUpdateTask {
 	/* atributes* */
 	
 	//will run at 0 minutes every hour every day
-	private static final String CRON_CONF = "59 * * * * *";
+	private static final String CRON_CONF = "0 * * * * *";
 
 	
 	/* *********Injected objects**** */

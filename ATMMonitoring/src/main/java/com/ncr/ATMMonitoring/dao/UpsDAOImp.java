@@ -46,15 +46,17 @@ public class UpsDAOImp extends AbstractGenericDAO<Ups> implements UpsDAO {
 	@Override
 	public Ups getUpsBySerialNumber(String seriesNumber) {
 
-		Ups ups = null;
-		logger.debug("series number: "+seriesNumber);
-		List<Ups> fetch = this.listUps(Restrictions.eq("seriesNumber",
+		// Ups ups = null;
+		logger.debug("series number: " + seriesNumber);
+		Ups ups = this.getOnlyOneResultFromList(Restrictions.eq("seriesNumber",
 				seriesNumber));
-		if (fetch != null && !fetch.isEmpty()) {
-
-			ups = fetch.get(0);
-
-		}
+		// List<Ups> fetch = this.listUps(Restrictions.eq("seriesNumber",
+		// seriesNumber));
+		// if (fetch != null && !fetch.isEmpty()) {
+		//
+		// ups = fetch.get(0);
+		//
+		// }
 
 		return ups;
 	}
@@ -104,6 +106,14 @@ public class UpsDAOImp extends AbstractGenericDAO<Ups> implements UpsDAO {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.ncr.ATMMonitoring.dao.UpsDAO#listUps(org.hibernate.criterion.Criterion
+	 * [])
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Ups> listUps(Criterion... criterions) {
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(
@@ -112,5 +122,50 @@ public class UpsDAOImp extends AbstractGenericDAO<Ups> implements UpsDAO {
 			crit.add(rest);
 		}
 		return (List<Ups>) crit.list();
+	}
+
+	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see com.ncr.ATMMonitoring.dao.UpsDAO#getUpsBySerialNumberAndModel(java.lang.String, java.lang.String)
+	 */
+	public Ups getUpsBySerialNumberAndModel(String seriesNumber, String model) {
+
+		logger.debug("series number: " + seriesNumber + " model: " + model);
+		Ups ups = this.getOnlyOneResultFromList(Restrictions.and(
+				Restrictions.eq("seriesNumber", seriesNumber),
+				Restrictions.eq("model", model)));
+		// List<Ups> fetch =
+		// this.listUps(Restrictions.and(Restrictions.eq("seriesNumber",
+		// seriesNumber),Restrictions.eq("model",
+		// model)));
+		// if (fetch != null && !fetch.isEmpty()) {
+		//
+		// ups = fetch.get(0);
+		//
+		// }
+		//
+		return ups;
+	}
+
+	/**
+	 * Executes the method {@link UpsDAO#listUps(Criterion...)} applying the
+	 * given Criterion for fetching only one result
+	 * 
+	 * @param criteria
+	 *            Criterion
+	 * @return Ups
+	 */
+	private Ups getOnlyOneResultFromList(Criterion criteria) {
+		Ups ups = null;
+
+		List<Ups> fetch = this.listUps(criteria);
+		if (fetch != null && !fetch.isEmpty()) {
+
+			ups = fetch.get(0);
+
+		}
+
+		return ups;
 	}
 }

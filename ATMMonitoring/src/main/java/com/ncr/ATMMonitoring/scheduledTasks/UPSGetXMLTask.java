@@ -60,7 +60,7 @@ public class UPSGetXMLTask {
 	@Value("${config.upstask.copyto:}")
 	private String copyFolder = null;
 	// will run at 0 minutes every hour every day
-	private static final String CRON_CONF = "59 * * * * *";
+	private static final String CRON_CONF = "0 * * * * *";
 	// by default deletes the file
 	private int copyDeleteMove = 0;
 	// each successfully processed file will be copied to a folder maintaining

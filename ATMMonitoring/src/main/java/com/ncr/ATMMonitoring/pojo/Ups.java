@@ -35,6 +35,7 @@ public class Ups implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ups_id_seq")
     @SequenceGenerator(name = "ups_id_seq", sequenceName = "ups_id_seq", allocationSize = 1)
     private Integer id;
+    @Column(name = "ip")
     private String ip;
     @Column(name = "firmware_revision")
 	private String firmware;
@@ -46,7 +47,9 @@ public class Ups implements Serializable{
 	private Float expensePercentage;
 	@Column(name = "alarm_msg")
 	private String alarmMsg;
+	@Column(name = "type")
 	private String type;
+	@Column(name = "model")
 	private String model;
 	@Column(name = "series_number")
 	private String seriesNumber;
@@ -64,50 +67,7 @@ public class Ups implements Serializable{
 	private Date lastExecutionDate;
 	@Column(name = "xml")
 	private String originalXML;
-	/**
-	 * Constructor with all params
-	 * @param ip
-	 * @param firmware
-	 * @param runningStatus
-	 * @param chargePercentage
-	 * @param expensePercentage
-	 * @param alarmMsg
-	 * @param upsType
-	 * @param upsModel
-	 * @param seriesNumber
-	 * @param runningTimeMilisec
-	 * @param autonomyMilisec
-	 * @param numPosition
-	 * @param audFmo
-	 * @param generalStatusMsg
-	 * @param lastExecutionDate
-	 * @param originalXML
-	 * @param extraInfo
-	 */
-	public Ups(String ip, String firmware, String runningStatus,
-			float chargePercentage, float expensePercentage, String alarmMsg,
-			String upsType, String upsModel, String seriesNumber,
-			long runningTimeMilisec, long autonomyMilisec, String numPosition,
-			Date audFmo, String generalStatusMsg, Date lastExecutionDate,
-			String originalXML){
-		
-		this.ip = ip;
-		this.firmware = firmware;
-		this.runningStatus = runningStatus;
-		this.chargePercentage = chargePercentage;
-		this.expensePercentage = expensePercentage;
-		this.alarmMsg = alarmMsg;
-		this.type = upsType;
-		this.model = upsModel;
-		this.seriesNumber = seriesNumber;
-		this.runningTimeMilisec = runningTimeMilisec;
-		this.autonomyMilisec = autonomyMilisec;
-		this.numPosition = numPosition;
-		this.audFmo = audFmo;
-		this.generalStatusMsg = generalStatusMsg;
-		this.lastExecutionDate = lastExecutionDate;
-		this.originalXML = originalXML;
-	}
+	
 	/**
 	 * default constructor
 	 */
@@ -115,109 +75,245 @@ public class Ups implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	
+	/**
+	 * Getter method for id
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
+	/**
+	 * Setter method for the id
+	 * @param id the id to set
+	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	/**
+	 * Getter method for ip
+	 * @return the ip
+	 */
 	public String getIp() {
 		return ip;
 	}
+	/**
+	 * Setter method for the ip
+	 * @param ip the ip to set
+	 */
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+	/**
+	 * Getter method for firmware
+	 * @return the firmware
+	 */
 	public String getFirmware() {
 		return firmware;
 	}
+	/**
+	 * Setter method for the firmware
+	 * @param firmware the firmware to set
+	 */
 	public void setFirmware(String firmware) {
 		this.firmware = firmware;
 	}
+	/**
+	 * Getter method for runningStatus
+	 * @return the runningStatus
+	 */
 	public String getRunningStatus() {
 		return runningStatus;
 	}
+	/**
+	 * Setter method for the runningStatus
+	 * @param runningStatus the runningStatus to set
+	 */
 	public void setRunningStatus(String runningStatus) {
 		this.runningStatus = runningStatus;
 	}
-	public float getChargePercentage() {
+	/**
+	 * Getter method for chargePercentage
+	 * @return the chargePercentage
+	 */
+	public Float getChargePercentage() {
 		return chargePercentage;
 	}
+	/**
+	 * Setter method for the chargePercentage
+	 * @param chargePercentage the chargePercentage to set
+	 */
 	public void setChargePercentage(Float chargePercentage) {
 		this.chargePercentage = chargePercentage;
 	}
-	
-	public float getExpensePercentage() {
+	/**
+	 * Getter method for expensePercentage
+	 * @return the expensePercentage
+	 */
+	public Float getExpensePercentage() {
 		return expensePercentage;
 	}
+	/**
+	 * Setter method for the expensePercentage
+	 * @param expensePercentage the expensePercentage to set
+	 */
 	public void setExpensePercentage(Float expensePercentage) {
 		this.expensePercentage = expensePercentage;
 	}
+	/**
+	 * Getter method for alarmMsg
+	 * @return the alarmMsg
+	 */
 	public String getAlarmMsg() {
 		return alarmMsg;
 	}
+	/**
+	 * Setter method for the alarmMsg
+	 * @param alarmMsg the alarmMsg to set
+	 */
 	public void setAlarmMsg(String alarmMsg) {
 		this.alarmMsg = alarmMsg;
 	}
+	/**
+	 * Getter method for type
+	 * @return the type
+	 */
 	public String getType() {
 		return type;
 	}
+	/**
+	 * Setter method for the type
+	 * @param type the type to set
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
+	/**
+	 * Getter method for model
+	 * @return the model
+	 */
 	public String getModel() {
 		return model;
 	}
+	/**
+	 * Setter method for the model
+	 * @param model the model to set
+	 */
 	public void setModel(String model) {
 		this.model = model;
 	}
+	/**
+	 * Getter method for seriesNumber
+	 * @return the seriesNumber
+	 */
 	public String getSeriesNumber() {
 		return seriesNumber;
 	}
+	/**
+	 * Setter method for the seriesNumber
+	 * @param seriesNumber the seriesNumber to set
+	 */
 	public void setSeriesNumber(String seriesNumber) {
 		this.seriesNumber = seriesNumber;
 	}
-	public long getRunningTimeMilisec() {
+	/**
+	 * Getter method for runningTimeMilisec
+	 * @return the runningTimeMilisec
+	 */
+	public Long getRunningTimeMilisec() {
 		return runningTimeMilisec;
 	}
+	/**
+	 * Setter method for the runningTimeMilisec
+	 * @param runningTimeMilisec the runningTimeMilisec to set
+	 */
 	public void setRunningTimeMilisec(Long runningTimeMilisec) {
 		this.runningTimeMilisec = runningTimeMilisec;
 	}
-	public long getAutonomyMilisec() {
+	/**
+	 * Getter method for autonomyMilisec
+	 * @return the autonomyMilisec
+	 */
+	public Long getAutonomyMilisec() {
 		return autonomyMilisec;
 	}
+	/**
+	 * Setter method for the autonomyMilisec
+	 * @param autonomyMilisec the autonomyMilisec to set
+	 */
 	public void setAutonomyMilisec(Long autonomyMilisec) {
 		this.autonomyMilisec = autonomyMilisec;
 	}
+	/**
+	 * Getter method for numPosition
+	 * @return the numPosition
+	 */
 	public String getNumPosition() {
 		return numPosition;
 	}
+	/**
+	 * Setter method for the numPosition
+	 * @param numPosition the numPosition to set
+	 */
 	public void setNumPosition(String numPosition) {
 		this.numPosition = numPosition;
 	}
+	/**
+	 * Getter method for audFmo
+	 * @return the audFmo
+	 */
 	public Date getAudFmo() {
 		return audFmo;
 	}
+	/**
+	 * Setter method for the audFmo
+	 * @param audFmo the audFmo to set
+	 */
 	public void setAudFmo(Date audFmo) {
 		this.audFmo = audFmo;
 	}
+	/**
+	 * Getter method for generalStatusMsg
+	 * @return the generalStatusMsg
+	 */
 	public String getGeneralStatusMsg() {
 		return generalStatusMsg;
 	}
+	/**
+	 * Setter method for the generalStatusMsg
+	 * @param generalStatusMsg the generalStatusMsg to set
+	 */
 	public void setGeneralStatusMsg(String generalStatusMsg) {
 		this.generalStatusMsg = generalStatusMsg;
 	}
+	/**
+	 * Getter method for lastExecutionDate
+	 * @return the lastExecutionDate
+	 */
 	public Date getLastExecutionDate() {
 		return lastExecutionDate;
 	}
+	/**
+	 * Setter method for the lastExecutionDate
+	 * @param lastExecutionDate the lastExecutionDate to set
+	 */
 	public void setLastExecutionDate(Date lastExecutionDate) {
 		this.lastExecutionDate = lastExecutionDate;
 	}
+	/**
+	 * Getter method for originalXML
+	 * @return the originalXML
+	 */
 	public String getOriginalXML() {
 		return originalXML;
 	}
+	/**
+	 * Setter method for the originalXML
+	 * @param originalXML the originalXML to set
+	 */
 	public void setOriginalXML(String originalXML) {
 		this.originalXML = originalXML;
 	}
+
+	
+	
 }

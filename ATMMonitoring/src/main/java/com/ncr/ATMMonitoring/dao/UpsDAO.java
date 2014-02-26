@@ -72,5 +72,18 @@ public interface UpsDAO {
 	 * @return Ups
 	 */
 	public Ups getUpsBySerialNumber(String seriesNumber);
+	 
+	 /** Returns a Ups by the given series number and model
+	 * 
+	 * @param seriesNumber
+	 *            String
+	 * @param model
+	 *            String
+	 *            
+	 * @return Ups
+	 */
+	public Ups getUpsBySerialNumberAndModel(String seriesNumber, String model);
+	
+	
 
 }
