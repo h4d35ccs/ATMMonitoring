@@ -42,10 +42,25 @@ public abstract class GenericController {
 		
 		if(greeting == null){
 			
-			Locale locale = RequestContextUtils.getLocale(request);
 			User user = this.userService.getUserByUsername(principal.getName());
-			greeting = user.getHtmlWelcomeMessage(locale);
-			request.getSession().setAttribute(USER_GREETING,greeting);
+			greeting = this.getUserGreetingFromUser(user, request);
+		}
+		return greeting;
+	}
+	
+	/**
+	 * Obtains the greeting for the user
+	 * @param principal
+	 * @param request
+	 * @return
+	 */
+	protected String getUserGreeting(User loggedUser, HttpServletRequest request){
+		
+		String greeting  = (String) request.getSession().getAttribute(USER_GREETING);
+		
+		if(greeting == null){
+			
+			greeting = this.getUserGreetingFromUser(loggedUser, request);
 		}
 		return greeting;
 	}
@@ -57,5 +72,20 @@ public abstract class GenericController {
 	 */
 	protected void clearSession(HttpServletRequest request, String sessionKey){
 		request.getSession().setAttribute(sessionKey,null);
+	}
+	
+	/**
+	 * Extract the greeting from the user object
+	 * @param loggedUser
+	 * @param request
+	 * @return
+	 */
+	private String getUserGreetingFromUser(User loggedUser, HttpServletRequest request){
+		String greeting = "";
+		Locale locale = RequestContextUtils.getLocale(request);
+		greeting = loggedUser.getHtmlWelcomeMessage(locale);
+		request.getSession().setAttribute(USER_GREETING,greeting);
+		
+		return greeting;
 	}
 }

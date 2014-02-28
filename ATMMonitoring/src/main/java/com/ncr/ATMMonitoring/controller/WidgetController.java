@@ -26,10 +26,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ncr.ATMMonitoring.controller.propertyEditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Query;
-import com.ncr.ATMMonitoring.pojo.User;
 import com.ncr.ATMMonitoring.pojo.Widget;
 import com.ncr.ATMMonitoring.pojo.WidgetCategory;
-import com.ncr.ATMMonitoring.service.UserService;
+import com.ncr.ATMMonitoring.service.QueryService;
 import com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade;
 import com.ncr.ATMMonitoring.utils.RegionType;
 import com.ncr.ATMMonitoring.utils.WidgetQueryAssociationType;
@@ -59,11 +58,14 @@ public class WidgetController extends GenericController{
 	// @Autowired
 	// private WidgetCategoryService widgetCategoryService;
 	//
-	 /** The user service. */
-	 @Autowired
-	 private UserService userService;
+//	 /** The user service. */
+//	 @Autowired
+//	 private UserService userService;
 	@Autowired
 	private DashboardWidgetFacade dashboardWidgets;
+	 /* query Service*/
+	 @Autowired
+	 private QueryService queryService;
 
 	/**
 	 * Binds custom editors.
@@ -357,14 +359,15 @@ public class WidgetController extends GenericController{
 	 */
 	private String createOrEditWidget(Map<String, Object> model,
 			Principal principal, Integer widgetId) {
-		User loggedUser = null;
+//		User loggedUser = null;
 		Set<Query> userQueries = null;
 		String operationType = "create";
 		Widget widget = new Widget();
 
 		if (principal != null) {
-			loggedUser = userService.getUserByUsername(principal.getName());
-			userQueries = loggedUser.getQueries();
+//			loggedUser = userService.getUserByUsername(principal.getName());
+//			userQueries = loggedUser.getQueries();
+			userQueries = this.queryService.getQueriesByUser(principal.getName());
 
 			if (widgetId != null) {
 				Widget widgetToEdit = this.dashboardWidgets.getWidget(widgetId);

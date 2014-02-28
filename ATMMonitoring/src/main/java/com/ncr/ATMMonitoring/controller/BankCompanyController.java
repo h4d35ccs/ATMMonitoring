@@ -32,7 +32,7 @@ import com.ncr.ATMMonitoring.service.UserService;
  */
 
 @Controller
-public class BankCompanyController {
+public class BankCompanyController extends GenericController {
 
     /** The bank companies page size. */
     @Value("${config.bankCompaniesPageSize}")
@@ -42,9 +42,9 @@ public class BankCompanyController {
     @Autowired
     private BankCompanyService bankCompanyService;
 
-    /** The user service. */
-    @Autowired
-    private UserService userService;
+//    /** The user service. */
+//    @Autowired
+//    private UserService userService;
 
     /**
      * Redirect to bank companies URL.
@@ -73,11 +73,12 @@ public class BankCompanyController {
     public String listBankCompanies(Map<String, Object> map,
 	    Principal principal, String p, HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	PagedListHolder<BankCompany> pagedListHolder = new PagedListHolder<BankCompany>(
 		bankCompanyService.listBankCompanies());
@@ -128,11 +129,12 @@ public class BankCompanyController {
 
 	if (result.hasErrors()) {
 	    String userMsg = "";
-	    Locale locale = RequestContextUtils.getLocale(request);
+//	    Locale locale = RequestContextUtils.getLocale(request);
 	    if (principal != null) {
-		User loggedUser = userService.getUserByUsername(principal
-			.getName());
-		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//		User loggedUser = userService.getUserByUsername(principal
+//			.getName());
+//		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+	    	 userMsg = this.getUserGreeting(principal, request);
 	    }
 	    map.put("userMsg", userMsg);
 
@@ -192,11 +194,12 @@ public class BankCompanyController {
 	    return "redirect:/banks/list";
 	}
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	map.put("bankCompany", bankCompany);
@@ -235,11 +238,12 @@ public class BankCompanyController {
 
 	if (result.hasErrors()) {
 	    String userMsg = "";
-	    Locale locale = RequestContextUtils.getLocale(request);
+//	    Locale locale = RequestContextUtils.getLocale(request);
 	    if (principal != null) {
-		User loggedUser = userService.getUserByUsername(principal
-			.getName());
-		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//		User loggedUser = userService.getUserByUsername(principal
+//			.getName());
+//		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+	    	 userMsg = this.getUserGreeting(principal, request);
 	    }
 	    map.put("userMsg", userMsg);
 	    map.put("bankCompaniesList", bankCompanyService.listBankCompanies());

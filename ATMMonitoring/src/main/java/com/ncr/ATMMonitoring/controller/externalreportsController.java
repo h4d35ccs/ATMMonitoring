@@ -16,20 +16,21 @@ import com.ncr.ATMMonitoring.pojo.User;
 import com.ncr.ATMMonitoring.service.UserService;
 
 //@Controller
-public class externalreportsController {  
+public class externalreportsController extends GenericController {  
 //    @Autowired
-    private UserService userService;
+//    private UserService userService;
    
 
 //    @RequestMapping(value = "/externalreports", method = RequestMethod.GET)
     public void requestTerminalsUpdate(Map<String, Object> map, HttpServletRequest request, Principal principal) {
 		
     	String userMsg = "";
-    	Locale locale = RequestContextUtils.getLocale(request);
+//    	Locale locale = RequestContextUtils.getLocale(request);
     	if (principal != null) {
-    	    User loggedUser = userService
-    		    .getUserByUsername(principal.getName());
-    	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//    	    User loggedUser = userService
+//    		    .getUserByUsername(principal.getName());
+//    	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+    		 userMsg = this.getUserGreeting(principal, request);
     	}
     	map.put("userMsg", userMsg);
 		return;// "/externalreports.jsp";

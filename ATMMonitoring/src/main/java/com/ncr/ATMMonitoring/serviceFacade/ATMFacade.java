@@ -6,9 +6,11 @@ package com.ncr.ATMMonitoring.serviceFacade;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.Installation;
+import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
 import com.ncr.ATMMonitoring.pojo.Terminal;
 import com.ncr.ATMMonitoring.pojo.TerminalConfig;
@@ -70,6 +72,18 @@ public interface ATMFacade {
 	 * @return List<ScheduledUpdate>
 	 */
 	List<ScheduledUpdate> listScheduledUpdates(int updateType);
+	/**
+	 * Returns a list with all the ScheduledUpdate that matches the given update
+	 * type and are associated with the given user <br>
+	 * To return a list with weekly updates please use {@link ATMFacade#WEEKLY},
+	 * To return a list with monthly updates please use
+	 * {@link ATMFacade#MONTHLY}
+	 * @param username String with the username
+	 *  @param updateType
+	 *            int indicate the type of update to fetch ( weekly or monthly) 
+	  * @return List<ScheduledUpdate>
+	 */
+	List<ScheduledUpdate> listScheduledUpdates(String username,int updateType);
 
 	/**
 	 * Adds the given {@link ScheduledUpdate}
@@ -91,11 +105,11 @@ public interface ATMFacade {
 	 * Id<br>
 	 * if a {@link ScheduledUpdate} is found returns true, false otherwise
 	 * 
-	 * @param updateId
-	 *            int
+	 * @param update
+	 *            ScheduledUpdate
 	 * @return boolean
 	 */
-	boolean existScheduledUpdate(int updateId);
+	boolean existScheduledUpdate(ScheduledUpdate update);
 
 	/**
 	 * Adds a physical ATM machine to the Database<br>
@@ -125,43 +139,32 @@ public interface ATMFacade {
 	TerminalConfig getATMMachine(int atmId);
 
 	/**
-	 * Method that returns a list of ATM ({@link Terminal}) using the criteria
+	 * Method that returns a list of ATM ({@link Terminal}) related to the banks {@link BankCompany}
 	 * given<br>
-	 * <b><i>Important</i>: ONLY ONE PARAMETER CAN BE USED OF
-	 * banksCompanies,bank AND atmId , THIS MEANS ONLY ONE CAN NOT BE NULL,
-	 * OTHERWISE WILL EXECUTE THE FIRST NOT NULL PARAM RECEIVED</b><br>
-	 * Examples of use:<br>
-	 * <ul>
-	 * <li>Search by several Bank companies: listATM(banksCompanies,null,
-	 * null,sort, order);</li>
-	 * <li>Search by ONE Bank company: listATM(null,bankCompany, null,sort,
-	 * order);</li>
-	 * <li>Search by Terminal ID: listATM(null,null, ids,null, null);</li>
-	 * <li>Return all the Terminals: listATM(null,null, null,null, null);</li>
+	 * *<ul>
+	 * <li>Search by several Bank companies: Fill the list with different {@link BankCompany} element</li>
+	 * <li>Search by ONE Bank company: Fill the list with only one {@link BankCompany} element</li>
 	 * </ul>
-	 * <i>Note:</i> the params sort and order only will affect the search by
-	 * Bank Companies or by a single bank<br>
 	 * To specify the param order please use: {@link ATMFacade#ORDER_ASC} for an
 	 * ascendant order and {@link ATMFacade#ORDER_DESC} for descendant
-	 * 
 	 * @param banksCompanies
-	 *            List<BankCompany> if not null will search based on the given
-	 *            Bank companies
-	 * @param bank
-	 *            BankCompany if not null will search based on the given Bank
-	 * @param atmId
-	 *            if not null will search based on the given list of ids
-	 * @param sort
-	 *            String optional param used when listing by Banks, will be the
-	 *            value to sort the result
-	 * @param order
-	 *            String optional param used when listing by Banks. give the
-	 *            order, can be ascendant or descendant
+	 *            Set<BankCompany> will search based on the given Bank companies 
 	 * @return List<Terminal>
 	 */
-	List<Terminal> listATM(List<BankCompany> banksCompanies, BankCompany bank,
-			List<Integer> atmId, String sort, String order);
-
+	List<Terminal> listATMByBanks(Set<BankCompany> banksCompanies ,String sort, String order);
+	/**
+	 * Method that returns a list of ATM ({@link Terminal}) related to the banks {@link BankCompany} and only those with the given ids
+	 * @param banksCompanies
+	 *            Set<BankCompany> will search based on the given Bank companies 
+	 * @param ids List<Integer> with the ids
+	 * @return 	List<Terminal>
+	 */
+	List<Terminal> listATMByBanksAndAtmId(Set<BankCompany> banksCompanies,List<Integer> ids);
+	/**
+	 * Retuns all the ATM in the database
+	 * @return List<Terminal>
+	 */
+	 List<Terminal> listAllATM();
 	/**
 	 * Method that returns an ATM ({@link Terminal}) using the criteria given<br>
 	 * <b><i>Important</i>: ONLY ONE PARAMETER CAN BE USED OF
@@ -169,7 +172,6 @@ public interface ATMFacade {
 	 * NOT BE NULL, OTHERWISE WILL EXECUTE THE FIRST NOT NULL PARAM RECEIVED</b><br>
 	 * Examples of use:<br>
 	 * <ul>
-	 * <li>Search by terminals ID: getATM(atmId,null, null, null,null);</li>
 	 * <li>Search by serial number: getATM(null,serialNumber, null, null,null);</li>
 	 * <li>Search by matricula: getATM(null,null, matricula, null,null);</li>
 	 * *
@@ -177,22 +179,25 @@ public interface ATMFacade {
 	 * <li>Search by MAC Address: getATM(null,null, null, null,macAddress);</li>
 	 * </ul>
 	 * 
-	 * @param atmId
-	 *            int if not null will search based on the given list of ids
 	 * @param serialNumber
 	 *            String if not null will search based on the given serial
 	 *            number
 	 * @param matricula
-	 *            String if not null will search based on the given matricula
+	 *            Long if not null will search based on the given matricula
 	 * @param ip
 	 *            String if not null will search based on the given ip
 	 * @param macAddress
 	 *            String if not null will search based on the given Mac Address
 	 * @return Terminal
 	 */
-	Terminal getATM(int atmId, String serialNumber, String matricula,
+	Terminal getATM(String serialNumber, Long matricula,
 			String ip, String macAddress);
-
+	/**
+	 * Returns the {@link Terminal} associated to the given id
+	 * @param id
+	 * @return
+	 */
+	Terminal getATMById(int id);
 	/**
 	 * Execute an add or update operation on the given {@link Terminal}<br>
 	 * To execute an add operation please use {@link ATMFacade#ADD}, To update
@@ -215,6 +220,19 @@ public interface ATMFacade {
 	 */
 	void addATMByFile(InputStream file);
 
+	/**
+	 * Executes a remote update on the given ATM and returns the {@link Terminal} object to be updated<br>
+	 * Returns null if the given id does not match any Terminal on the Database<br>
+	 * If the id matches with a {@link Terminal} in the Database, the remote update will be asked<br>
+	 * @param atmId
+	 */
+	Terminal atmSnmpUpdate(int atmId);
+	
+	/** Executes a remote update based on the result of the given query <br>
+	 * If the query is null, will update all the ATMs in the DB<br>
+	 * @param query  Query
+	 */
+	void atmSnmpUpdate(Query query);
 	/**
 	 * Returns all the models of ATMs registered in the Database
 	 * 
@@ -245,6 +263,12 @@ public interface ATMFacade {
 	 */
 	void addUpdateATMModel(TerminalModel terminalModel, int operType);
 	
+	/**
+	 * Returns the ATM model that matches with the ID
+	 * @param modelId int with a valid ID
+	 * @return TerminalModel
+	 */
+	TerminalModel getATMModel(int modelId);
 	/**
 	 * Removes the {@link TerminalModel} that matches the given id
 	 * 

@@ -1,9 +1,7 @@
 package com.ncr.ATMMonitoring.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,12 +20,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.ncr.ATMMonitoring.controller.propertyEditor.BankCompanyPropertyEditor;
 import com.ncr.ATMMonitoring.controller.propertyEditor.RolePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
-import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.Role;
 import com.ncr.ATMMonitoring.pojo.User;
 import com.ncr.ATMMonitoring.service.BankCompanyService;
@@ -43,7 +39,7 @@ import com.ncr.ATMMonitoring.service.UserService;
  */
 
 @Controller
-public class UserController {
+public class UserController extends GenericController {
 
     /** The logger. */
     static private Logger logger = Logger.getLogger(UserController.class
@@ -137,11 +133,12 @@ public class UserController {
 	    String p1, String sort1, String order1, String p2, String sort2,
 	    String order2, HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	String sortValue1 = (sort1 == null) ? DEFAULT_USER_SORT : sort1;
 	String orderValue1 = (order1 == null) ? DEFAULT_USER_ORDER : order1;
@@ -206,15 +203,16 @@ public class UserController {
 	    return "redirect:/users/list";
 	}
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 	// TODO
 	// Actualizar los permisos
 	boolean canEdit = true;
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	    // TODO
 	    // Revisar la gestión de permisos mediante bancos
 	    // bankCompanies = loggedUser.getManageableBankCompanies();
@@ -322,14 +320,15 @@ public class UserController {
 	    BindingResult result, Map<String, Object> map,
 	    HttpServletRequest request, Principal principal) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	// TODO
 	// Revisar la gestión de permisos mediante bancos
 	// Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	    // bankCompanies = loggedUser.getManageableBankCompanies();
 	}
 	// map.put("banksList", bankCompanies);
@@ -483,11 +482,12 @@ public class UserController {
 	    return "redirect:/users/list";
 	}
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	map.put("role", role);
@@ -523,14 +523,15 @@ public class UserController {
 		if ((roleAux != null)
 			&& (!roleAux.getId().equals(role.getId()))) {
 		    String userMsg = "";
-		    Locale locale = RequestContextUtils.getLocale(request);
+//		    Locale locale = RequestContextUtils.getLocale(request);
 		    // TODO
 		    // Actualizar los permisos
 		    boolean canEdit = true;
 		    if (principal != null) {
-			User loggedUser = userService
-				.getUserByUsername(principal.getName());
-			userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//			User loggedUser = userService
+//				.getUserByUsername(principal.getName());
+//			userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		    	 userMsg = this.getUserGreeting(principal, request);
 		    }
 		    map.put("canEdit", canEdit);
 		    map.put("userMsg", userMsg);
@@ -573,11 +574,12 @@ public class UserController {
 	    if ((roleAux != null) && (!roleAux.getId().equals(role.getId()))) {
 
 		String userMsg = "";
-		Locale locale = RequestContextUtils.getLocale(request);
+//		Locale locale = RequestContextUtils.getLocale(request);
 		if (principal != null) {
-		    User loggedUser = userService.getUserByUsername(principal
-			    .getName());
-		    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//		    User loggedUser = userService.getUserByUsername(principal
+//			    .getName());
+//		    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+			 userMsg = this.getUserGreeting(principal, request);
 		}
 		String sortValue1 = DEFAULT_USER_SORT;
 		String orderValue1 = DEFAULT_USER_ORDER;
@@ -701,11 +703,12 @@ public class UserController {
     public String newGroup(Map<String, Object> map, Principal principal,
 	    HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "newGroup";

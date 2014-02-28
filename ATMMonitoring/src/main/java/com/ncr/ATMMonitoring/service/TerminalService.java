@@ -1,9 +1,8 @@
 package com.ncr.ATMMonitoring.service;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.Installation;
@@ -124,7 +123,7 @@ public interface TerminalService {
      *            the json file
      * @return true, if successful
      */
-    public boolean importJsonTerminal(CommonsMultipartFile jsonFile);
+    public boolean importJsonTerminal(InputStream jsonFile);
 
     /**
      * Persist data store terminal from an agent's pojo.

@@ -1,19 +1,13 @@
 package com.ncr.ATMMonitoring.controller;
 
 import java.security.Principal;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
-import com.ncr.ATMMonitoring.pojo.User;
-import com.ncr.ATMMonitoring.service.UserService;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * The Class HelpController.
@@ -23,11 +17,11 @@ import com.ncr.ATMMonitoring.service.UserService;
  * @author Rafael Luque (rafael.luque@osoco.es)
  */
 @Controller
-public class HelpController {
+public class HelpController extends GenericController{
 
     /** The user service. */
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     /**
      * Show default help URL.
@@ -44,14 +38,15 @@ public class HelpController {
     public String showHelp(Map<String, Object> map, Principal principal,
 	    HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
-	return "redirect:/resources/help/"+locale+"/user-main.html";
+	return "redirect:/help/dashboard";
     }
 
     /**
@@ -69,11 +64,12 @@ public class HelpController {
     public String showDashboardHelp(Map<String, Object> map,
 	    Principal principal, HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "helpDashboard";
@@ -94,11 +90,12 @@ public class HelpController {
     public String showTerminalsHelp(Map<String, Object> map,
 	    Principal principal, HttpServletRequest request) {
 	String userMsg = "";
-	Locale locale = RequestContextUtils.getLocale(request);
+//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-	    User loggedUser = userService
-		    .getUserByUsername(principal.getName());
-	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+//	    User loggedUser = userService
+//		    .getUserByUsername(principal.getName());
+//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		 userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "helpTerminals";

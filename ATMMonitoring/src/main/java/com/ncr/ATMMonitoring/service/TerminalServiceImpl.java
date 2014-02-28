@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ncr.ATMMonitoring.dao.TerminalDAO;
 import com.ncr.ATMMonitoring.pojo.AuditableInternetExplorer;
@@ -244,9 +243,9 @@ public class TerminalServiceImpl implements TerminalService {
      * @see com.ncr.ATMMonitoring.service.TerminalService#importJsonTerminal(org.springframework.web.multipart.commons.CommonsMultipartFile)
      */
     @Override
-    public boolean importJsonTerminal(CommonsMultipartFile jsonFile) {
+    public boolean importJsonTerminal(InputStream is) {
 	try {
-	    InputStream is = jsonFile.getInputStream();
+//	    InputStream is = jsonFile.getInputStream();
 	    String json = IOUtils.toString(is, "ISO-8859-1");
 	    // logger.debug("Json read: " + json);
 	    ATMDataStorePojo data = ATMDataStorePojo.fromJson(json);
