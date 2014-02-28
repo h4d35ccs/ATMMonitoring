@@ -28,7 +28,7 @@ import com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade;
  * 
  */
 @Service
-public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
+public class DashboardWidgetFacadeImpl implements DashboardWidgetFacade {
 
 	// autowired services
 	@Autowired
@@ -43,7 +43,7 @@ public class DashboardWidgetFacadeImp implements DashboardWidgetFacade {
 
 	/* The logger. */
 	static private Logger logger = Logger
-			.getLogger(DashboardWidgetFacadeImp.class);
+			.getLogger(DashboardWidgetFacadeImpl.class);
 
 	/*
 	 * (non-Javadoc)

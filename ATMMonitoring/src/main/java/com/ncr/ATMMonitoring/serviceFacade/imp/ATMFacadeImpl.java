@@ -35,10 +35,10 @@ import com.ncr.ATMMonitoring.socket.SocketService;
  * 
  */
 @Service
-public class ATMFacadeImp implements ATMFacade {
+public class ATMFacadeImpl implements ATMFacade {
 
 	/* The logger. */
-	static private Logger logger = Logger.getLogger(ATMFacadeImp.class);
+	static private Logger logger = Logger.getLogger(ATMFacadeImpl.class);
 
 	@Autowired
 	private TerminalService terminalService;
