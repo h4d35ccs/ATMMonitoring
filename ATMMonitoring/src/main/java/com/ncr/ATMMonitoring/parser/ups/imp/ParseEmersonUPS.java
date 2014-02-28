@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.imp;
+package com.ncr.ATMMonitoring.parser.ups.imp;
 
 import java.io.InputStream;
 import java.text.ParseException;
@@ -16,12 +16,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
-import com.ncr.ATMMonitoring.parser.annotation.UPSParser;
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSChainBuilder;
+import com.ncr.ATMMonitoring.parser.ups.annotation.UPSParser;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 
 /**
  * 

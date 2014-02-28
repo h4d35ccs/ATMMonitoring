@@ -1,4 +1,4 @@
-package com.ncr.ATMMonitoring.parser.dto;
+package com.ncr.ATMMonitoring.parser.ups.dto;
 
 /**
  * Define extra attributes that can have an UPS XML

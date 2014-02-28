@@ -10,10 +10,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSChainBuilder;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 
 public class ParseUPSChainBuilderTest {
 	
@@ -99,7 +99,7 @@ public class ParseUPSChainBuilderTest {
 
 	}
 
-	@Test(expected = com.ncr.ATMMonitoring.parser.exception.NoParserFoundException.class)
+	@Test(expected = com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException.class)
 	public void testNoParser() throws ParserException, XMLNotReadableException,
 			NoParserFoundException {
 

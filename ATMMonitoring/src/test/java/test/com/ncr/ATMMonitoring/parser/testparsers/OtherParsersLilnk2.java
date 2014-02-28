@@ -2,12 +2,12 @@ package test.com.ncr.ATMMonitoring.parser.testparsers;
 
 import org.apache.log4j.Logger;
 
-import com.ncr.ATMMonitoring.parser.ParseUPSXML;
-import com.ncr.ATMMonitoring.parser.annotation.UPSParser;
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSXML;
+import com.ncr.ATMMonitoring.parser.ups.annotation.UPSParser;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 @UPSParser
 public class OtherParsersLilnk2 extends ParseUPSXML {
 

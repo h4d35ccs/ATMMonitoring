@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.exception;
+package com.ncr.ATMMonitoring.parser.ups.exception;
 
 /**
  * Indicate an error while executing the parsing operation that are not related

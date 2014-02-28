@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ncr.ATMMonitoring.dao.UpsDAO;
 import com.ncr.ATMMonitoring.handler.FileInDiskHandler;
-import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSChainBuilder;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 import com.ncr.ATMMonitoring.pojo.Ups;
 
 /**
@@ -31,10 +31,10 @@ import com.ncr.ATMMonitoring.pojo.Ups;
  */
 @Service
 @Transactional
-public class UPSServiceImp implements UPSService {
+public class UPSServiceImpl implements UPSService {
 
 	// logger
-	private static final Logger logger = Logger.getLogger(UPSServiceImp.class);
+	private static final Logger logger = Logger.getLogger(UPSServiceImpl.class);
 
 	@Autowired
 	private UpsDAO upsDao;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser;
+package com.ncr.ATMMonitoring.parser.ups;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +19,11 @@ import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
-import com.ncr.ATMMonitoring.parser.annotation.UPSParser;
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.annotation.UPSParser;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 
 /**
  * Class that builds and executes the chain of responsibility of UPS Parsers <BR>
@@ -174,7 +174,7 @@ public class ParseUPSChainBuilder {
 
 				instance = parserClass.newInstance();
 				PARSERS_INSTANCES
-						.add((com.ncr.ATMMonitoring.parser.ParseUPSXML) instance);
+						.add((com.ncr.ATMMonitoring.parser.ups.ParseUPSXML) instance);
 
 			} catch (InstantiationException e) {
 				logger.warn("Can not instantiate the given parser: "

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.dto;
+package com.ncr.ATMMonitoring.parser.ups.dto;
 
 import java.util.Date;
 

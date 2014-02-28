@@ -1,4 +1,4 @@
-package com.ncr.ATMMonitoring.parser.annotation;
+package com.ncr.ATMMonitoring.parser.ups.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

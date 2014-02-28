@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.imp;
+package com.ncr.ATMMonitoring.parser.ups.imp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,10 +16,10 @@ import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
-import com.ncr.ATMMonitoring.parser.ParseUPSChainBuilder;
-import com.ncr.ATMMonitoring.parser.ParseUPSXML;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSChainBuilder;
+import com.ncr.ATMMonitoring.parser.ups.ParseUPSXML;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 
 /**
  * Class that define a parse based on w3c DOM<br>

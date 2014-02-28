@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.exception;
+package com.ncr.ATMMonitoring.parser.ups.exception;
 
 /**
  * Indicate that the XML can not be read by the parser

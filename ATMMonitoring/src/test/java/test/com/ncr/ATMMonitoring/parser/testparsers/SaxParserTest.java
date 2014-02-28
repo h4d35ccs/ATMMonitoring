@@ -5,12 +5,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.ncr.ATMMonitoring.parser.annotation.UPSParser;
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
-import com.ncr.ATMMonitoring.parser.imp.ParseUPSSAX;
+import com.ncr.ATMMonitoring.parser.ups.annotation.UPSParser;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.imp.ParseUPSSAX;
 
 @UPSParser(priority = UPSParser.HIGH_PRIORITY)
 public class SaxParserTest extends ParseUPSSAX {

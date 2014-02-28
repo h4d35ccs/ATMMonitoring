@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.parser.exception;
+package com.ncr.ATMMonitoring.parser.ups.exception;
 
 /**
  * Indicate that the given XML can be processed by any parser found in the

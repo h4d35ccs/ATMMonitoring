@@ -1,4 +1,4 @@
-package com.ncr.ATMMonitoring.parser;
+package com.ncr.ATMMonitoring.parser.ups;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,10 +6,10 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
-import com.ncr.ATMMonitoring.parser.dto.UPSInfo;
-import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
-import com.ncr.ATMMonitoring.parser.exception.ParserException;
-import com.ncr.ATMMonitoring.parser.exception.XMLNotReadableException;
+import com.ncr.ATMMonitoring.parser.ups.dto.UPSInfo;
+import com.ncr.ATMMonitoring.parser.ups.exception.NoParserFoundException;
+import com.ncr.ATMMonitoring.parser.ups.exception.ParserException;
+import com.ncr.ATMMonitoring.parser.ups.exception.XMLNotReadableException;
 
 /**
  * Interface that define a XML UPS Parser ( a Link in the responsibility chain) <br>
