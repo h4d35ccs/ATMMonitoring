@@ -27,7 +27,7 @@
 
 	  <servlet-mapping>
 	    <servlet-name>spring</servlet-name>
-	    <url-pattern>/</url-pattern>
+	    <url-pattern>/*</url-pattern>
 	  </servlet-mapping>
 
     <context-param>
@@ -61,7 +61,7 @@
 
 	<filter-mapping>
 		<filter-name>OpenHibernateSessionInViewFilter</filter-name>
-		<url-pattern>*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
 	<error-page>
@@ -77,7 +77,7 @@
     <jsp-config>
         <taglib>
             <taglib-uri>http://www.ncr.com/tags</taglib-uri>
-            <taglib-location>/WEB-INF/tags/ncr.tld</taglib-location>
+            <taglib-location>/WEB-INF/tld/ncr.tld</taglib-location>
         </taglib>
     </jsp-config>
 
