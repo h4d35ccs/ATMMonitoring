@@ -30,7 +30,7 @@ The minimum requirements for running the NCR HSAM Agent are:
 	* (*) Extra requirements only for Windows NT
 		* *Windows Management Instrumentation (WMI) Core 1.5* (**wmint4.exe**)
 		* For NCR ATMs – Apply the following XFS Manager Error
-			* Workaround:
+			.. note:: Workaround:
 				* *HKEY_CLASSES_ROOT\WOSA/XFS_ROOT\XFS_MANAGER ShareMapAddr(REG_SZ)=”67000000*
 				* 256 MB RAM
 
@@ -55,7 +55,7 @@ NCR HSAM Agent Configuration
 
 
 #. HSAMAgent.cfg (only for J/XFS ATMs)
-	*  *workstation_name* key ­ Computer name.
+	* *workstation name* key Computer name.
 	* *config_key* key – Application name according to the *read.repository* application name (INVENTORYAGENT).
 	* *sdm_addparm_1* key – Path where J/XFS is installed.
 
@@ -99,21 +99,15 @@ Server Side
 
 Apache Tomcat
 -------------
-­­­­­­­­­­­­­­
-Install the product (please verify the *Host Manager* is also selected during the process). `<http://tomcat.apache.org/download­70.cgi>`_.
+Install the product (plaese verify the *Host Manager* is also selected during the process) from:`<http://tomcat.apache.org/download70.cgi>`_.
 The Tomcat service can be automatically started by changing the “Startup type” property to *Automatic*.
-
 .. warning:: The Tomcat version must be 7
-
 
 PostgreSQL
 ----------
-
-­­­­­­­­­­­­­­­Install the product. Please use the following data during PostgreSQL installation:
-   
-   * User: postgres (default)
-   * Password: qwerty
-
+Install the product. Please set the following data during PostgreSQL installation :):
+	* User: postgres (default)
+	* Password: qwerty
 
 Download postgres from `<http://www.postgresql.org/download/>`_.
 
@@ -136,21 +130,20 @@ Server Side Deployment
 		* War file name: **atm.war**
 		* New Folder created inside webapps: **C:\Program Files\Apache Software Foundation\Tomcat x.x\webapps\atm**
 #. Make sure that the recently created folder have the following structure basic structure:
-	* atm
-		* WEB-INF
-			* classes
-			* lib
-			* jsp
-			* tags
-		* resources
-		* META-INF
+ atm
+	*WEB-INF
+		* classes
+		* lib
+		* jsp
+		* tags
+	* resources
+	* META-INF
 
 .. warning:: It is not necessary to create any folder, is an automatic process made by Tomcat, do not create the folder structure by yourself
 
 Configuration Files
 -------------------
-Once the war file is deployed ( the  application folder is created inside the webapps folder) go to the \\webapps\\atm\\WEB­INF\\classes folder inside the application folder and edit the property file called **jdbc.properties** this file contains the parameters to allow the connection with the database such as user, password, etc.  edit  or confirm the values as follows:
-	
+Once the war file is deployed ( the application folder is created inside the webapps folder) go to the \\webapps\\atm\\WEB-INF\\classes folder inside the appliaction folder and edit the property file called **jdbc.properties** this file contains the parameters to allow the connection with the database such as user, password, etc.  edit  or confirm the values as follows:
 	#. **jdbc.databaseurl** =jdbc\:postgresql\://{server}\:{port}/inventory
 		* Replace {server} with the name or ip where the postgres instance is running, the same with the {port}
 			* if Tomcat and Postgres resides in the same machine, can be used *localhost*
@@ -166,12 +159,11 @@ Once the war file is deployed ( the  application folder is created inside the we
 		* If the password for the postgres user is not qwerty, change the value for the one used during the postgres installation.
 	#. Restart the Tomcat server
 
-The **Config.properties** (available in  \\WEB­-INF\\classes) This file contains the NCR HSAM Server settings. Be aware that some of the settings must be exactly the same configured in the HSAM Agent side such as *config.serverSocketPort*, *config.agentSocketPort* and *config.agentOkMessage*.
+The **Config.properties** (available in \\WEB-INF\\classes) This file contains the NCR HSAM Server settings. Be aware that some of the settings must be exactly the same configured in the HSAM Agent side such as *config.serverSocketPort*, *config.agentSocketPort* and *config.agentOkMessage*.
 
 Test the Installation
 ---------------------
-Once all the configuration is done, go, using any of the most common browsers ­ Chrome, Firefox, Opera, Internet Explorer (7 and above), Safari, ­to:
-
+Once all the configuration is done, go, using any of the most common browsers Chrome, Firefox, Opera, Internet Explorer (7 and above), Safari, to:
 	* `<http://localhost:8080/folderName>`_ (Local Access)
 	* `<http://IPserver:8080/folderName>`_ (External Access)
 

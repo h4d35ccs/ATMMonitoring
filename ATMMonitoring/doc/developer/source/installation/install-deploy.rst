@@ -54,7 +54,7 @@ This environment is meant for developers who want to make changes onto the softw
 			
 #. Next we must make the ATM Agent jar available to Maven as a dependency package. We can do it in two ways:
 
-	* Installing it in the local Maven repo: select the pom file and right click on it, search for **Run As** ⇒ **Maven build...**, that will open a window, search for the option *goal* and write the following:
+	* Installing it in the local Maven repo: select the pom file and right click on it, search for **Run As** --> **Maven build...**, that will open a window, search for the option *goal* and write the following:
 
 		.. code-block:: text
 
@@ -93,7 +93,7 @@ This environment is meant for developers who want to make changes onto the softw
 Add a Tomcat Server in Eclipse
 ------------------------------
 
-#. Go to *File ⇒ New ⇒ Server*
+#. Go to *File --> New --> Server*
 #. From the list select Tomcat 7:
 
 	.. image:: images-install/image01.png
@@ -166,7 +166,7 @@ Configure the Application
 	.. image:: images-install/image04.png	
 	      :align: center
       
-#. If the M is not present, right click over the project folder, select the option *Configure ⇒ Convert to Maven Project*.
+#. If the M is not present, right click over the project folder, select the option *Configure --> Convert to Maven Project*.
 
 	.. note:: the process may take a while because the eclipse will download all the dependencies defined in the pom and then try to compile
 		the project.
@@ -198,7 +198,7 @@ Configure the Application
 	      :align: center
 	      :height: 400px
 
-	.. note:: using the commmand *Run As ⇒ Maven build...* it is posible to execute tests, compile and deploy
+	.. note:: using the commmand *Run As --> Maven build...* it is posible to execute tests, compile and deploy
 		(and combining these steps in several ways) in any Tomcat server.
 
 Test-Production
@@ -293,7 +293,7 @@ Compiling And Packaging The Application
 	.. image:: images-install/image08.png
       		:align: center
       		
-    .. note:: this step can be accomplished from Eclipse as well. Right click onto the project and select *Run As* ⇒ *Maven build...*, then
+    .. note:: this step can be accomplished from Eclipse as well. Right click onto the project and select *Run As* --> *Maven build...*, then
 		write the goals (*clean validate compile test package*) in the proper field and click *Run*.
             
 #. If there is no error during the whole process, you should see something like this:
@@ -381,7 +381,7 @@ This schema uses Maven not only to generate the war file, but to deploy it direc
 
 		$ mvn clean validate compile test tomcat7:deploy
       		
-    .. note:: this step can be accomplished from Eclipse as well. Right click onto the project and select *Run As* ⇒ *Maven build...*, then
+    .. note:: this step can be accomplished from Eclipse as well. Right click onto the project and select *Run As* --> *Maven build...*, then
 		write the goals (*clean validate compile test tomcat7:deploy*) in the proper field and click *Run*.
 
 Using Jenkins To Compile, Generate The War File And Deploy Into a Tomcat server
