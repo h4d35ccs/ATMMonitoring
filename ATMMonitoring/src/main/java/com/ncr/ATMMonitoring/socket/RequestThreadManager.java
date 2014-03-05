@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.ncr.ATMMonitoring.handler.QueueHandler;
+
 
 /**
  * The Class RequestThreadManager.
