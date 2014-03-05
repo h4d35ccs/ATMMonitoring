@@ -213,5 +213,9 @@ Setting Up The Database For ATMMonitoring
 #. Restore the database structure and starting data:
 	* Execute the following :download:`sql script <minimum_dump.sql>` as PostgreSQL user *postgres* (or any other user with admin permission onto the database *inventory*):
 		
-.. literalinclude:: minimum_dump.sql
+.. include:: minimum_dump_create1.rst
+
+.. include:: minimum_dump_create2.rst
+
+.. include:: minimum_dump_insert.rst
 
