@@ -191,7 +191,8 @@ htmlhelp_basename = 'ATMMonitoringdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
-
+#f = open('latex-styling.tex', 'r+');
+#PREAMBLE = f.read();
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
@@ -200,7 +201,9 @@ latex_elements = {
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
-#'preamble': '',
+#'preamble': 'mypreamble',
+'classoptions': ',oneside',
+'babel': '\\usepackage[english]{babel}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -213,7 +216,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = "_static/logo.jpg"
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -223,7 +226,7 @@ latex_documents = [
 #latex_show_pagerefs = False
 
 # If true, show URL addresses after external links.
-#latex_show_urls = False
+latex_show_urls = "true"
 
 # Documents to append as an appendix to all manuals.
 #latex_appendices = []
