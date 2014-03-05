@@ -1,8 +1,8 @@
 *****************************
-Introduction to ATMMonitoring
+Introduction to ATM Inventory
 *****************************
 
-ATMMonitoring is a web application that allows us to manage the data of a set of ATM's holistically. On top of allowing us to add, edit and remove an ATM from the system, if the ATMs have the agent supplied with the application installed, the server can communicate with them to receive their data at any time. The agent can also send the ATM data by its own (e.g. when it detects a change in the ATM configuration). 
+ATM Inventory is a web application that allows us to manage the data of a set of ATM's holistically. On top of allowing us to add, edit and remove an ATM from the system, if the ATMs have the agent supplied with the application installed, the server can communicate with them to receive their data at any time. The agent can also send the ATM data by its own (e.g. when it detects a change in the ATM configuration). 
 
 The application also allows us to schedule updates of the ATM data for specific times on a weekly or monthly basis.
 
@@ -39,7 +39,7 @@ It is done by using a file called "keystore" (SSL stores the certificates and th
 Agent collected Information
 ---------------------------
 
-ATMMonitoring(Server) communicates with an Agent(Client) that is able to catch all the information provided by the ATM in order to be stored in the NCR HSAM Database. Although it is mainly intented to be run in ATMs, it is also able to collect information from any other devices.
+ATM Inventory(Server) communicates with an Agent(Client) that is able to catch all the information provided by the ATM in order to be stored in the NCR HSAM Database. Although it is mainly intented to be run in ATMs, it is also able to collect information from any other devices.
 
 It is divided into two main pieces, *HSAMAgent.jar* and *XFSCollector.dll*.
 
@@ -49,7 +49,7 @@ It is divided into two main pieces, *HSAMAgent.jar* and *XFSCollector.dll*.
 The NCR HSAM Agent performs the following actions:
 
 
-   * *ATM Information Collector* that gathers all the ATM information and stores it in a JSON formatted file (`<www.json.org>`_).
+   * *ATM Information Collector* that gathers all the ATM information and stores it in a JSON formatted file (`<http://www.json.org>`_).
    * *Server Requests Receptor* for getting on-demand information. When an update order is received the ATM information is refreshed and restored into a JSON file. Once finished, the server is notified.
    * *Request Sender for notifying the server* that an update has been completed and a data update can be requested after a manual or scheduled demand for updating, or after refreshing the ATMinformation the first time the agent starts up.
 

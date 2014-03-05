@@ -1,5 +1,5 @@
 =============================================
-ATMMonitoring: ATM management web application
+ATM Inventory: ATM management web application
 =============================================
 
 .. sectnum::
@@ -8,10 +8,10 @@ ATMMonitoring: ATM management web application
    :start: 0
 .. contents:: Table of contents
 
-Introduction to ATMMonitoring
+Introduction to ATM Inventory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ATMMonitoring is a web application which allows us to manage all the data we have from a collection of ATM in an integral way. On top of allowing us to add, delete and edit ATMs and their data, if they have the proper agent installed, server can communicate with them and receive their data at any time, starting the communication from either the server or the ATM (e.g. when it detects a config change). This data updates can also be scheduled weekly or monthly at specific times. It also has a powerful query engine that allows us to impose restrictions onto the ATMs' data and filter them, being particularly useful when combined with the scheduled updates so we can update only a subset of ATMs.
+ATM Inventory is a web application which allows us to manage all the data we have from a collection of ATM in an integral way. On top of allowing us to add, delete and edit ATMs and their data, if they have the proper agent installed, server can communicate with them and receive their data at any time, starting the communication from either the server or the ATM (e.g. when it detects a config change). This data updates can also be scheduled weekly or monthly at specific times. It also has a powerful query engine that allows us to impose restrictions onto the ATMs' data and filter them, being particularly useful when combined with the scheduled updates so we can update only a subset of ATMs.
 
 Functionalities summary
 ***********************

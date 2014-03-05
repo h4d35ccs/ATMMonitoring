@@ -16,7 +16,7 @@ INSTALATION_FOLDER="installation"
 USER_FOLDER="user"
 INDEXES_FOLDER=indexes
 GENERATED_PDF_FOLDER=build_pdf
-FINAL_PDF_BASENAME="ATMMonitoring"
+FINAL_PDF_BASENAME="ATMInventory"
 
 #environment creators, copy and remove files
 copyFilesFolders(){

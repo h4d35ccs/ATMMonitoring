@@ -1,7 +1,7 @@
-.. ATMMonitoring documentation master file, created by Otto Abreu Using
+.. ATM Inventory documentation master file, created by Otto Abreu Using
    sphinx-quickstart on Fri Jan 10 11:20:39 2014 NCR All Rights Reserved.
 
-ATMMonitoring: ATM's Data Management Application
+ATM Inventory: ATM's Data Management Application
 ================================================
 
 .. include:: introduction.rst

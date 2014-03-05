@@ -11,7 +11,7 @@ General Secuence Diagram
       :align: center
       :height: 600px
       
-The general behavior of ATMMonitoring is as shown above, first the user select an operation from the HTML view, that operation send a message to the corresponding controller, after the message is received,  the controller invokes a service to operate over the entities. When the service receive the message, it will call the corresponding DAO operation. Finally the DAO will use the Hibernate session to perform the corresponding Database operation.
+The general behavior of ATM Inventory is as shown above, first the user select an operation from the HTML view, that operation send a message to the corresponding controller, after the message is received,  the controller invokes a service to operate over the entities. When the service receive the message, it will call the corresponding DAO operation. Finally the DAO will use the Hibernate session to perform the corresponding Database operation.
 
 After the operation has ended in the database, hibernate will generate the object, if the operation was a fetch, or will update the state of each entity object. Then the result of the operation will be show to the user.
 
@@ -52,7 +52,7 @@ In parallel a process will be running in order to check if some scheduled update
 ATM Request
 %%%%%%%%%%%
 
-The ATM can call the ATMMonitoring in order to indicate that an update has occur, this is possible because the ATMMonitoring has a server that is listening to any possible request from the ATM's. This server and the clients are Sockets implementations.
+The ATM can call the ATM Inventory in order to indicate that an update has occur, this is possible because the ATM Inventory has a server that is listening to any possible request from the ATM's. This server and the clients are Sockets implementations.
 Below is possible see the sequence diagram of this process.
 
 .. image:: diagrams/Sequence_Diagrams/ATM_Request.png
@@ -82,7 +82,7 @@ If the information from the ATM can not be obtained (error) , the *RequestThread
       
 Query Management
 ================
-Each user of ATMMonitoring can create, store and execute Queries that fetch a list of ATM's, those querys can be use in the update process 
+Each user of ATM Inventory can create, store and execute Queries that fetch a list of ATM's, those querys can be use in the update process 
 
 .. image:: diagrams/Sequence_Diagrams/Query_Secuence_Diagram.png
       :width: 800px

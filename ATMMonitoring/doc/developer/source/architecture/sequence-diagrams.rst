@@ -11,7 +11,7 @@ General Sequence Diagram
       :align: center
       :height: 600px
       
-The general behavior of ATMMonitoring is as shown above: first the user selects an operation from the HTML view, that operation sends
+The general behavior of ATM Inventory is as shown above: first the user selects an operation from the HTML view, that operation sends
 a message to the corresponding controller, and after the message is received, the controller invokes a service to operate over the entities.
 When the service receives the message, it will call the corresponding DAO operation. Finally, the DAO will use the Hibernate session to
 perform the corresponding database operation(s).
@@ -65,7 +65,7 @@ it will obtain the *Terminals* returned by the related *Query*, and then, after 
 ATM Request
 %%%%%%%%%%%
 
-The ATMs can also request data updates to the ATMMonitoring on their own. For achieving this, our server application is listening to any possible
+The ATMs can also request data updates to the ATM Inventory on their own. For achieving this, our server application is listening to any possible
 request from the ATM's through a socket connection (same technology used in the ATMs' agent connections).
 Next you can see the sequence diagram of this process:
 
@@ -115,7 +115,7 @@ the set to try again in the next cycle.
 Query Management
 ================
 
-Each user of ATMMonitoring can create, store and execute Queries that fetch a list of ATMs. These queries can also be used for the scheduled updates.
+Each user of ATM Inventory can create, store and execute Queries that fetch a list of ATMs. These queries can also be used for the scheduled updates.
 In the following diagram we detail the query process:
 
 .. image:: diagrams/Sequence_Diagrams/Query_Sequence_Diagram.png

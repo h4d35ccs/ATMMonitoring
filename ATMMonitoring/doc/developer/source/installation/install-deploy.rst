@@ -1,6 +1,6 @@
-*********************************
-Install And Deploy ATM Monitoring
-*********************************
+********************************
+Install And Deploy ATM Inventory
+********************************
 In order to install and deploy the ATM Monitoring server application, you must have the proper software environment:
 	* Database Setup:
 		* The database server should be installed (Section :doc:`Database Installation <../enviroment_setup/database-setup>`).
@@ -154,7 +154,7 @@ Starting Tomcat
 
 Restart and Debug Mode
 $$$$$$$$$$$$$$$$$$$$$$
-* Is possible to restart the running instance, to do this press the same button (green with a white arrow) shown above.
+* Is possible to restart the running instance, to do this press the same button (green with a white arrow) shown above.
 
 * The debug mode will allow you to put breakpoints in the code and see in running time how the code is performing, to do so, press the green bug(located to the left of the start/restart button; see the picture above). This will launch the debug perspective (probably a pop up willshow up, press *Yes* in that case) after that you can put breakpoints and control the execution. A more detailed guide can be found in `Vogella <http://www.vogella.com/tutorials/EclipseDebugging/article.html>`_
 

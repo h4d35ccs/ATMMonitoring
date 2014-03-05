@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ATMMonitoring documentation build configuration file, created by
+# ATMInventory documentation build configuration file, created by
 # sphinx-quickstart on Fri Jan 10 11:20:39 2014.
 #
 # This file is execfile()d with the current directory set to its
@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ATMMonitoring'
+project = u'ATMInventory'
 copyright = u'2014, NCR'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -187,7 +187,7 @@ pygments_style = 'sphinx'
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-#htmlhelp_basename = 'ATMMonitoringdoc'
+#htmlhelp_basename = 'ATMInventorydoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -210,7 +210,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ATMMonitoring.tex', u'ATMMonitoring Architecture',
+  ('index', 'ATMInventory.tex', u'ATMInventory Architecture',
    u'NCR', 'manual'),
 ]
 
@@ -240,7 +240,7 @@ latex_show_urls = "true"
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'atmmonitoring', u'ATMMonitoring Architecture',
+    ('index', 'ATMInventory', u'ATMInventory Architecture',
      [u'NCR'], 1)
 ]
 
@@ -254,8 +254,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ATMMonitoring', u'ATMMonitoring Architecture',
-   u'NCR', 'ATMMonitoring', 'One line description of project.',
+  ('index', 'ATMInventory', u'ATMInventory Architecture',
+   u'NCR', 'ATMInventory', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -275,13 +275,13 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'ATMMonitoring'
+epub_title = u'ATMInventory'
 epub_author = u'NCR'
 epub_publisher = u'NCR'
 epub_copyright = u'2014, NCR'
 
 # The basename for the epub file. It defaults to the project name.
-#epub_basename = u'ATMMonitoring'
+#epub_basename = u'ATMInventory'
 
 # The HTML theme for the epub output. Since the default themes are not optimized
 # for small screen space, using the same theme for HTML and epub output is

@@ -8,13 +8,13 @@ Below we can check the general architecture of the system, which is based on a M
       :align: center
       :height: 400px
 
-Basically the ATMMonitoring is divided into four components:
+Basically the ATM Inventory is divided into four components:
 	* The *Persistence*, where all the DAO and POJO objects reside.
 	* The *Services*, which hold the objects that allow access to the persistence layer via specific and atomic business logic operations.
 	* The *Controllers*, in charge of communicating with the view and consuming the services in order to perform operations.
 	* The *View*, where all the HTML pages are (actually JSP pages that result in HTML).
 
-ATMMonitoring communicates with two other components: first the *ATMClient*, that is in charge of the ATM update communication; and the *Database*
+ATM Inventory communicates with two other components: first the *ATMClient*, that is in charge of the ATM update communication; and the *Database*
 where the information is stored. 
 
 Diagrams Download

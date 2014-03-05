@@ -1,7 +1,7 @@
 **************
 Database Setup
 **************
-This section explains how to install PostgresSQL and configure ATMMonitoring's database.
+This section explains how to install PostgresSQL and configure ATM Inventory's database.
 
 Software Requisites And Assumptions
 ===================================
@@ -191,7 +191,7 @@ strongly encouraged, we must follow the next steps:
 	
 		postgres=# ALTER USER postgres WITH PASSWORD '<new_password>';
 
-Setting Up The Database For ATMMonitoring
+Setting Up The Database For ATM Inventory
 =========================================
 #. Create the database with the name *inventory* (or any other name you wish) by any of these methods:
 	* Using a PostgreSQL admin tool (like `pgAdmin <http://www.pgadmin.org/>`_) or the command line interpreter (as we `previously explained`__), write the following as the PostgreSQL user *postgres* (or any other user with enough permissions to create a new database):
