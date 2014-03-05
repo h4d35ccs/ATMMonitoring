@@ -35,9 +35,9 @@ public class ErrorController extends GenericController {
 //    @Autowired
 //    private RoleService roleService;
 
-    /** The bank company service. */
-    @Autowired
-    private BankCompanyService bankCompanyService;
+//    /** The bank company service. */
+//    @Autowired
+//    private BankCompanyService bankCompanyService;
 
     /**
      * 404 error.

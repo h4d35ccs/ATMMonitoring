@@ -1,7 +1,6 @@
 package com.ncr.ATMMonitoring.controller;
 
 import java.security.Principal;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.ncr.ATMMonitoring.pojo.BankCompany;
-import com.ncr.ATMMonitoring.pojo.User;
 import com.ncr.ATMMonitoring.service.BankCompanyService;
-import com.ncr.ATMMonitoring.service.UserService;
 
 /**
  * The Class BankCompanyController.
