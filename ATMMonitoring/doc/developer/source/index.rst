@@ -11,7 +11,6 @@ Operations
 .. toctree::
    :maxdepth: 2
    
-   introduction.rst
    enviroment_setup/environment-setup.rst
    installation/install-main.rst
    architecture/architecture.rst
