@@ -14,18 +14,24 @@ ARCHITECTURE_FOLDER="architecture"
 ENVSETUP_FOLDER="enviroment_setup"
 INSTALATION_FOLDER="installation"
 USER_FOLDER="user"
-INDEXES_FOLDER=indexes
+INDEXES_FOLDER=indexconf
 GENERATED_PDF_FOLDER=build_pdf
 FINAL_PDF_BASENAME="ATMInventory"
+DATE=`date +%Y%m%d`
 
 #environment creators, copy and remove files
+
+copyIndexConf(){
+	cp -f ${INDEXES_FOLDER}/index_$1.rst ${PDF_SOURCES}/index.rst
+	cp -f ${INDEXES_FOLDER}/conf_$1.py ${PDF_SOURCES}/conf.py
+	cp -f ${DEVELOPER_FOLDER}/latex-styling.tex ${PDF_SOURCES}
+}
+
 copyFilesFolders(){
 	echo "Coping folder: $1 from  ${DEVELOPER_FOLDER}"
  
 	cp -r ${DEVELOPER_FOLDER}/$1 ${PDF_SOURCES}
-	cp -f ${INDEXES_FOLDER}/index_$1.rst ${PDF_SOURCES}/index.rst
-	cp -f ${INDEXES_FOLDER}/conf_$1.py ${PDF_SOURCES}/conf.py
-	cp -f ${DEVELOPER_FOLDER}/latex-styling.tex ${PDF_SOURCES}
+	copyIndexConf $1
 
 }
 
@@ -60,7 +66,7 @@ moveGeneratedPDF(){
 	for file in `ls ${PDF_BUILD_LATEX} |grep .pdf`
 	do
 	  
-	  cp -f ${PDF_BUILD_LATEX}/$file ${GENERATED_PDF_FOLDER}/${FINAL_PDF_BASENAME}_$1.pdf
+	  cp -f ${PDF_BUILD_LATEX}/$file ${GENERATED_PDF_FOLDER}/${FINAL_PDF_BASENAME}_$1_${DATE}.pdf
 	done
 }
 
@@ -86,6 +92,11 @@ createNeededFiles(){
 	echo "Coping introduction.rst from ${DEVELOPER_FOLDER}"
 
 	cp  ${DEVELOPER_FOLDER}/introduction.rst ${PDF_SOURCES}
+}
+
+copyGenerateCollectedInfo(){
+	cp ${DEVELOPER_FOLDER}/collected-info.rst ${PDF_SOURCES}
+
 }
 
 #pdf generation functions
@@ -212,6 +223,27 @@ generateUser(){
 	cleaning
 }
 
+generateCollectedInfo(){
+	echo "Generating Collected Info PDF"
+	echo ""
+	echo ""
+	copyGenerateCollectedInfo
+	echo ""
+	echo ""
+	copyIndexConf "collected-info"
+	echo ""
+	echo ""		
+	createLatex
+	echo ""
+	echo ""
+	createLatexPdf
+	echo ""
+	echo ""	
+	moveGeneratedPDF "collected_info"
+	echo "Generating Collected Info PDF DONE"
+	cleaning		
+}
+
 cleaning(){
 	#cleaning the house
 	echo "removing sources"
@@ -237,8 +269,10 @@ if  [ $# != 0 ] ; then
 			generateQuickInstall
 		elif [ "$1" == "-usr" ] ; then
 			generateUser
-		elif [ "$1" == "-full" ] ; then	
+		elif [ "$1" == "-all" ] ; then	
 			generateAllInOne
+		elif  [ "$1" == "-cin" ] ; then
+		    generateCollectedInfo			
 		else
 			echo "unrecognized option: $1"
 		fi
@@ -252,6 +286,7 @@ else
 	generateInstallation
 	generateQuickInstall
 	generateUser
+	generateCollectedInfo
 	generateAllInOne
 fi
 
