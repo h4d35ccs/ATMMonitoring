@@ -98,7 +98,7 @@ public class UPSGetXMLTask {
 				filesPathError = this.upsService.storeUPSinfo(filesPath);
 				// if has errors, i will only manage those who was processed
 				if (!filesPathError.isEmpty()) {
-					// i get only those proceed
+					// i get only those processed
 					@SuppressWarnings("unchecked")
 					Collection<String> toProcess = (Collection<String>) CollectionUtils
 							.disjunction(filesPathError, filesPath);
