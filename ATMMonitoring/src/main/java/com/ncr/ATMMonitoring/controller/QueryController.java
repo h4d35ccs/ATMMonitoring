@@ -41,7 +41,7 @@ import com.ncr.ATMMonitoring.service.QueryService;
  * @author Jorge López Fernández (lopez.fernandez.jorge@gmail.com)
  */
 @Controller
-public class QueryController extends GenericController{
+public class QueryController extends GenericController {
 
     /** The logger. */
     static private Logger logger = Logger.getLogger(QueryController.class
@@ -61,10 +61,6 @@ public class QueryController extends GenericController{
     @Autowired
     private QueryService queryService;
 
-//    /** The user service. */
-//    @Autowired
-//    private UserService userService;
-
     /**
      * Create query URL.
      * 
@@ -83,10 +79,7 @@ public class QueryController extends GenericController{
 	Locale locale = RequestContextUtils.getLocale(request);
 
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 
 	String datePattern = ((SimpleDateFormat) DateFormat.getDateInstance(
@@ -123,17 +116,13 @@ public class QueryController extends GenericController{
 
 	String userMsg = "";
 	Query query = null;
-//	Locale locale = RequestContextUtils.getLocale(request);
 
 	if (queryId != null) {
 	    query = queryService.getQuery(queryId);
 	}
 
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 
 	map.put("userMsg", userMsg);
@@ -164,7 +153,6 @@ public class QueryController extends GenericController{
 	String userMsg = "";
 	Query query = null;
 	Set<Query> userQueries = null;
-//	Locale locale = RequestContextUtils.getLocale(request);
 
 	if (queryId != null) {
 	    query = queryService.getQuery(queryId);
@@ -179,11 +167,7 @@ public class QueryController extends GenericController{
 	}
 
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-//	    userQueries = loggedUser.getQueries();
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	PagedListHolder<Query> pagedListHolder = new PagedListHolder<Query>(
 		new ArrayList<Query>(userQueries));
@@ -232,11 +216,7 @@ public class QueryController extends GenericController{
 	}
 
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userQueries = loggedUser.getQueries();
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 
 	String datePattern = ((SimpleDateFormat) DateFormat.getDateInstance(
@@ -284,15 +264,11 @@ public class QueryController extends GenericController{
 	    HttpServletRequest request, Principal principal, String p) {
 	Set<Query> userQueries = null;
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userQueries = loggedUser.getQueries();
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
-		 userQueries = this.queryService.getQueriesByUser(principal.getName());
+	    userMsg = this.getUserGreeting(principal, request);
+	    userQueries = this.queryService.getQueriesByUser(principal
+		    .getName());
 	}
 
 	PagedListHolder<Query> pagedListHolder = new PagedListHolder<Query>(
@@ -308,8 +284,6 @@ public class QueryController extends GenericController{
 	pagedListHolder.setPage(page);
 	pagedListHolder.setPageSize(pageSize);
 	map.put("pagedListHolder", pagedListHolder);
-
-	// map.put("userQueries", userQueries);
 	map.put("userMsg", userMsg);
 	return "queryList";
     }
@@ -344,18 +318,14 @@ public class QueryController extends GenericController{
 	    String p, String sort, String order) throws Exception {
 
 	Locale locale = RequestContextUtils.getLocale(request);
-//	User loggedUser = null;
-//	if (principal != null) {
-//	    loggedUser = userService.getUserByUsername(principal.getName());
-//	}
 
 	if (WebUtils.hasSubmitParameter(request, "save")) {
 	    if (principal != null) {
-//		query.setUser(loggedUser);
 		if (query.getId() != null) {
 		    try {
 			logger.debug("Updating query - " + query.getName());
-			this.queryService.updateQuery(query,principal.getName());
+			this.queryService.updateQuery(query,
+				principal.getName());
 			redirectAttributes.addFlashAttribute("success",
 				"success.updatingQuery");
 		    } catch (Exception e) {
@@ -379,9 +349,6 @@ public class QueryController extends GenericController{
 	    }
 	    return "redirect:/queries/list";
 	} else if (WebUtils.hasSubmitParameter(request, "execute")) {
-//	    if (principal != null) {
-////		query.setUser(loggedUser);
-//	    }
 	    logger.debug("Executing query... " + query.getName());
 	    String sortValue = (sort == null) ? DEFAULT_SORT : sort;
 	    String orderValue = (order == null) ? DEFAULT_ORDER : order;

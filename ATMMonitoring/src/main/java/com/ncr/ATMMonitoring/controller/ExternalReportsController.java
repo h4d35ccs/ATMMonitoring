@@ -9,17 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class externalreportsController.
  */
 @Controller
 public class ExternalReportsController extends GenericController{  
-    
-//    /** The user service. */
-//    @Autowired
-//    private UserService userService;
-//   
 
     /**
      * Request terminals update.
@@ -32,11 +26,7 @@ public class ExternalReportsController extends GenericController{
     public void requestTerminalsUpdate(Map<String, Object> map, HttpServletRequest request, Principal principal) {
 		
     	String userMsg = "";
-//    	Locale locale = RequestContextUtils.getLocale(request);
     	if (principal != null) {
-//    	    User loggedUser = userService
-//    		    .getUserByUsername(principal.getName());
-//    	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
     		 userMsg = this.getUserGreeting(principal, request);
     	}
     	map.put("userMsg", userMsg);

@@ -27,17 +27,9 @@ public class ErrorController extends GenericController {
     static private Logger logger = Logger.getLogger(ErrorController.class
 	    .getName());
 
-//    /** The user service. */
-//    @Autowired
-//    private UserService userService;
-
-//    /** The role service. */
-//    @Autowired
-//    private RoleService roleService;
-
-//    /** The bank company service. */
-//    @Autowired
-//    private BankCompanyService bankCompanyService;
+    /** The bank company service. */
+    @Autowired
+    private BankCompanyService bankCompanyService;
 
     /**
      * 404 error.
@@ -55,12 +47,8 @@ public class ErrorController extends GenericController {
     public String error404(Map<String, Object> map, HttpServletRequest request,
 	    Principal principal) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "404";
@@ -82,12 +70,8 @@ public class ErrorController extends GenericController {
     public String error403(Map<String, Object> map, HttpServletRequest request,
 	    Principal principal) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "403";
@@ -109,12 +93,8 @@ public class ErrorController extends GenericController {
     public String error(Map<String, Object> map, HttpServletRequest request,
 	    Principal principal) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "error";

@@ -103,7 +103,6 @@ public class UserController extends GenericController {
 	return "redirect:/users/list";
     }
 
-
     /**
      * List users and roles URL.
      * 
@@ -129,16 +128,11 @@ public class UserController extends GenericController {
      */
     @RequestMapping(value = "/users/list", method = RequestMethod.GET)
     public String listUsersAndRoles(Map<String, Object> map,
-	    Principal principal,
-	    String p1, String sort1, String order1, String p2, String sort2,
-	    String order2, HttpServletRequest request) {
+	    Principal principal, String p1, String sort1, String order1,
+	    String p2, String sort2, String order2, HttpServletRequest request) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	String sortValue1 = (sort1 == null) ? DEFAULT_USER_SORT : sort1;
 	String orderValue1 = (order1 == null) ? DEFAULT_USER_ORDER : order1;
@@ -203,16 +197,12 @@ public class UserController extends GenericController {
 	    return "redirect:/users/list";
 	}
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 	// TODO
 	// Actualizar los permisos
 	boolean canEdit = true;
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	    // TODO
 	    // Revisar la gestión de permisos mediante bancos
 	    // bankCompanies = loggedUser.getManageableBankCompanies();
@@ -229,76 +219,6 @@ public class UserController extends GenericController {
 
 	return "userDetails";
     }
-
-    //
-    // /**
-    // * Add user URL.
-    // *
-    // * @param user
-    // * the user
-    // * @param result
-    // * the result
-    // * @param map
-    // * the map
-    // * @param request
-    // * the request
-    // * @param principal
-    // * the principal
-    // * @return the petition response
-    // */
-    // @RequestMapping(value = "/users/list", method = RequestMethod.POST)
-    // public String addUser(@Valid @ModelAttribute("user") User user,
-    // BindingResult result, Map<String, Object> map,
-    // HttpServletRequest request, Principal principal) {
-    // if ((user.getBankCompany() != null)
-    // && (user.getBankCompany().getId() == null)) {
-    // user.setBankCompany(null);
-    // }
-    // String userMsg = "";
-    // Locale locale = RequestContextUtils.getLocale(request);
-    // Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
-    // List<User> users = new ArrayList<User>();
-    // if (principal != null) {
-    // User loggedUser = userService
-    // .getUserByUsername(principal.getName());
-    // userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-    // bankCompanies = loggedUser.getManageableBankCompanies();
-    // if ((user.getBankCompany() != null)
-    // && (!bankCompanies.contains(user.getBankCompany()))) {
-    // return "redirect:/users/list";
-    // }
-    // users = userService.listUsersByBankCompanies(bankCompanies);
-    // }
-    //
-    // if (result.hasErrors()) {
-    // map.put("banksList", bankCompanies);
-    // map.put("usersList", users);
-    // map.put("userMsg", userMsg);
-    // map.put("manageableRolesList", roleService.listManageableRoles());
-    // return "users";
-    // }
-    //
-    // try {
-    // if (userService.getUserByUsername(user.getUsername()) != null) {
-    // map.put("banksList", bankCompanies);
-    // map.put("usersList", users);
-    // map.put("userMsg", userMsg);
-    // map.put("manageableRolesList",
-    // roleService.listManageableRoles());
-    // map.put("duplicatedUsername", true);
-    // return "users";
-    // }
-    // } catch (UsernameNotFoundException e) {
-    // }
-    //
-    // user.setRole(roleService.getRole(user.getRole().getId()));
-    // if ((user.getRole() != null) && (user.getRole().getManageable())) {
-    // userService.addUser(user);
-    // }
-    //
-    // map.clear();
-    // return "redirect:/users/list";
-    // }
 
     /**
      * Update user URL.
@@ -320,15 +240,11 @@ public class UserController extends GenericController {
 	    BindingResult result, Map<String, Object> map,
 	    HttpServletRequest request, Principal principal) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	// TODO
 	// Revisar la gestión de permisos mediante bancos
 	// Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	    // bankCompanies = loggedUser.getManageableBankCompanies();
 	}
 	// map.put("banksList", bankCompanies);
@@ -347,108 +263,6 @@ public class UserController extends GenericController {
 	map.clear();
 	return "redirect:/users/details/" + user.getId().intValue();
     }
-    //
-    // /**
-    // * Update password URL.
-    // *
-    // * @param user
-    // * the user
-    // * @param result
-    // * the result
-    // * @param map
-    // * the map
-    // * @param request
-    // * the request
-    // * @param principal
-    // * the principal
-    // * @return the petition response
-    // */
-    // @RequestMapping(value = "/users/updatepw", method = RequestMethod.POST)
-    // public String updatePassword(@Valid @ModelAttribute("user") User user,
-    // BindingResult result, Map<String, Object> map,
-    // HttpServletRequest request, Principal principal) {
-    // user.setRole(roleService.getRole(user.getRole().getId()));
-    //
-    // if (result.hasErrors()) {
-    // String userMsg = "";
-    // Locale locale = RequestContextUtils.getLocale(request);
-    // Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
-    // if (principal != null) {
-    // User loggedUser = userService.getUserByUsername(principal
-    // .getName());
-    // userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-    // bankCompanies = loggedUser.getManageableBankCompanies();
-    // if ((user.getBankCompany() != null)
-    // && (!bankCompanies.contains(user.getBankCompany()))) {
-    // return "redirect:/users/list";
-    // }
-    // }
-    // map.put("banksList", bankCompanies);
-    // map.put("userMsg", userMsg);
-    //
-    // boolean sameUser = false;
-    // if (principal != null) {
-    // User loggedUser = userService.getUserByUsername(principal
-    // .getName());
-    // if ((loggedUser.getId() != null)
-    // && (loggedUser.getId().intValue() == user.getId()
-    // .intValue())) {
-    // sameUser = true;
-    // }
-    // }
-    // map.put("user", user);
-    // map.put("sameUser", sameUser);
-    // map.put("manageableRolesList", roleService.listManageableRoles());
-    // return "userDetails";
-    // }
-    //
-    // if ((user.getRole() != null) && (user.getRole().getManageable())) {
-    // userService.updatePassword(user);
-    // } else {
-    // if (principal != null) {
-    // User loggedUser = userService.getUserByUsername(principal
-    // .getName());
-    // if ((loggedUser.getId() != null)
-    // && (loggedUser.getId().equals(user.getId()))) {
-    // userService.updatePassword(user);
-    // }
-    // }
-    // }
-    //
-    // map.clear();
-    // return "redirect:/users/details/" + user.getId().intValue();
-    // }
-    //
-    // /**
-    // * Delete user URL.
-    // *
-    // * @param userId
-    // * the user id
-    // * @param principal
-    // * the principal
-    // * @return the petition response
-    // */
-    // @RequestMapping("/users/delete/{userId}")
-    // public String deleteUser(@PathVariable("userId") Integer userId,
-    // Principal principal) {
-    // User user = userService.getUser(userId);
-    // if (principal != null) {
-    // User loggedUser = userService
-    // .getUserByUsername(principal.getName());
-    // Set<BankCompany> bankCompanies = loggedUser
-    // .getManageableBankCompanies();
-    // if ((user.getBankCompany() != null)
-    // && (!bankCompanies.contains(user.getBankCompany()))) {
-    // return "redirect:/users/list";
-    // }
-    // }
-    // if ((user != null) && (user.getRole() != null)
-    // && (user.getRole().getManageable())) {
-    // userService.removeUser(userId);
-    // }
-    //
-    // return "redirect:/users/list";
-    // }
 
     /**
      * Redirect to roles list URL.
@@ -482,12 +296,8 @@ public class UserController extends GenericController {
 	    return "redirect:/users/list";
 	}
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	map.put("role", role);
@@ -523,15 +333,11 @@ public class UserController extends GenericController {
 		if ((roleAux != null)
 			&& (!roleAux.getId().equals(role.getId()))) {
 		    String userMsg = "";
-//		    Locale locale = RequestContextUtils.getLocale(request);
 		    // TODO
 		    // Actualizar los permisos
 		    boolean canEdit = true;
 		    if (principal != null) {
-//			User loggedUser = userService
-//				.getUserByUsername(principal.getName());
-//			userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		    	 userMsg = this.getUserGreeting(principal, request);
+			userMsg = this.getUserGreeting(principal, request);
 		    }
 		    map.put("canEdit", canEdit);
 		    map.put("userMsg", userMsg);
@@ -574,12 +380,8 @@ public class UserController extends GenericController {
 	    if ((roleAux != null) && (!roleAux.getId().equals(role.getId()))) {
 
 		String userMsg = "";
-//		Locale locale = RequestContextUtils.getLocale(request);
 		if (principal != null) {
-//		    User loggedUser = userService.getUserByUsername(principal
-//			    .getName());
-//		    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-			 userMsg = this.getUserGreeting(principal, request);
+		    userMsg = this.getUserGreeting(principal, request);
 		}
 		String sortValue1 = DEFAULT_USER_SORT;
 		String orderValue1 = DEFAULT_USER_ORDER;
@@ -645,55 +447,6 @@ public class UserController extends GenericController {
 
     }
 
-    // /**
-    // * List roles URL.
-    // *
-    // * @param map
-    // * the map
-    // * @param principal
-    // * the principal
-    // * @param p
-    // * the page number
-    // * @param sort
-    // * the fields for sorting roles
-    // * @param order
-    // * the order for sorting roles
-    // * @param request
-    // * the request
-    // * @return the petition response
-    // */
-    // @RequestMapping(value = "/users/roles/list", method = RequestMethod.GET)
-    // public String listRoles(Map<String, Object> map, Principal principal,
-    // String p, String sort, String order, HttpServletRequest request) {
-    // String userMsg = "";
-    // Locale locale = RequestContextUtils.getLocale(request);
-    // if (principal != null) {
-    // User loggedUser = userService
-    // .getUserByUsername(principal.getName());
-    // userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-    // }
-    // PagedListHolder<Role> pagedListHolder = new PagedListHolder<Role>(
-    // roleService.listManageableRoles(sort, order));
-    // String sortValue = (sort == null) ? DEFAULT_ROLE_SORT : sort;
-    // String orderValue = (order == null) ? DEFAULT_ROLE_ORDER : order;
-    // map.put("userMsg", userMsg);
-    // map.put("sort", sortValue);
-    // map.put("order", orderValue);
-    // int page = 0;
-    // if (p != null) {
-    // try {
-    // page = Integer.parseInt(p);
-    // } catch (NumberFormatException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // pagedListHolder.setPage(page);
-    // pagedListHolder.setPageSize(rolePageSize);
-    // map.put("pagedListHolder", pagedListHolder);
-    //
-    // return "roles";
-    // }
-
     /**
      * New group URL.
      * 
@@ -703,12 +456,8 @@ public class UserController extends GenericController {
     public String newGroup(Map<String, Object> map, Principal principal,
 	    HttpServletRequest request) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	return "newGroup";

@@ -38,10 +38,6 @@ public class BankCompanyController extends GenericController {
     @Autowired
     private BankCompanyService bankCompanyService;
 
-//    /** The user service. */
-//    @Autowired
-//    private UserService userService;
-
     /**
      * Redirect to bank companies URL.
      * 
@@ -69,12 +65,8 @@ public class BankCompanyController extends GenericController {
     public String listBankCompanies(Map<String, Object> map,
 	    Principal principal, String p, HttpServletRequest request) {
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	PagedListHolder<BankCompany> pagedListHolder = new PagedListHolder<BankCompany>(
 		bankCompanyService.listBankCompanies());
@@ -125,12 +117,8 @@ public class BankCompanyController extends GenericController {
 
 	if (result.hasErrors()) {
 	    String userMsg = "";
-//	    Locale locale = RequestContextUtils.getLocale(request);
 	    if (principal != null) {
-//		User loggedUser = userService.getUserByUsername(principal
-//			.getName());
-//		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-	    	 userMsg = this.getUserGreeting(principal, request);
+		userMsg = this.getUserGreeting(principal, request);
 	    }
 	    map.put("userMsg", userMsg);
 
@@ -190,12 +178,8 @@ public class BankCompanyController extends GenericController {
 	    return "redirect:/banks/list";
 	}
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	map.put("bankCompany", bankCompany);
@@ -234,12 +218,8 @@ public class BankCompanyController extends GenericController {
 
 	if (result.hasErrors()) {
 	    String userMsg = "";
-//	    Locale locale = RequestContextUtils.getLocale(request);
 	    if (principal != null) {
-//		User loggedUser = userService.getUserByUsername(principal
-//			.getName());
-//		userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-	    	 userMsg = this.getUserGreeting(principal, request);
+		userMsg = this.getUserGreeting(principal, request);
 	    }
 	    map.put("userMsg", userMsg);
 	    map.put("bankCompaniesList", bankCompanyService.listBankCompanies());

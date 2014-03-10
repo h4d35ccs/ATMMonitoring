@@ -29,18 +29,13 @@ import com.ncr.ATMMonitoring.serviceFacade.ATMFacade;
 @Controller
 public class TerminalConfigController extends GenericController {
 
-//    /** The terminal config service. */
-//    @Autowired
-//    private TerminalConfigService terminalConfigService;
-	@Autowired
-	private ATMFacade atmService;
+    /** The atm service facade. */
+    @Autowired
+    private ATMFacade atmService;
+
     /** The software service. */
     @Autowired
     private SoftwareService softwareService;
-    
-//    /** The user service. */
-//    @Autowired
-//    private UserService userService;
 
     /**
      * Binds custom property editors.
@@ -74,19 +69,14 @@ public class TerminalConfigController extends GenericController {
 	    @PathVariable("configId") Integer terminalConfigId,
 	    Map<String, Object> map, HttpServletRequest request,
 	    Principal principal) {
-//	TerminalConfig terminalConfig = terminalConfigService
-//		.getTerminalConfig(terminalConfigId);
-    	TerminalConfig terminalConfig = this.atmService.getATMMachine(terminalConfigId);
+	TerminalConfig terminalConfig = this.atmService
+		.getATMMachine(terminalConfigId);
 	if (terminalConfig == null) {
 	    return "redirect:/terminals/list";
 	}
 	String userMsg = "";
-//	Locale locale = RequestContextUtils.getLocale(request);
 	if (principal != null) {
-//	    User loggedUser = userService
-//		    .getUserByUsername(principal.getName());
-//	    userMsg = loggedUser.getHtmlWelcomeMessage(locale);
-		 userMsg = this.getUserGreeting(principal, request);
+	    userMsg = this.getUserGreeting(principal, request);
 	}
 	map.put("userMsg", userMsg);
 	map.put("config", terminalConfig);
