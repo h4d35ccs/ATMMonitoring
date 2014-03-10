@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ncr.ATMMonitoring.serviceFacade.imp;
+package com.ncr.ATMMonitoring.servicefacade.imp;
 
 import java.io.InputStream;
 import java.util.List;
