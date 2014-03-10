@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.ncr.ATMMonitoring.controller.propertyEditor.DatePropertyEditor;
+import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.Widget;
 import com.ncr.ATMMonitoring.pojo.WidgetCategory;

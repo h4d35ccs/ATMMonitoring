@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ncr.ATMMonitoring.controller.propertyEditor.DatePropertyEditor;
+import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Installation;
 import com.ncr.ATMMonitoring.pojo.Location;
 import com.ncr.ATMMonitoring.service.InstallationService;

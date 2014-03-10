@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ncr.ATMMonitoring.controller.propertyEditor.DatePropertyEditor;
+import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
 import com.ncr.ATMMonitoring.service.QueryService;

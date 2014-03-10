@@ -37,7 +37,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.ncr.ATMMonitoring.controller.propertyEditor.DatePropertyEditor;
+import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Auditable;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.Installation;
