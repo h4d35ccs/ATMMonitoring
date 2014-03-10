@@ -34,10 +34,6 @@ public class SocketServiceImpl implements SocketService {
 	static private Logger logger = Logger.getLogger(SocketServiceImpl.class
 			.getName());
 
-	// /** The ips waiting to be requested their data. */
-	// private Set<String> awaitingIps = Collections
-	// .synchronizedSet(new HashSet<String>());
-
 	/** The max number of threads. */
 	@Value("${config.maxNumberUpdateThreads}")
 	private double maxThreads;
@@ -82,6 +78,7 @@ public class SocketServiceImpl implements SocketService {
 	@Autowired
 	private QueryService queryService;
 
+	/** The queue handler. */
 	@Autowired
 	private QueueHandler queueHandler;
 
@@ -119,7 +116,6 @@ public class SocketServiceImpl implements SocketService {
 	 */
 	@Override
 	public void updateTerminalSocket(Terminal terminal) {
-		// awaitingIps.add(terminal.getIp());
 		logger.debug("adding ip: " + terminal.getIp());
 		this.addToQueue(terminal.getIp(), null);
 	}
@@ -133,7 +129,6 @@ public class SocketServiceImpl implements SocketService {
 	 */
 	@Override
 	public void updateTerminalSocket(String ip) {
-		// awaitingIps.add(ip);
 		this.addToQueue(ip, null);
 	}
 
@@ -146,7 +141,6 @@ public class SocketServiceImpl implements SocketService {
 	 */
 	@Override
 	public void updateTerminalsSocket(Collection<String> ips) {
-		// awaitingIps.addAll(ips);
 		logger.debug("adding collection: " + ips);
 		this.addToQueue(null, ips);
 	}
@@ -176,12 +170,8 @@ public class SocketServiceImpl implements SocketService {
 	 * @see com.ncr.ATMMonitoring.socket.SocketService#processAwaitingIps()
 	 */
 	@Override
-	// @Scheduled(cron = "30 * * * * *")
 	public void processAwaitingIps() {
 		logger.info("Checking the IPs waiting for update...");
-		// if (awaitingIps.isEmpty()) {
-		// return;
-		// }
 		this.queueHandler.loadQueue();
 		if (this.queueHandler.isEmpty()) {
 			logger.info("Nothing in the queue, no ip to process");
@@ -192,12 +182,7 @@ public class SocketServiceImpl implements SocketService {
 			return;
 		}
 		logger.info("Processing the IPs waiting for update...");
-		// Set<String> aux;
-		// synchronized (awaitingIps) {
-		// aux = new HashSet<String>(awaitingIps);
-		// awaitingIps.clear();
-		// }
-		logger.debug("the queue collection: "+this.queueHandler.viewQueue());
+		logger.debug("the queue collection: " + this.queueHandler.viewQueue());
 		requestThreadManager = new RequestThreadManager(maxThreads,
 				maxTerminals, timeOut, agentPort, sleepTime, maxTime, this,
 				this.queueHandler.viewQueue());
@@ -260,24 +245,22 @@ public class SocketServiceImpl implements SocketService {
 	 * Adds elements to the queue
 	 * 
 	 * @param ip
+	 *            an individual ip to add
 	 * @param ips
+	 *            a collection of ips to add
 	 */
 	private void addToQueue(String ip, Collection<String> ips) {
 		this.queueHandler.loadQueue();
 		boolean added = false;
 
 		if (ips != null && !ips.isEmpty()) {
-
 			this.queueHandler.addAll(ips);
 			added = true;
-
 		} else if (ip != null) {
-
 			this.queueHandler.add(ip);
 			added = true;
 		}
 		if (added) {
-
 			this.queueHandler.save();
 		}
 	}

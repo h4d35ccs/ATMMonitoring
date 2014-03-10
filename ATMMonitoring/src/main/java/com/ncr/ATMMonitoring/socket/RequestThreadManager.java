@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-
+import com.ncr.ATMMonitoring.handler.QueueHandler;
 
 /**
  * The Class RequestThreadManager.
@@ -110,8 +110,9 @@ public class RequestThreadManager extends Thread {
 	/** The threads. */
 	private List<RequestThread> threads = Collections
 			.synchronizedList(new ArrayList<RequestThread>());
-	
+
 	private Queue<String> ips;
+
 	/**
 	 * Instantiates a new request thread manager.
 	 * 
@@ -143,7 +144,7 @@ public class RequestThreadManager extends Thread {
 		this.maxTime = maxTime;
 		this.socketService = socketService;
 		this.ips = actualQueue;
-		
+
 	}
 
 	/**
@@ -167,135 +168,18 @@ public class RequestThreadManager extends Thread {
 		socketService.updateTerminalSocket(ip);
 	}
 
-//	public void run() {
-//		String ip = null;
-//		try {
-//			Iterator<String> iterator = this.ips.iterator();
-////			Set<String> subSet;
-//
-//			RequestThread thread;
-//			if (ips.size() > (maxThreads * maxTerminals)) {
-//				// El número de ips no nos permite mantener el número m�ximo de
-//				// threads y de ips por cada una. Dividimos de la manera m�s
-//				// equitativa entre el número m�ximo de threads.
-//				double size = this.ips.size() / maxThreads;
-//				double roundedSize = Math.floor(size);
-//				int remainingTerminals = 0;
-//				if (size != roundedSize) {
-//					remainingTerminals = this.ips.size()
-//							- new Double(roundedSize * maxThreads).intValue();
-//				}
-//				
-//				int j;
-//				for (int i = 1; i <= maxThreads; i++) {
-////					subSet = new HashSet<String>();
-//					int requestNum = 0;
-//					j = 0;
-//					while (ip != null && (j++ < roundedSize)) {
-//						// ip = iterator.next();
-////						logger.info("IP " + ip + " is gonna be updated...");
-////						subSet.add(ip);
-//						requestNum++;
-//						
-//					}
-//					 if ((remainingTerminals > 0) && (iterator.hasNext())) {
-//				
-//						remainingTerminals--;
-//						// ip = iterator.next();
-//					
-////						logger.info("IP " + ip + " is gonna be updated...");
-//						requestNum++;
-//						j++;
-//					}
-//					if (j > 0) {
-//						logger.info("We create thread number " + i
-//								+ " for updating "+requestNum+" IPs...");
-////						thread = new RequestThread(requestNum, agentPort, timeOut,
-////								this);
-////						thread.start();
-////						threads.add(thread);
-//					}
-//				
-//				}
-//				
-//			} else {
-//				// Podemos dividirlo entre n threads que no sobrepasan el número
-//				// m�ximo de ips
-//				int j = 0, i = 1;
-////				subSet = new HashSet<String>();
-//				int requestnum = 0;
-//			     while (iterator.hasNext()) {
-//			
-//					 ip = iterator.next();
-////					logger.info("IP " + ip + " is gonna be updated...");
-////					subSet.add(ip);
-//					requestnum++;
-//					// if ((++j == maxTerminals) || !iterator.hasNext()) {
-//					if ((++j == maxTerminals) || ips.isEmpty()) {
-//						logger.info("We create thread number " + i++
-//								+ " for updating a collection of IPs...");
-////						thread = new RequestThread(requestnum, agentPort, timeOut,
-////								this);
-////						thread.start();
-////						threads.add(thread);
-////						subSet = new HashSet<String>();
-//						requestnum = 0;
-//						j = 0;
-//					}
-//					
-//				}
-//			
-//			}
-//			// Calculamos el nº m�ximo de ciclos de comprobaci�n
-//			double cycles = Math.ceil(maxTime / sleepTime);
-//			while (!threads.isEmpty() && (cycles-- > 0)) {
-//				try {
-//					Thread.sleep(sleepTime * 1000);
-//					Iterator<RequestThread> iter = threads.iterator();
-//					while (iter.hasNext()) {
-//						if (!iter.next().isAlive()) {
-//							iter.remove();
-//						}
-//					}
-//				} catch (InterruptedException e) {
-//					logger.error("Error while sleeping"
-//							+ " between request threads checks...", e);
-//				}
-//			}
-//			// Si la colecci�n no est� vacía, es que no han terminado a tiempo.
-//			if (!threads.isEmpty()) {
-//				logger.warn("Some request threads somehow couldn't finish in the configured max time."
-//						+ " Their ips will be requested again at next request phase...");
-////				for (RequestThread auxThread : threads) {
-////					socketService.updateTerminalsSocket(auxThread
-////							.getIpsNotProcessed());
-////				}
-//			}
-//		} catch (Exception e) {
-//			
-//			logger.error("Unexpected error when"
-//					+ " requesting updates to ips...", e);
-//			for (Thread thread : threads) {
-//				thread.interrupt();
-//				
-//			}
-//			threads.clear();
-//		}
-//		
-//	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Thread#run()
 	 */
-	 public void run() {
-			try {
-			    Iterator<String> iterator = ips.iterator();
-//			    Set<String> subSet;
-			    String ip;
-			    RequestThread thread;
-			    if (ips.size() > (maxThreads * maxTerminals)) {
+	public void run() {
+		try {
+			Iterator<String> iterator = ips.iterator();
+			// Set<String> subSet;
+			String ip;
+			RequestThread thread;
+			if (ips.size() > (maxThreads * maxTerminals)) {
 				// El número de ips no nos permite mantener el número m�ximo de
 				// threads y de ips por cada una. Dividimos de la manera m�s
 				// equitativa entre el número m�ximo de threads.
@@ -303,95 +187,93 @@ public class RequestThreadManager extends Thread {
 				double roundedSize = Math.floor(size);
 				int remainingTerminals = 0;
 				if (size != roundedSize) {
-				    remainingTerminals = ips.size()
-					    - new Double(roundedSize * maxThreads).intValue();
+					remainingTerminals = ips.size()
+							- new Double(roundedSize * maxThreads).intValue();
 				}
 				int j;
 				for (int i = 1; i <= maxThreads; i++) {
-//				    subSet = new HashSet<String>();
+					;
 					int requestNum = 0;
-				    j = 0;
-				    while (iterator.hasNext() && (j++ < roundedSize)) {
-					ip = iterator.next();
-					logger.info("IP " + ip + " is gonna be updated...");
-//					subSet.add(ip);
-					requestNum++;
-				    }
-				    if ((remainingTerminals > 0) && (iterator.hasNext())) {
-					remainingTerminals--;
-					ip = iterator.next();
-					logger.info("IP " + ip + " is gonna be updated...");
-//					subSet.add(ip);
-					requestNum++;
-					j++;
-				    }
-				    if (j > 0) {
-					logger.info("We create thread number " + i
-								+ " for updating "+requestNum+" IPs...");
-					thread = new RequestThread(requestNum, agentPort, timeOut,
-						this);
-					thread.start();
-					threads.add(thread);
-				    }
+					j = 0;
+					while (iterator.hasNext() && (j++ < roundedSize)) {
+						ip = iterator.next();
+						logger.info("IP " + ip + " is gonna be updated...");
+
+						requestNum++;
+					}
+					if ((remainingTerminals > 0) && (iterator.hasNext())) {
+						remainingTerminals--;
+						ip = iterator.next();
+						logger.info("IP " + ip + " is gonna be updated...");
+
+						requestNum++;
+						j++;
+					}
+					if (j > 0) {
+						logger.info("We create thread number " + i
+								+ " for updating " + requestNum + " IPs...");
+						thread = new RequestThread(requestNum, agentPort,
+								timeOut, this);
+						thread.start();
+						threads.add(thread);
+					}
 				}
-			    } else {
+			} else {
 				// Podemos dividirlo entre n threads que no sobrepasan el número
 				// m�ximo de ips
 				int j = 0, i = 1;
-//				subSet = new HashSet<String>();
+
 				int requestNum = 0;
 				while (iterator.hasNext()) {
-				    ip = iterator.next();
-				    logger.info("IP " + ip + " is gonna be updated...");
-//				    subSet.add(ip);
-				    requestNum++;
-				    if ((++j == maxTerminals) || !iterator.hasNext()) {
+					ip = iterator.next();
+					logger.info("IP " + ip + " is gonna be updated...");
+
+					requestNum++;
+					if ((++j == maxTerminals) || !iterator.hasNext()) {
 						logger.info("We create thread number " + i
-									+ " for updating "+requestNum+" IPs...");
-					thread = new RequestThread(requestNum, agentPort, timeOut,
-						this);
-					thread.start();
-					threads.add(thread);
-//					subSet = new HashSet<String>();
-					requestNum = 0;
-					j = 0;
-				    }
-				}
-			    }
-			    // Calculamos el nº m�ximo de ciclos de comprobaci�n
-			    double cycles = Math.ceil(maxTime / sleepTime);
-			    while (!threads.isEmpty() && (cycles-- > 0)) {
-				try {
-				    Thread.sleep(sleepTime * 1000);
-				    Iterator<RequestThread> iter = threads.iterator();
-				    while (iter.hasNext()) {
-					if (!iter.next().isAlive()) {
-					    iter.remove();
+								+ " for updating " + requestNum + " IPs...");
+						thread = new RequestThread(requestNum, agentPort,
+								timeOut, this);
+						thread.start();
+						threads.add(thread);
+
+						requestNum = 0;
+						j = 0;
 					}
-				    }
-				} catch (InterruptedException e) {
-				    logger.error("Error while sleeping"
-					    + " between request threads checks...", e);
 				}
-			    }
-			    // Si la colecci�n no est� vacía, es que no han terminado a tiempo.
-			    if (!threads.isEmpty()) {
-				logger.warn("Some request threads somehow couldn't finish in the configured max time."
-					+ " Their ips will be requested again at next request phase...");
-//				for (RequestThread auxThread : threads) {
-//				    socketService.updateTerminalsSocket(auxThread.getIps());
-//				}
-			    }
-			} catch (Exception e) {
-			    logger.error("Unexpected error when"
-				    + " requesting updates to ips...", e);
-			    for (Thread thread : threads) {
-				thread.interrupt();
-			    }
-			    threads.clear();
-//			    socketService.updateTerminalsSocket(ips);
 			}
-		    }
+			// Calculamos el nº m�ximo de ciclos de comprobaci�n
+			double cycles = Math.ceil(maxTime / sleepTime);
+			while (!threads.isEmpty() && (cycles-- > 0)) {
+				try {
+					Thread.sleep(sleepTime * 1000);
+					Iterator<RequestThread> iter = threads.iterator();
+					while (iter.hasNext()) {
+						if (!iter.next().isAlive()) {
+							iter.remove();
+						}
+					}
+				} catch (InterruptedException e) {
+					logger.error("Error while sleeping"
+							+ " between request threads checks...", e);
+				}
+			}
+			// Si la colecci�n no est� vacía, es que no han terminado a tiempo.
+			if (!threads.isEmpty()) {
+				logger.warn("Some request threads somehow couldn't finish in the configured max time."
+						+ " Their ips will be requested again at next request phase...");
+
+			}
+		} catch (Exception e) {
+			logger.error("Unexpected error when"
+					+ " requesting updates to ips...", e);
+			for (Thread thread : threads) {
+				thread.interrupt();
+			}
+			threads.clear();
+
+		}
+	}
 
 	/**
 	 * Gets the server socket factory.
@@ -428,11 +310,13 @@ public class RequestThreadManager extends Thread {
 	public String getOldHashSeed() {
 		return socketService.getOldHashSeed();
 	}
+
 	/**
 	 * Returns the first ip to process in the queue
+	 * 
 	 * @return
 	 */
-	public String getIpToProcess(){
+	public String getIpToProcess() {
 		return this.socketService.getIpToProcess();
 	}
 }

@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Set;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -46,7 +45,6 @@ public class RequestThread extends Thread {
 	// /** The ips to request. */
 	// private Set<String> ips;
 
-	
 	/** The agent port. */
 	private int agentPort;
 
@@ -245,7 +243,7 @@ public class RequestThread extends Thread {
 		for (int i = 0; i < this.requestNumber; i++) {
 			try {
 				ip = this.parent.getIpToProcess();
-				logger.info("requesting data to IP: "+ip);
+				logger.info("requesting data to IP: " + ip);
 				requestDataJson(ip);
 			} catch (Exception e) {
 				logger.warn(
@@ -253,7 +251,7 @@ public class RequestThread extends Thread {
 								+ ip
 								+ ". Ip will be requested again in next request phase...",
 						e);
-				
+
 				parent.handleIpError(ip);
 
 			}
