@@ -28,7 +28,7 @@ import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.ScheduledUpdate;
 import com.ncr.ATMMonitoring.service.QueryService;
-import com.ncr.ATMMonitoring.serviceFacade.ATMFacade;
+import com.ncr.ATMMonitoring.servicefacade.ATMFacade;
 
 /**
  * The Class ScheduledUpdateController.

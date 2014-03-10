@@ -29,7 +29,7 @@ import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.Widget;
 import com.ncr.ATMMonitoring.pojo.WidgetCategory;
 import com.ncr.ATMMonitoring.service.QueryService;
-import com.ncr.ATMMonitoring.serviceFacade.DashboardWidgetFacade;
+import com.ncr.ATMMonitoring.servicefacade.DashboardWidgetFacade;
 import com.ncr.ATMMonitoring.utils.RegionType;
 import com.ncr.ATMMonitoring.utils.WidgetQueryAssociationType;
 

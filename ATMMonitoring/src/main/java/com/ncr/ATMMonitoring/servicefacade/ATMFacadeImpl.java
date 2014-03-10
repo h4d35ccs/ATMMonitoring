@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.ncr.ATMMonitoring.servicefacade.imp;
+package com.ncr.ATMMonitoring.servicefacade;
 
 import java.io.InputStream;
 import java.util.List;
@@ -27,7 +24,7 @@ import com.ncr.ATMMonitoring.service.TerminalConfigService;
 import com.ncr.ATMMonitoring.service.TerminalModelService;
 import com.ncr.ATMMonitoring.service.TerminalService;
 import com.ncr.ATMMonitoring.service.UserService;
-import com.ncr.ATMMonitoring.serviceFacade.ATMFacade;
+import com.ncr.ATMMonitoring.servicefacade.ATMFacade;
 import com.ncr.ATMMonitoring.socket.SocketService;
 
 /**

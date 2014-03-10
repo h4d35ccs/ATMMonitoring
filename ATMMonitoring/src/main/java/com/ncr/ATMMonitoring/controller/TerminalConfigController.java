@@ -16,7 +16,7 @@ import com.ncr.ATMMonitoring.controller.propertyeditor.SoftwarePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Software;
 import com.ncr.ATMMonitoring.pojo.TerminalConfig;
 import com.ncr.ATMMonitoring.service.SoftwareService;
-import com.ncr.ATMMonitoring.serviceFacade.ATMFacade;
+import com.ncr.ATMMonitoring.servicefacade.ATMFacade;
 
 /**
  * The Class TerminalConfigController.

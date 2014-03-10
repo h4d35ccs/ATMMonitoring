@@ -48,7 +48,7 @@ import com.ncr.ATMMonitoring.pojo.TerminalModel;
 import com.ncr.ATMMonitoring.service.BankCompanyService;
 import com.ncr.ATMMonitoring.service.LocationService;
 import com.ncr.ATMMonitoring.service.QueryService;
-import com.ncr.ATMMonitoring.serviceFacade.ATMFacade;
+import com.ncr.ATMMonitoring.servicefacade.ATMFacade;
 
 /**
  * The Class TerminalController.
