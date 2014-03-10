@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ncr.ATMMonitoring.serviceFacade;
 
 import java.io.InputStream;
