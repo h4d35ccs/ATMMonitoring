@@ -58,7 +58,7 @@ This environment is meant for developers who want to make changes onto the softw
 
 		.. code-block:: text
 
-			org.apache.maven.plugins:maven-install-plugin:2.3.1:install-file -Dfile=${project.basedir}/lib/InventoryAgentData.jar-DgroupId=ncr.ATMMonitoring.agent  -DartifactId=ATMAgent -Dversion=1.0 -Dpackaging=jar -DlocalRepositoryPath=${project.basedir}/lib/
+			org.apache.maven.plugins:maven-install-plugin:2.3.1:install-file -Dfile=${project.basedir}/lib/InventoryAgentData.jar -DgroupId=ncr.ATMMonitoring.agent  -DartifactId=ATMAgent -Dversion=1.0 -Dpackaging=jar -DlocalRepositoryPath=${project.basedir}/lib/
                
 		.. image:: images-install/image11.png
 			:width: 500px
