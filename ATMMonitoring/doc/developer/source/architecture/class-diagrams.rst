@@ -125,7 +125,7 @@ Entities Class Diagram
 The entities, or POJOs, are classes that conceptually represent a database table, and each instance of those classes represents a row of the
 corresponding table. That's the reason why the relationships between these objects are pretty similar (but **NOT IDENTICAL**) to the ones between the database tables.
 
-The cardinality of the relationships is given by JPA annotations present in the classes (`@ManyToOne <http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html>`_, `@OneToMany <http://docs.oracle.com/javaee/7/api/javax/persistence/OneToMany.html>`_, `@ManyToMany <http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToMany.html>`_ and `@OneToOne <http://docs.oracle.com/javaee/7/api/javax/persistence/OneToOne.html>`_ ).
+The cardinality of the relationships is given by `JPA (Java Persistence API) <http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html>`_ annotations present in the classes (`@ManyToOne <http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html>`_, `@OneToMany <http://docs.oracle.com/javaee/7/api/javax/persistence/OneToMany.html>`_, `@ManyToMany <http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToMany.html>`_ and `@OneToOne <http://docs.oracle.com/javaee/7/api/javax/persistence/OneToOne.html>`_ ).
  
 In the next diagram we include all the classes and their relationships [2]_:
 
