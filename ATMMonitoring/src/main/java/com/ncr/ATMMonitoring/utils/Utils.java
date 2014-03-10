@@ -1,10 +1,18 @@
 package com.ncr.ATMMonitoring.utils;
 
+import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -21,8 +29,84 @@ import com.google.gson.GsonBuilder;
 
 public abstract class Utils {
 
+    /** Hardcoded key for the encrypted keystore. */
+    public final static String KEYSTORE_KEY = "f|7,1e>Nr-$e1I2H";
+
+    /** Hardcoded key for the encrypted privatekey. */
+    public final static String PRIVATEKEY_KEY = "vq~aQ}a$DIg'ry47";
+
+    /** Hardcoded license key. */
+    private static final String HARDCODED_KEY = "4u%qyfw^";
+
+    /** Terminal limit value that stands for no limit. */
+    public static final long NO_TERMINAL_LIMIT = -1;
+
+    /** Terminal limit value that stands for no limit (1970-01-01 01:00). */
+    public static final Date NO_DATE_LIMIT = new Date(0);
+
     /** The Gson object. */
     private static Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+
+    /**
+     * Decrypts a string using the passed key and the hardcoded one.
+     * 
+     * @param configuredKey
+     *            the configured encryption key
+     * @param encrypted
+     *            the string to decrypt
+     * @return the decrypted string
+     */
+    public static String decrypt(String configuredKey, String encrypted)
+	    throws GeneralSecurityException {
+	String key = configuredKey.substring(1, 2)
+		+ configuredKey.substring(3, 4) + configuredKey.substring(5, 6)
+		+ configuredKey.substring(7, 8)
+		+ configuredKey.substring(9, 10)
+		+ configuredKey.substring(11, 12)
+		+ configuredKey.substring(13, 14)
+		+ configuredKey.substring(15, 16) + HARDCODED_KEY;
+
+	byte[] encryptedBytes = DatatypeConverter.parseBase64Binary(encrypted);
+	byte[] raw = key.getBytes(Charset.forName("UTF8"));
+	if (raw.length != 16) {
+	    throw new IllegalArgumentException("Invalid key size.");
+	}
+	SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+
+	Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+	cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(
+		new byte[16]));
+	byte[] original = cipher.doFinal(encryptedBytes);
+
+	return new String(original, Charset.forName("UTF8"));
+    }
+
+    /**
+     * Decrypts a string using the passed key.
+     * 
+     * @param key
+     *            the encryption key
+     * @param encrypted
+     *            the string to decrypt
+     * @return the decrypted string
+     */
+    public static String simpleDecrypt(String key, String encrypted)
+	    throws GeneralSecurityException {
+
+	byte[] encryptedBytes = DatatypeConverter.parseBase64Binary(encrypted);
+	byte[] raw = key.getBytes(Charset.forName("UTF8"));
+	if (raw.length != 16) {
+	    throw new IllegalArgumentException("Invalid key size.");
+	}
+	SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+
+	Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+	cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(
+		new byte[16]));
+	byte[] original = cipher.doFinal(encryptedBytes);
+
+	return new String(original, Charset.forName("UTF8"));
+    }
 
     /**
      * Tranforms an object to its Gson json representation.
