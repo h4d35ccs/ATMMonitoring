@@ -156,7 +156,7 @@ public class UPSServiceImpl implements UPSService {
 	private void handleParserSucess(UPSInfo file) {
 
 		String seriesNumber = file.getSeriesNumber();
-		String model = file.getUpsModel();
+		String model = file.getModel();
 		Ups ups = this.getEntity(file);
 		// verify if is an update or a new information
 		Ups toUpdate = this.upsDao.getUpsBySerialNumberAndModel(seriesNumber,
@@ -213,11 +213,11 @@ public class UPSServiceImpl implements UPSService {
 		ups.setChargePercentage(info.getChargePercentage());
 		ups.setExpensePercentage(info.getExpensePercentage());
 		ups.setAlarmMsg(info.getAlarmMsg());
-		ups.setType(info.getUpsType());
-		ups.setModel(info.getUpsModel());
+		ups.setType(info.getType());
+		ups.setModel(info.getModel());
 		ups.setSeriesNumber(info.getSeriesNumber());
-		ups.setRunningTimeMilisec(info.getRunningTimeMilisec());
-		ups.setAutonomyMilisec(info.getAutonomyMilisec());
+		ups.setRunningTimeMilisec(info.getRunningTimeMillisec());
+		ups.setAutonomyMilisec(info.getAutonomyMillisec());
 		ups.setNumPosition(info.getNumPosition());
 		ups.setAudFmo(info.getAudFmo());
 		ups.setGeneralStatusMsg(info.getGeneralStatusMsg());
