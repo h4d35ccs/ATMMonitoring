@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.Installation;
 import com.ncr.ATMMonitoring.pojo.Terminal;
@@ -148,5 +150,11 @@ public interface TerminalService {
      * @return The list of terminals
      */
 	public List<Terminal> listTerminalsByIdsAndBankCompanies(List<Integer> terminalIds, Set<BankCompany> bankCompanies);
+
+    /**
+     * Check if date license has expired, and delete terminals' data in that
+     * case.
+     */
+    public void checkDateLicense();
 	
 }

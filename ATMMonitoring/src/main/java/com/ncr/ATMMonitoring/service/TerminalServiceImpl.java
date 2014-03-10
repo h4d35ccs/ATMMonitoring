@@ -1,9 +1,12 @@
 package com.ncr.ATMMonitoring.service;
 
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -11,11 +14,13 @@ import java.util.Vector;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ncr.ATMMonitoring.dao.TerminalDAO;
 import com.ncr.ATMMonitoring.pojo.AuditableInternetExplorer;
+import com.ncr.ATMMonitoring.pojo.AuditableSoftwareAggregate;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.FinancialDevice;
 import com.ncr.ATMMonitoring.pojo.HardwareDevice;
@@ -31,6 +36,7 @@ import com.ncr.ATMMonitoring.pojo.TerminalConfig;
 import com.ncr.ATMMonitoring.pojo.TerminalModel;
 import com.ncr.ATMMonitoring.pojo.XfsComponent;
 import com.ncr.ATMMonitoring.socket.ATMWrongDataException;
+import com.ncr.ATMMonitoring.utils.Utils;
 import com.ncr.agent.baseData.ATMDataStorePojo;
 import com.ncr.agent.baseData.os.module.BaseBoardPojo;
 import com.ncr.agent.baseData.os.module.BiosPojo;
@@ -106,43 +112,51 @@ public class TerminalServiceImpl implements TerminalService {
     static private Logger logger = Logger.getLogger(TerminalServiceImpl.class
 	    .getName());
 
+    /** The encrypted date limit for this version. */
+    @Value("${license.dateLimit}")
+    private String dateLimit;
+
+    /** The key for the current license. */
+    @Value("${license.licenseKey}")
+    private String licenseKey;
+
     /** The terminal dao. */
     @Autowired
     private TerminalDAO terminalDAO;
-    
+
     /** The hardware device service. */
     @Autowired
     private HardwareDeviceService hardwareDeviceService;
-    
+
     /** The financial device service. */
     @Autowired
     private FinancialDeviceService financialDeviceService;
-    
+
     /** The internet explorer service. */
     @Autowired
     private InternetExplorerService internetExplorerService;
-    
+
     /** The hotfix service. */
     @Autowired
     private HotfixService hotfixService;
-    
+
     /** The software aggregate service. */
     @Autowired
     private SoftwareAggregateService softwareAggregateService;
-    
+
     /** The software service. */
     @Autowired
     private SoftwareService softwareService;
-    
+
     /** The operating system service. */
     @Autowired
     private OperatingSystemService operatingSystemService;
-    
+
     /** The terminal model service. */
     @Autowired
     private TerminalModelService terminalModelService;
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#addTerminal(com.ncr.ATMMonitoring.pojo.Terminal)
      */
     @Override
@@ -150,7 +164,7 @@ public class TerminalServiceImpl implements TerminalService {
 	terminalDAO.addTerminal(terminal);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#updateTerminal(com.ncr.ATMMonitoring.pojo.Terminal)
      */
     @Override
@@ -158,7 +172,7 @@ public class TerminalServiceImpl implements TerminalService {
 	terminalDAO.updateTerminal(terminal);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#listTerminalsByBankCompanies(java.util.Set)
      */
     @Override
@@ -166,7 +180,7 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.listTerminalsByBankCompanies(banks);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#listTerminalsByBankCompany(com.ncr.ATMMonitoring.pojo.BankCompany)
      */
     @Override
@@ -174,16 +188,18 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.listTerminalsByBankCompany(bank);
     }
 
-    /* (non-Javadoc)
-     * @see com.ncr.ATMMonitoring.service.TerminalService#listTerminalsByBankCompanies(java.util.Set, java.lang.String, java.lang.String)
+    /**
+     * @see com.ncr.ATMMonitoring.service.TerminalService#listTerminalsByBankCompanies(java.util.Set,
+     *      java.lang.String, java.lang.String)
      */
     @Override
     public List<Terminal> listTerminalsByBankCompanies(Set<BankCompany> banks,
 	    String sort, String order) {
-	return terminalDAO.listTerminalsByBankCompanies(banks, sort, order, null);
+	return terminalDAO.listTerminalsByBankCompanies(banks, sort, order,
+		null);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#listTerminals()
      */
     @Override
@@ -191,23 +207,25 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.listTerminals();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#getTerminal(java.lang.Integer)
      */
     @Override
     public Terminal getTerminal(Integer id) {
 	return terminalDAO.getTerminal(id);
     }
-    
+
     /**
      * @see TerminalService
      */
     @Override
-    public List<Terminal> listTerminalsByIdsAndBankCompanies(List<Integer> terminalIds, Set<BankCompany> bankCompanies) {
-    	return terminalDAO.listTerminalsByIdsAndBankCompanies(terminalIds, bankCompanies);
+    public List<Terminal> listTerminalsByIdsAndBankCompanies(
+	    List<Integer> terminalIds, Set<BankCompany> bankCompanies) {
+	return terminalDAO.listTerminalsByIdsAndBankCompanies(terminalIds,
+		bankCompanies);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#loadTerminalBySerialNumber(java.lang.String)
      */
     @Override
@@ -215,7 +233,7 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.getTerminalBySerialNumber(serialNumber);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#loadTerminalByMatricula(java.lang.Long)
      */
     @Override
@@ -223,7 +241,7 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.getTerminalByMatricula(matricula);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#loadTerminalByIp(java.lang.String)
      */
     @Override
@@ -231,7 +249,7 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.getTerminalByIp(ip);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#loadTerminalByMac(java.lang.String)
      */
     @Override
@@ -239,22 +257,19 @@ public class TerminalServiceImpl implements TerminalService {
 	return terminalDAO.getTerminalByMac(mac);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#importJsonTerminal(org.springframework.web.multipart.commons.CommonsMultipartFile)
      */
     @Override
     public boolean importJsonTerminal(InputStream is) {
 	try {
-//	    InputStream is = jsonFile.getInputStream();
 	    String json = IOUtils.toString(is, "ISO-8859-1");
-	    // logger.debug("Json read: " + json);
 	    ATMDataStorePojo data = ATMDataStorePojo.fromJson(json);
 	    if (data == null) {
 		logger.error("Invalid json file for importing terminal...");
 		return false;
 	    }
 	    logger.debug("ATMDataStore read: " + data.toString());
-	    // logger.debug("Resulting Json: " + data.toJson());
 	    persistDataStoreTerminal(data);
 	} catch (Exception e) {
 	    logger.error(
@@ -263,43 +278,6 @@ public class TerminalServiceImpl implements TerminalService {
 	    return false;
 	}
 	return true;
-    }
-
-    /**
-     * Removes all entities that depend onto a terminal.
-     * 
-     * @param terminal
-     *            the terminal
-     */
-    @SuppressWarnings("rawtypes")
-    private void removeRelatedEntities(Terminal terminal) {
-	Set<HardwareDevice> hwDevs = terminal.getHardwareDevices();
-	Iterator iter = hwDevs.iterator();
-	while (iter.hasNext()) {
-	    HardwareDevice hw = (HardwareDevice) iter.next();
-	    iter.remove();
-	    hardwareDeviceService.removeHardwareDevice(hw.getId());
-	}
-	logger.debug("Deleted Hardware Devices for Terminal with IP "
-		+ terminal.getIp());
-	Set<FinancialDevice> financialDevs = terminal.getFinancialDevices();
-	iter = financialDevs.iterator();
-	while (iter.hasNext()) {
-	    FinancialDevice fd = (FinancialDevice) iter.next();
-	    iter.remove();
-	    financialDeviceService.removeFinancialDevice(fd.getId());
-	}
-	logger.debug("Deleted Financial Devices for Terminal with IP "
-		+ terminal.getIp());
-	Set<Hotfix> hotfixes = terminal.getHotfixes();
-	iter = hotfixes.iterator();
-	while (iter.hasNext()) {
-	    Hotfix hotfix = (Hotfix) iter.next();
-	    iter.remove();
-	    hotfixService.removeHotfix(hotfix.getId());
-	}
-	logger.debug("Deleted Hotfixes for Terminal with IP "
-		+ terminal.getIp());
     }
 
     /**
@@ -318,86 +296,25 @@ public class TerminalServiceImpl implements TerminalService {
 	    terminal.setTerminalModel(model);
 	    terminal.setTerminalVendor(model.getManufacturer());
 	}
-	terminal.setHardwareDevices(getHwDevs(terminal, dataStoreTerminal));
-	terminal.setFinancialDevices(getFinancialDevs(terminal,
+	terminal.updateHardwareDevices(getHwDevs(terminal, dataStoreTerminal));
+	terminal.updateHotfixes(getHotfixes(terminal, dataStoreTerminal));
+	terminal.updateFinancialDevices(getFinancialDevs(terminal,
 		dataStoreTerminal));
-	terminal.setHotfixes(getHotfixes(terminal, dataStoreTerminal));
+
+	Set<InternetExplorer> ies = getInternetExplorers(dataStoreTerminal);
+	terminal.updateAuditableInternetExplorers(buildAuditableInternetExplorers(ies));
+
+	TerminalConfig newConfig = getTerminalConfig(dataStoreTerminal,
+		terminal);
+	terminal.setCurrentTerminalConfig(newConfig);
+	logger.debug("Adding new Software Config to Terminal with IP "
+		+ terminal.getIp());
 
 	Set<SoftwareAggregate> swAggregates = getSwAggregates(dataStoreTerminal);
-	Set<SoftwareAggregate> swAggregatesAux = new HashSet<SoftwareAggregate>();
-	for (SoftwareAggregate swAggregate : swAggregates) {
-	    SoftwareAggregate swAggregateAux = softwareAggregateService
-		    .getSoftwareAggregateByVersionName(
-			    swAggregate.getMajorVersion(),
-			    swAggregate.getMinorVersion(),
-			    swAggregate.getBuildVersion(),
-			    swAggregate.getRevisionVersion(),
-			    swAggregate.getRemainingVersion(),
-			    swAggregate.getName());
-	    if (swAggregateAux != null) {
-		swAggregatesAux.add(swAggregateAux);
-	    } else {
-		swAggregatesAux.add(swAggregate);
-	    }
-	}
-	terminal.setSoftwareAggregates(swAggregatesAux);
-
-	//TODO Do correct AuditableInternetExplorer use
-	Set<InternetExplorer> ies = getInternetExplorers(dataStoreTerminal);
-	Set<AuditableInternetExplorer> iesAux = new HashSet<AuditableInternetExplorer>();
-	for (InternetExplorer ie : ies) {
-	    InternetExplorer storedIE = internetExplorerService
-		    .getInternetExplorerByVersion(ie.getMajorVersion(),
-			    ie.getMinorVersion(), ie.getBuildVersion(),
-			    ie.getRevisionVersion(), ie.getRemainingVersion());
-	    
-	    AuditableInternetExplorer auditableIE = new AuditableInternetExplorer(storedIE != null ? storedIE : ie);
-	    iesAux.add(auditableIE);
-	}
-	terminal.setAuditableInternetExplorers(iesAux);
-
-	TerminalConfig newConfig = new TerminalConfig();
-
-	Set<Software> sws = getSoftware(dataStoreTerminal);
-	Set<Software> swsAux = new HashSet<Software>();
-	for (Software sw : sws) {
-	    Software swAux = softwareService.getSoftwareByIdentifyingNumber(sw
-		    .getIdentifyingNumber());
-	    if (swAux != null) {
-		swsAux.add(swAux);
-	    } else {
-		swsAux.add(sw);
-	    }
-	}
-	newConfig.setSoftware(swsAux);
-
-	Set<OperatingSystem> oss = getOperatingSystems(dataStoreTerminal);
-	Set<OperatingSystem> ossAux = new HashSet<OperatingSystem>();
-	for (OperatingSystem os : oss) {
-	    OperatingSystem osAux = operatingSystemService
-		    .getOperatingSystemBySerialNumber(os.getSerialNumber());
-	    if (osAux != null) {
-		logger.debug("Found os with serial number "
-			+ os.getSerialNumber());
-		ossAux.add(osAux);
-	    } else {
-		logger.debug("Couldn't find os with serial number "
-			+ os.getSerialNumber());
-		ossAux.add(os);
-	    }
-	}
-	newConfig.setOperatingSystems(ossAux);
-
-	if ((terminal.getCurrentTerminalConfig() == null)
-		|| (!terminal.getCurrentTerminalConfig().equals(newConfig))) {
-	    terminal.getConfigs().add(newConfig);
-	    newConfig.setTerminal(terminal);
-	    logger.debug("Adding new Software Config to Terminal with IP "
-		    + terminal.getIp());
-	}
+	terminal.updateAuditableSoftwareAggregates(buildAuditableSoftwareAggregate(swAggregates));
     }
 
-    /* (non-Javadoc)
+    /**
      * @see com.ncr.ATMMonitoring.service.TerminalService#persistDataStoreTerminal(com.ncr.agent.baseData.ATMDataStorePojo)
      */
     @Override
@@ -413,7 +330,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    Terminal dbTerminal = terminalDAO.getTerminalByMatricula(terminal
 		    .getMatricula());
 	    if ((dbTerminal == null) && (terminal.getSerialNumber() != null)
-			&& (terminal.getSerialNumber().trim().length() > 0)) {
+		    && (terminal.getSerialNumber().trim().length() > 0)) {
 		dbTerminal = terminalDAO.getTerminalBySerialNumber(terminal
 			.getSerialNumber());
 	    }
@@ -428,7 +345,6 @@ public class TerminalServiceImpl implements TerminalService {
 		logger.debug("Updated Terminal from ATMDataStore with IP "
 			+ terminal.getIp() + " and generated id "
 			+ terminal.getMatricula());
-		removeRelatedEntities(terminal);
 	    } else {
 		terminalDAO.addTerminal(terminal);
 		logger.debug("Created Terminal from ATMDataStore with IP "
@@ -445,7 +361,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    logger.error(
 		    "Couldn't persist ATM with IP "
 			    + dataStoreTerminal.getCurrentip()
-		    + "due to error: ", e);
+			    + "due to error: ", e);
 	}
 	return terminal;
     }
@@ -1235,12 +1151,141 @@ public class TerminalServiceImpl implements TerminalService {
 	return hwDevs;
     }
 
+    /**
+     * Build terminal config from a data store pojo
+     * 
+     * @param dataStoreTerminal
+     *            The data store pojo
+     * @param terminal
+     * @return The terminal config
+     */
+    private TerminalConfig getTerminalConfig(
+	    ATMDataStorePojo dataStoreTerminal, Terminal terminal) {
+	TerminalConfig newConfig = new TerminalConfig();
+	newConfig.setTerminal(terminal);
+	Set<Software> sws = getSoftware(dataStoreTerminal);
+	Set<Software> swsAux = new HashSet<Software>();
+	for (Software sw : sws) {
+	    Software swAux = softwareService.getSoftwareByIdentifyingNumber(sw
+		    .getIdentifyingNumber());
+	    if (swAux != null) {
+		swsAux.add(swAux);
+	    } else {
+		swsAux.add(sw);
+	    }
+	}
+	newConfig.setSoftware(swsAux);
+
+	Set<OperatingSystem> oss = getOperatingSystems(dataStoreTerminal);
+	newConfig.setOperatingSystems(oss);
+	return newConfig;
+    }
+
+    /**
+     * Build terminal internet explorers from a data store pojo
+     * 
+     * @param dataStoreTerminal
+     *            The data store pojo
+     * @return The auditable internet explorer
+     */
+    private Set<AuditableInternetExplorer> buildAuditableInternetExplorers(
+	    Set<InternetExplorer> ies) {
+	Set<AuditableInternetExplorer> iesAux = new HashSet<AuditableInternetExplorer>();
+	for (InternetExplorer ie : ies) {
+	    InternetExplorer storedIE = internetExplorerService
+		    .getInternetExplorerByVersion(ie.getMajorVersion(),
+			    ie.getMinorVersion(), ie.getBuildVersion(),
+			    ie.getRevisionVersion(), ie.getRemainingVersion());
+
+	    AuditableInternetExplorer auditableIE = new AuditableInternetExplorer(
+		    storedIE != null ? storedIE : ie);
+	    iesAux.add(auditableIE);
+	}
+
+	return iesAux;
+    }
+
+    /**
+     * Build auditables software aggregates from a data store pojo
+     * 
+     * @param dataStoreTerminal
+     *            The data store pojo
+     * @return The auditable terminal configs
+     */
+    private Set<AuditableSoftwareAggregate> buildAuditableSoftwareAggregate(
+	    Set<SoftwareAggregate> swAggregates) {
+	Set<AuditableSoftwareAggregate> swAggregatesAux = new HashSet<AuditableSoftwareAggregate>();
+	for (SoftwareAggregate swAggregate : swAggregates) {
+	    SoftwareAggregate swAggregateAux = softwareAggregateService
+		    .getSoftwareAggregateByVersionName(
+			    swAggregate.getMajorVersion(),
+			    swAggregate.getMinorVersion(),
+			    swAggregate.getBuildVersion(),
+			    swAggregate.getRevisionVersion(),
+			    swAggregate.getRemainingVersion(),
+			    swAggregate.getName());
+
+	    AuditableSoftwareAggregate auditableSwAggregate = new AuditableSoftwareAggregate(
+		    swAggregateAux != null ? swAggregateAux : swAggregate);
+
+	    swAggregatesAux.add(auditableSwAggregate);
+	}
+
+	return swAggregatesAux;
+    }
 
     /**
      * @see TerminalService
      */
-	public void addInstallationAndUpdateHistoricalData(Terminal terminal, Installation installation) {
-		terminal.setCurrentInstallation(installation);
-		updateTerminal(terminal);
+    public void addInstallationAndUpdateHistoricalData(Terminal terminal,
+	    Installation installation) {
+	terminal.setCurrentInstallation(installation);
+	updateTerminal(terminal);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.ncr.ATMMonitoring.service.TerminalService#checkDateLicense ()
+     */
+    @Override
+    public void checkDateLicense() {
+	try {
+	    if ((licenseKey == null) || (licenseKey.length() != 16)) {
+		logger.fatal("The configured license key isn't correct."
+			+ " Deleting DB. Please contact the support team.");
+		terminalDAO.deleteAllTerminalData();
+	    } else {
+		if ((dateLimit == null) || (dateLimit.length() < 1)) {
+		    logger.fatal("The configured limit date key isn't correct."
+			    + " Deleting DB. Please contact the support team.");
+		    terminalDAO.deleteAllTerminalData();
+		} else {
+		    String dateLimitString = Utils.decrypt(licenseKey,
+			    this.dateLimit);
+		    Date dateLimit = new SimpleDateFormat("yyyy-MM-dd hh:mm")
+			    .parse(dateLimitString);
+		    if ((dateLimit.compareTo(Utils.NO_DATE_LIMIT) != 0)
+			    && (new Date().compareTo(dateLimit) >= 0)) {
+			logger.fatal("Trial time has expired. Deleting DB.");
+			terminalDAO.deleteAllTerminalData();
+		    }
+		}
+	    }
+	} catch (GeneralSecurityException e) {
+	    logger.fatal(
+		    "There was some problem while checking your license key."
+			    + " Deleting DB. Please contact the support team.",
+		    e);
+	    terminalDAO.deleteAllTerminalData();
+	} catch (ParseException e) {
+	    logger.fatal("The configured limit date key isn't correct."
+		    + " Deleting DB. Please contact the support team.", e);
+	    terminalDAO.deleteAllTerminalData();
+	} catch (ArrayIndexOutOfBoundsException e) {
+	    logger.fatal("The configured limit date key isn't correct."
+		    + " Deleting DB. Please contact the support team.", e);
+	    terminalDAO.deleteAllTerminalData();
 	}
+    }
 }
