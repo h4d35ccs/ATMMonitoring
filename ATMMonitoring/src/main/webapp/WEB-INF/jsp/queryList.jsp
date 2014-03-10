@@ -13,7 +13,7 @@
         $("tr.queryRow").click(function(event) {
             event.preventDefault();
             var queryId = $(this).data('queryId');
-            document.location.href = "queries/show?queryId=" + queryId;
+            window.location.assignWithBase("queries/show?queryId=" + queryId);
         });
 
         $(".delete").click(function(event) {
@@ -21,7 +21,7 @@
             event.preventDefault();
             var queryId= $(this).data('queryId');
             if (confirm('¿Estás seguro que quieres borrar la consulta?')) {
-                document.location.href = "queries/delete?queryId=" + queryId;
+                window.location.assignWithBase("queries/delete?queryId=" + queryId);
             }
         });
     });
@@ -45,10 +45,10 @@
       <a href="queries/create" class="btn right"><spring:message code="label.query.new"/></a>
     </div>
     <c:if test="${success != null}">
-       <div class="notification"><p>${success}</p></div>
+       <div class="notification"><p><spring:message code="${success}"/></p></div>
     </c:if>
     <c:if test="${error != null}">
-      <div class="alert"><p>${error}</p></div>
+      <div class="alert"><p><spring:message code="${error}"/></p></div>
     </c:if>
     <c:if test="${!empty pagedListHolder.pageList}">
       <table class="link">

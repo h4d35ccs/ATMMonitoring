@@ -39,6 +39,7 @@
 	    <script type='text/javascript' src="resources/js/jquery-ui.min.js"></script>
 	    <script type='text/javascript' src="resources/js/jquery.ui.touch-punch.min.js"></script>
 	    <script type='text/javascript' src='resources/js/jquery.colorbox-min.js'></script>
+        <script src="resources/js/windowLocationHenhancer.js"></script>
         <script src="resources/js/menu.js"></script>
         <script src="resources/js/application.js"></script>
 
@@ -114,8 +115,7 @@
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole(${helpAccessAllowedRoles})">
 	                <li class="help">
-	                    <a onclick="window.open('help',null,'height=500,width=700,status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=1')";>
-	                    <span><spring:message code="label.menu.help"/></span></a>
+	                    <a href="help"><span><spring:message code="label.menu.help"/></span></a>
 	                </li>
                 </sec:authorize>
             </ul>

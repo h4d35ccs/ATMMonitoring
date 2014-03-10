@@ -167,16 +167,18 @@ $(function() {
 			var queryTypeSelect = $(this);
 			var queryType = queryTypeSelect.val();
 			
-			groupByEntitySelectValueInput.val(queryType);
-			
-			queryTypeValueRows.addClass("hide");
-			queryTypeValuesByRow.attr("disabled", "disabled");
-			queryTypeValuesByRow.removeAttr("required");
-			
-			$('div#' + queryType).removeClass("hide");
-			var groupBySelectByQueryType = getGroupBySelectByQueryType(queryType);
-			groupBySelectByQueryType.removeAttr("disabled");
-			groupBySelectByQueryType.attr("required", "required");	
+			if(queryType) {
+				groupByEntitySelectValueInput.val(queryType);
+				
+				queryTypeValueRows.addClass("hide");
+				queryTypeValuesByRow.attr("disabled", "disabled");
+				queryTypeValuesByRow.removeAttr("required");
+				
+				$('div#' + queryType).removeClass("hide");
+				var groupBySelectByQueryType = getGroupBySelectByQueryType(queryType);
+				groupBySelectByQueryType.removeAttr("disabled");
+				groupBySelectByQueryType.attr("required", "required");
+			}	
 		})
 	}
 	
@@ -193,8 +195,7 @@ $(function() {
 	initQueryDateInput();	
 	function initQueryDateInput() {
 		var inputQueryDate = $("input#queryDate"); 
-		//inputQueryDate.datepicker();
-	    inputQueryDate.datepicker({ dateFormat: "dd/mm/yy" });
+		inputQueryDate.datepicker({ dateFormat: "dd/mm/yy" });
 	    $('#queryDateButton').click(function(event) {
 	        event.preventDefault();
 	        inputQueryDate.datepicker("show");
