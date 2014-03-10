@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 /**
  * 
  * The Auditable Internet Explorer  Pojo.
@@ -28,7 +31,8 @@ public class AuditableInternetExplorer extends Auditable {
     private Integer id;
     
 	/** The internet explorer */
-	@ManyToOne @PrimaryKeyJoinColumn 
+	@ManyToOne @PrimaryKeyJoinColumn
+	@Cascade(CascadeType.ALL)
     @JoinColumn(name = "internet_explorer_id")
     private InternetExplorer internetExplorer;
 	
@@ -58,5 +62,32 @@ public class AuditableInternetExplorer extends Auditable {
 	 */
 	public void setInternetExplorer(InternetExplorer internetExplorer) {
 		this.internetExplorer = internetExplorer;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((internetExplorer == null) ? 0 : internetExplorer.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AuditableInternetExplorer other = (AuditableInternetExplorer) obj;
+		if (internetExplorer == null) {
+			if (other.internetExplorer != null)
+				return false;
+		} else if (!internetExplorer.equals(other.internetExplorer))
+			return false;
+		return true;
 	}
 }

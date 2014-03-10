@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ncr.ATMMonitoring.pojo;
 
 import java.io.Serializable;
@@ -15,305 +12,408 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Entity that holds the info of an UPS
+ * The UPS Pojo.
  * 
  * @author Otto Abreu
- *
  */
 @Entity
 @Table(name = "ups")
-public class Ups implements Serializable{
+public class Ups implements Serializable {
 
-	
-	 /*The Constant serialVersionUID. */
-	private static final long serialVersionUID = 3914511485325636325L;
-	
-	
-	/* The id. */
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 3914511485325636325L;
+
+    /** The id. */
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ups_id_seq")
     @SequenceGenerator(name = "ups_id_seq", sequenceName = "ups_id_seq", allocationSize = 1)
     private Integer id;
+
+    /** The ip. */
     @Column(name = "ip")
     private String ip;
-    @Column(name = "firmware_revision")
-	private String firmware;
-	@Column(name = "running_status")
-	private String runningStatus;
-	@Column(name = "charge_percentage")
-	private Float chargePercentage;
-	@Column(name = "expense_percentage")
-	private Float expensePercentage;
-	@Column(name = "alarm_msg")
-	private String alarmMsg;
-	@Column(name = "type")
-	private String type;
-	@Column(name = "model")
-	private String model;
-	@Column(name = "series_number")
-	private String seriesNumber;
-	@Column(name = "running_time_milisec")
-	private Long runningTimeMilisec;
-	@Column(name = "autonomy_milisec")
-	private Long autonomyMilisec;
-	@Column(name = "num_position")
-	private String numPosition;
-	@Column(name = "aud_fmo")
-	private Date audFmo;
-	@Column(name = "general_status_msg")
-	private String generalStatusMsg;
-	@Column(name = "last_execution")
-	private Date lastExecutionDate;
-	@Column(name = "xml")
-	private String originalXML;
-	
-	/**
-	 * default constructor
-	 */
-	public Ups() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	/**
-	 * Getter method for id
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * Setter method for the id
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	/**
-	 * Getter method for ip
-	 * @return the ip
-	 */
-	public String getIp() {
-		return ip;
-	}
-	/**
-	 * Setter method for the ip
-	 * @param ip the ip to set
-	 */
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	/**
-	 * Getter method for firmware
-	 * @return the firmware
-	 */
-	public String getFirmware() {
-		return firmware;
-	}
-	/**
-	 * Setter method for the firmware
-	 * @param firmware the firmware to set
-	 */
-	public void setFirmware(String firmware) {
-		this.firmware = firmware;
-	}
-	/**
-	 * Getter method for runningStatus
-	 * @return the runningStatus
-	 */
-	public String getRunningStatus() {
-		return runningStatus;
-	}
-	/**
-	 * Setter method for the runningStatus
-	 * @param runningStatus the runningStatus to set
-	 */
-	public void setRunningStatus(String runningStatus) {
-		this.runningStatus = runningStatus;
-	}
-	/**
-	 * Getter method for chargePercentage
-	 * @return the chargePercentage
-	 */
-	public Float getChargePercentage() {
-		return chargePercentage;
-	}
-	/**
-	 * Setter method for the chargePercentage
-	 * @param chargePercentage the chargePercentage to set
-	 */
-	public void setChargePercentage(Float chargePercentage) {
-		this.chargePercentage = chargePercentage;
-	}
-	/**
-	 * Getter method for expensePercentage
-	 * @return the expensePercentage
-	 */
-	public Float getExpensePercentage() {
-		return expensePercentage;
-	}
-	/**
-	 * Setter method for the expensePercentage
-	 * @param expensePercentage the expensePercentage to set
-	 */
-	public void setExpensePercentage(Float expensePercentage) {
-		this.expensePercentage = expensePercentage;
-	}
-	/**
-	 * Getter method for alarmMsg
-	 * @return the alarmMsg
-	 */
-	public String getAlarmMsg() {
-		return alarmMsg;
-	}
-	/**
-	 * Setter method for the alarmMsg
-	 * @param alarmMsg the alarmMsg to set
-	 */
-	public void setAlarmMsg(String alarmMsg) {
-		this.alarmMsg = alarmMsg;
-	}
-	/**
-	 * Getter method for type
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-	/**
-	 * Setter method for the type
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-	/**
-	 * Getter method for model
-	 * @return the model
-	 */
-	public String getModel() {
-		return model;
-	}
-	/**
-	 * Setter method for the model
-	 * @param model the model to set
-	 */
-	public void setModel(String model) {
-		this.model = model;
-	}
-	/**
-	 * Getter method for seriesNumber
-	 * @return the seriesNumber
-	 */
-	public String getSeriesNumber() {
-		return seriesNumber;
-	}
-	/**
-	 * Setter method for the seriesNumber
-	 * @param seriesNumber the seriesNumber to set
-	 */
-	public void setSeriesNumber(String seriesNumber) {
-		this.seriesNumber = seriesNumber;
-	}
-	/**
-	 * Getter method for runningTimeMilisec
-	 * @return the runningTimeMilisec
-	 */
-	public Long getRunningTimeMilisec() {
-		return runningTimeMilisec;
-	}
-	/**
-	 * Setter method for the runningTimeMilisec
-	 * @param runningTimeMilisec the runningTimeMilisec to set
-	 */
-	public void setRunningTimeMilisec(Long runningTimeMilisec) {
-		this.runningTimeMilisec = runningTimeMilisec;
-	}
-	/**
-	 * Getter method for autonomyMilisec
-	 * @return the autonomyMilisec
-	 */
-	public Long getAutonomyMilisec() {
-		return autonomyMilisec;
-	}
-	/**
-	 * Setter method for the autonomyMilisec
-	 * @param autonomyMilisec the autonomyMilisec to set
-	 */
-	public void setAutonomyMilisec(Long autonomyMilisec) {
-		this.autonomyMilisec = autonomyMilisec;
-	}
-	/**
-	 * Getter method for numPosition
-	 * @return the numPosition
-	 */
-	public String getNumPosition() {
-		return numPosition;
-	}
-	/**
-	 * Setter method for the numPosition
-	 * @param numPosition the numPosition to set
-	 */
-	public void setNumPosition(String numPosition) {
-		this.numPosition = numPosition;
-	}
-	/**
-	 * Getter method for audFmo
-	 * @return the audFmo
-	 */
-	public Date getAudFmo() {
-		return audFmo;
-	}
-	/**
-	 * Setter method for the audFmo
-	 * @param audFmo the audFmo to set
-	 */
-	public void setAudFmo(Date audFmo) {
-		this.audFmo = audFmo;
-	}
-	/**
-	 * Getter method for generalStatusMsg
-	 * @return the generalStatusMsg
-	 */
-	public String getGeneralStatusMsg() {
-		return generalStatusMsg;
-	}
-	/**
-	 * Setter method for the generalStatusMsg
-	 * @param generalStatusMsg the generalStatusMsg to set
-	 */
-	public void setGeneralStatusMsg(String generalStatusMsg) {
-		this.generalStatusMsg = generalStatusMsg;
-	}
-	/**
-	 * Getter method for lastExecutionDate
-	 * @return the lastExecutionDate
-	 */
-	public Date getLastExecutionDate() {
-		return lastExecutionDate;
-	}
-	/**
-	 * Setter method for the lastExecutionDate
-	 * @param lastExecutionDate the lastExecutionDate to set
-	 */
-	public void setLastExecutionDate(Date lastExecutionDate) {
-		this.lastExecutionDate = lastExecutionDate;
-	}
-	/**
-	 * Getter method for originalXML
-	 * @return the originalXML
-	 */
-	public String getOriginalXML() {
-		return originalXML;
-	}
-	/**
-	 * Setter method for the originalXML
-	 * @param originalXML the originalXML to set
-	 */
-	public void setOriginalXML(String originalXML) {
-		this.originalXML = originalXML;
-	}
 
-	
-	
+    /** The firmware version. */
+    @Column(name = "firmware_revision")
+    private String firmware;
+
+    /** The running status. */
+    @Column(name = "running_status")
+    private String runningStatus;
+
+    /** The charge percentage. */
+    @Column(name = "charge_percentage")
+    private Float chargePercentage;
+
+    /** The expense percentage. */
+    @Column(name = "expense_percentage")
+    private Float expensePercentage;
+
+    /** The alarm message. */
+    @Column(name = "alarm_msg")
+    private String alarmMsg;
+
+    /** The type. */
+    @Column(name = "type")
+    private String type;
+
+    /** The model. */
+    @Column(name = "model")
+    private String model;
+
+    /** The serial number. */
+    @Column(name = "series_number")
+    private String seriesNumber;
+
+    /** The running time in millisecs. */
+    @Column(name = "running_time_millisec")
+    private Long runningTimeMillisec;
+
+    /** The autonomy in millisecs. */
+    @Column(name = "autonomy_millisec")
+    private Long autonomyMillisec;
+
+    /** The position number. */
+    @Column(name = "num_position")
+    private String numPosition;
+
+    /** The aud fmo. */
+    @Column(name = "aud_fmo")
+    private Date audFmo;
+
+    /** The general status message. */
+    @Column(name = "general_status_msg")
+    private String generalStatusMsg;
+
+    /** The last execution date. */
+    @Column(name = "last_execution")
+    private Date lastExecutionDate;
+
+    /** The original xml. */
+    @Column(name = "xml")
+    private String originalXML;
+
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public Integer getId() {
+	return id;
+    }
+
+    /**
+     * Sets the id.
+     * 
+     * @param id
+     *            the new id
+     */
+    public void setId(Integer id) {
+	this.id = id;
+    }
+
+    /**
+     * Gets the ip.
+     * 
+     * @return the ip
+     */
+    public String getIp() {
+	return ip;
+    }
+
+    /**
+     * Sets the ip.
+     * 
+     * @param ip
+     *            the new ip
+     */
+    public void setIp(String ip) {
+	this.ip = ip;
+    }
+
+    /**
+     * Gets the firmware.
+     * 
+     * @return the firmware
+     */
+    public String getFirmware() {
+	return firmware;
+    }
+
+    /**
+     * Sets the firmware.
+     * 
+     * @param firmware
+     *            the new firmware
+     */
+    public void setFirmware(String firmware) {
+	this.firmware = firmware;
+    }
+
+    /**
+     * Gets the running status.
+     * 
+     * @return the running status
+     */
+    public String getRunningStatus() {
+	return runningStatus;
+    }
+
+    /**
+     * Sets the running status.
+     * 
+     * @param runningStatus
+     *            the new running status
+     */
+    public void setRunningStatus(String runningStatus) {
+	this.runningStatus = runningStatus;
+    }
+
+    /**
+     * Gets the charge percentage.
+     * 
+     * @return the charge percentage
+     */
+    public float getChargePercentage() {
+	return chargePercentage;
+    }
+
+    /**
+     * Sets the charge percentage.
+     * 
+     * @param chargePercentage
+     *            the new charge percentage
+     */
+    public void setChargePercentage(Float chargePercentage) {
+	this.chargePercentage = chargePercentage;
+    }
+
+    /**
+     * Gets the expense percentage.
+     * 
+     * @return the expense percentage
+     */
+    public float getExpensePercentage() {
+	return expensePercentage;
+    }
+
+    /**
+     * Sets the expense percentage.
+     * 
+     * @param expensePercentage
+     *            the new expense percentage
+     */
+    public void setExpensePercentage(Float expensePercentage) {
+	this.expensePercentage = expensePercentage;
+    }
+
+    /**
+     * Gets the alarm msg.
+     * 
+     * @return the alarm msg
+     */
+    public String getAlarmMsg() {
+	return alarmMsg;
+    }
+
+    /**
+     * Sets the alarm msg.
+     * 
+     * @param alarmMsg
+     *            the new alarm msg
+     */
+    public void setAlarmMsg(String alarmMsg) {
+	this.alarmMsg = alarmMsg;
+    }
+
+    /**
+     * Gets the type.
+     * 
+     * @return the type
+     */
+    public String getType() {
+	return type;
+    }
+
+    /**
+     * Sets the type.
+     * 
+     * @param type
+     *            the new type
+     */
+    public void setType(String type) {
+	this.type = type;
+    }
+
+    /**
+     * Gets the model.
+     * 
+     * @return the model
+     */
+    public String getModel() {
+	return model;
+    }
+
+    /**
+     * Sets the model.
+     * 
+     * @param model
+     *            the new model
+     */
+    public void setModel(String model) {
+	this.model = model;
+    }
+
+    /**
+     * Gets the series number.
+     * 
+     * @return the series number
+     */
+    public String getSeriesNumber() {
+	return seriesNumber;
+    }
+
+    /**
+     * Sets the series number.
+     * 
+     * @param seriesNumber
+     *            the new series number
+     */
+    public void setSeriesNumber(String seriesNumber) {
+	this.seriesNumber = seriesNumber;
+    }
+
+    /**
+     * Gets the running time milisec.
+     * 
+     * @return the running time milisec
+     */
+    public long getRunningTimeMilisec() {
+	return runningTimeMillisec;
+    }
+
+    /**
+     * Sets the running time milisec.
+     * 
+     * @param runningTimeMilisec
+     *            the new running time milisec
+     */
+    public void setRunningTimeMilisec(Long runningTimeMilisec) {
+	this.runningTimeMillisec = runningTimeMilisec;
+    }
+
+    /**
+     * Gets the autonomy milisec.
+     * 
+     * @return the autonomy milisec
+     */
+    public long getAutonomyMilisec() {
+	return autonomyMillisec;
+    }
+
+    /**
+     * Sets the autonomy milisec.
+     * 
+     * @param autonomyMilisec
+     *            the new autonomy milisec
+     */
+    public void setAutonomyMilisec(Long autonomyMilisec) {
+	this.autonomyMillisec = autonomyMilisec;
+    }
+
+    /**
+     * Gets the num position.
+     * 
+     * @return the num position
+     */
+    public String getNumPosition() {
+	return numPosition;
+    }
+
+    /**
+     * Sets the num position.
+     * 
+     * @param numPosition
+     *            the new num position
+     */
+    public void setNumPosition(String numPosition) {
+	this.numPosition = numPosition;
+    }
+
+    /**
+     * Gets the aud fmo.
+     * 
+     * @return the aud fmo
+     */
+    public Date getAudFmo() {
+	return audFmo;
+    }
+
+    /**
+     * Sets the aud fmo.
+     * 
+     * @param audFmo
+     *            the new aud fmo
+     */
+    public void setAudFmo(Date audFmo) {
+	this.audFmo = audFmo;
+    }
+
+    /**
+     * Gets the general status msg.
+     * 
+     * @return the general status msg
+     */
+    public String getGeneralStatusMsg() {
+	return generalStatusMsg;
+    }
+
+    /**
+     * Sets the general status msg.
+     * 
+     * @param generalStatusMsg
+     *            the new general status msg
+     */
+    public void setGeneralStatusMsg(String generalStatusMsg) {
+	this.generalStatusMsg = generalStatusMsg;
+    }
+
+    /**
+     * Gets the last execution date.
+     * 
+     * @return the last execution date
+     */
+    public Date getLastExecutionDate() {
+	return lastExecutionDate;
+    }
+
+    /**
+     * Sets the last execution date.
+     * 
+     * @param lastExecutionDate
+     *            the new last execution date
+     */
+    public void setLastExecutionDate(Date lastExecutionDate) {
+	this.lastExecutionDate = lastExecutionDate;
+    }
+
+    /**
+     * Gets the original xml.
+     * 
+     * @return the original xml
+     */
+    public String getOriginalXML() {
+	return originalXML;
+    }
+
+    /**
+     * Sets the original xml.
+     * 
+     * @param originalXML
+     *            the new original xml
+     */
+    public void setOriginalXML(String originalXML) {
+	this.originalXML = originalXML;
+    }
 }
