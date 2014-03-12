@@ -22,3 +22,18 @@ function defaultInitTabs() {
 function countOccurences(mainStr, strToCount) {
 	return mainStr.split(strToCount).length
 }
+/**
+ * Load an URL inside an element
+ * @param link where the click is made
+ * @param elementID where the content is going to be shown
+ * @param url the remote url to show
+ */
+function loadInnerSection(link, elementID, url){
+   if(link == null){
+		$(link).click(function(event) {
+	        $(elementID).load(url);
+	    });
+   }else{
+	   $(elementID).load(url);
+   }
+}

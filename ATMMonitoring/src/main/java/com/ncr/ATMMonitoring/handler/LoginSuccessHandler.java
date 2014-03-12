@@ -81,7 +81,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		    return;
 		}
 	    }
-	    getRedirectStrategy().sendRedirect(request, response, "/dashboard");
+	    getRedirectStrategy().sendRedirect(request, response, "/main");
 	    return;
 	}
 

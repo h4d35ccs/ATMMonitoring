@@ -2133,23 +2133,23 @@ nav#main_nav li {
   position: relative;
 }
 /* line 15, ../sass/_nav.scss */
-nav#main_nav .dashboard a {
+nav#main_nav .dashboard div {
   background: url("../images/icons/icons_main_left.png") no-repeat 0 0 transparent;
 }
 /* line 18, ../sass/_nav.scss */
-nav#main_nav .terminals a {
+nav#main_nav .terminals div {
   background: url("../images/icons/icons_main_left.png") no-repeat -90px 0 transparent;
 }
 /* line 21, ../sass/_nav.scss */
-nav#main_nav .users a {
+nav#main_nav .users div {
   background: url("../images/icons/icons_main_left.png") no-repeat -180px 0 transparent;
 }
 /* line 24, ../sass/_nav.scss */
-nav#main_nav .reports a {
+nav#main_nav .reports div {
   background: url("../images/icons/icons_main_left.png") no-repeat -270px 0 transparent;
 }
 /* line 27, ../sass/_nav.scss */
-nav#main_nav .schedule a {
+nav#main_nav .schedule div {
   background: url("../images/icons/icons_main_left.png") no-repeat -360px 0 transparent;
 }
 /* line 30, ../sass/_nav.scss */
@@ -2160,7 +2160,7 @@ nav#main_nav .help {
   z-index: 2;
 }
 /* line 35, ../sass/_nav.scss */
-nav#main_nav .help a {
+nav#main_nav .help div {
   background: url("../images/icons/icons_main_left.png") no-repeat -450px 0 transparent;
 }
 /* line 39, ../sass/_nav.scss */

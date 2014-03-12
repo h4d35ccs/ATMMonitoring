@@ -29,7 +29,7 @@ public class CheckDateLicenseTask {
     /**
      * Method that calls the service in order to check the date-limited license
      */
-    @Scheduled(cron = CRON_CONF)
+//    @Scheduled(cron = CRON_CONF)
     public void processIps() {
 	logger.info("Calling service for checking the date-limited license...");
 	terminalService.checkDateLicense();

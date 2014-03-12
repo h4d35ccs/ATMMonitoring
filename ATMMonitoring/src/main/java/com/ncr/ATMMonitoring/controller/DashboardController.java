@@ -59,8 +59,9 @@ public class DashboardController extends GenericController {
 	    HttpServletRequest request) {
 	String userMsg = "";
 	Dashboard dashboard = null;
+	System.out.println("LLAMO AL CONTROLLER!!!!!!!!!!!!!!!!!!!");
 	if (principal != null) {
-	    userMsg = this.getUserGreeting(principal, request);
+		userMsg = this.getUserGreeting(principal, request);
 	    dashboard = (Dashboard) request.getSession().getAttribute(
 		    SESSION_KEY_DASHBOARD);
 	    logger.debug("Dasboard loaded from session: " + dashboard);
