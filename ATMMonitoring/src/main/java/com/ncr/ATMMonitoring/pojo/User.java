@@ -354,18 +354,19 @@ public class User implements UserDetails {
      * @return the html welcome message
      */
     public String getHtmlWelcomeMessage(Locale locale) {
-      	DateFormat timeFormatter = new SimpleDateFormat("H:mm");
-        String lastLoginFormatted = "";
-        lastLoginFormatted  = DateFormat.getDateInstance(DateFormat.SHORT, locale).format(lastLogin) +
-	    " - " + timeFormatter.format(lastLogin);
-
-	return "<div class=\"welcome\"><spring:message code=\"label.welcomeMessage\"/> "
-		+ firstname
-		+ " "
-		+ lastname
-		+ "</div>"
-		+
-	       "<div class=\"date\">" + lastLoginFormatted + "</div>";
+//      	DateFormat timeFormatter = new SimpleDateFormat("H:mm");
+//        String lastLoginFormatted = "";
+//        lastLoginFormatted  = DateFormat.getDateInstance(DateFormat.SHORT, locale).format(lastLogin) +
+//	    " - " + timeFormatter.format(lastLogin);
+//
+//	return "<div class=\"welcome\"><spring:message code=\"label.welcomeMessage\"/> "
+//		+ firstname
+//		+ " "
+//		+ lastname
+//		+ "</div>"
+//		+
+//	       "<div class=\"date\">" + lastLoginFormatted + "</div>";
+    	return this.firstname+ " "+ this.lastname;
     }
 
     /**

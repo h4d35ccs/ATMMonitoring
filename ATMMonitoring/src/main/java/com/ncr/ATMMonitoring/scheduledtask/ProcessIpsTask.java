@@ -29,7 +29,7 @@ public class ProcessIpsTask {
     /**
      * Method that calls the service in order to start the ATM update process
      */
-    @Scheduled(cron = CRON_CONF)
+//    @Scheduled(cron = CRON_CONF)
     public void processIps() {
 	logger.info("Calling service for checking the IPs waiting for update...");
 	this.socketService.processAwaitingIps();

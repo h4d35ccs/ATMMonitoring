@@ -57,8 +57,13 @@ public class LoginController extends GenericController{
      * @return the petition response
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-	return "login";
+    public String login(HttpServletRequest request,Principal principal) {
+    	String redirect = "login";
+    	
+    	if(principal != null){
+    		redirect = "mainFrame";
+    	}
+    	return redirect;
     }
 
     /**

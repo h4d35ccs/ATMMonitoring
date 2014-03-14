@@ -4,11 +4,11 @@
 <%@ attribute name="pagedLink" required="true" type="java.lang.String" %>
 <c:if test="${pagedListHolder.pageCount > 1}">
 <c:if test="${!pagedListHolder.firstPage}">
-<span class="pagingItem"><a href="<%= StringUtils.replace(pagedLink, 
-   "~", String.valueOf(pagedListHolder.getPage()-1)) %>"><</a></span>
+<span class="pagingItem"><a onclick="loadInnerSection('#pagTable','<%= StringUtils.replace(pagedLink, 
+   "~", String.valueOf(pagedListHolder.getPage()-1)) %> #pagTable')">&lt;</a></span>
 </c:if>
 <c:if test="${pagedListHolder.firstLinkedPage > 0}">
-<span class="pagingItem"><a href="<%= StringUtils.replace(pagedLink, "~", "0") %>">1</a></span>
+<span class="pagingItem"><a onclick="loadInnerSection('#pagTable','<%= StringUtils.replace(pagedLink, "~", "0") %> #pagTable')">1</a></span>
 </c:if>
 <c:if test="${pagedListHolder.firstLinkedPage > 1}">
 <span class="pagingDots">...</span>
@@ -19,8 +19,8 @@
 <span class="pagingItemCurrent">${i+1}</span>
 </c:when>
 <c:otherwise>
-<span class="pagingItem"><a href="<%= StringUtils.replace(pagedLink, 
-   "~", String.valueOf(jspContext.getAttribute("i"))) %>">${i+1}</a></span>
+<span class="pagingItem"><a onclick="loadInnerSection('#pagTable','<%= StringUtils.replace(pagedLink, 
+   "~", String.valueOf(jspContext.getAttribute("i"))) %> #pagTable')">${i+1}</a></span>
 </c:otherwise>
 </c:choose>
 </c:forEach>
@@ -28,11 +28,11 @@
 <span class="pagingDots">...</span>
 </c:if>
 <c:if test="${pagedListHolder.lastLinkedPage < pagedListHolder.pageCount - 1}">
-<span class="pagingItem"><a href="<%= StringUtils.replace(pagedLink, 
-   "~", String.valueOf(pagedListHolder.getPageCount()-1)) %>">${pagedListHolder.pageCount}</a></span>
+<span class="pagingItem"><a onclick="loadInnerSection('#pagTable','<%= StringUtils.replace(pagedLink, 
+   "~", String.valueOf(pagedListHolder.getPageCount()-1)) %> #pagTable')">${pagedListHolder.pageCount}</a></span>
 </c:if>
 <c:if test="${!pagedListHolder.lastPage}">
-<span class="pagingItem"><a href="<%= StringUtils.replace(pagedLink, 
-   "~", String.valueOf(pagedListHolder.getPage()+1)) %>">></a></span>
+<span class="pagingItem"><a onclick="loadInnerSection('#pagTable','<%= StringUtils.replace(pagedLink, 
+   "~", String.valueOf(pagedListHolder.getPage()+1)) %> #pagTable')">&gt;</a></span>
 </c:if>
 </c:if>

@@ -2,9 +2,9 @@
 <html>
 <head>	 
 	    <meta http-equiv="Cache-Control" Content="public,max-age=31536000" />
-		<script type="text/javascript" src="resources/js/json2html.js"></script>
+		<!-- <script type="text/javascript" src="resources/js/json2html.js"></script>
 		<script type="text/javascript" src="resources/js/jquery.json2html.js"></script>
-		<script type='text/javascript' src='resources/js/jquery.colorbox-min.js'></script> 
+		<script type='text/javascript' src='resources/js/jquery.colorbox-min.js'></script>  -->
 		<script type="text/javascript">
 	      var strings = new Array();
 	      strings['label.widget.options'] = "<spring:message code='label.widget.options' javaScriptEscape='true' />";
@@ -22,6 +22,10 @@
 	      <sec:authorize access="hasAnyRole(${editWidgetsLibraryAllowedRoles})">
 	          hasPrivileges = true;
 	      </sec:authorize>
+
+	      function initPageJS() {; 
+				initDashboard() ;
+			};
     </script>
     <!--  <script type='text/javascript' src='https://www.google.com/jsapi'></script> 
 	 	<script type="text/javascript">
@@ -65,11 +69,6 @@
 			<p>
 				<spring:message code="label.dashboard.explain" />
 			</p>
-			<script type="text/javascript">
-				$( document ).ready(function() {
-					initDashboard() ;
-				});
-	</script>
 		</div>
 	</div>
 </body>

@@ -34,7 +34,7 @@
 		      <c:if test="${!isColumnSorted}">
 		        <c:set var="sortClass" value=""/>
 		      </c:if>
-		      <th class="order ${sortClass}"><a href="${baseUrl}?p=${pagedListHolder.page}&queryId=${query.id}&sort=${column}&order=${orderValue}&queryDate=${stringQueryDate}"><spring:message code="label.terminal.${column}"/></a></th>
+		      <th class="order ${sortClass}" onclick="loadInnerSection('#tabs','${baseUrl}?p=${pagedListHolder.page}&queryId=${query.id}&sort=${column}&order=${orderValue}&queryDate=${stringQueryDate} #tabs')"><a><spring:message code="label.terminal.${column}"/></a></th>
 		    </c:forEach>
 		  </tr>
 		  </thead>
@@ -42,7 +42,7 @@
 		  <c:forEach items="${terminals}" var="terminal">
 		    <tr>
 		      <!--td class="check"><input type="checkbox"/></td-->
-		      <td><a href="terminals/details/${terminal.id}?dateTime=${queryDate.time}">${terminal.mac}</a></td>
+		      <td><a onclick="loadInnerSection('#primary', 'terminals/details/${terminal.id}?dateTime=${queryDate.time}')">${terminal.mac}</a></td>
 		      <td>${terminal.ip}</td>
 			  <td>${terminal.serialNumber}</td>
 		      <td>${terminal.terminalType}</td>

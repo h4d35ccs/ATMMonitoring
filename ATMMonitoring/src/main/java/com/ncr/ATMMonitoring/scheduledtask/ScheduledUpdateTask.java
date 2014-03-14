@@ -32,7 +32,7 @@ public class ScheduledUpdateTask {
      * Method that checks if there are any Scheduled updates to execute, and in
      * that case runs them
      */
-    @Scheduled(cron = CRON_CONF)
+//    @Scheduled(cron = CRON_CONF)
     @Transactional
     public void callToCheckCurrentUpdates() {
 	logger.info("Calling service for checking Current Updates ");

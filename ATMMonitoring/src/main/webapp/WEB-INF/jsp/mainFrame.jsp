@@ -3,10 +3,18 @@
 <html>
 <head>
 <%@include file="includes/HtmlHead.jsp" %>
+<script type="text/javascript">
+
+ $( document ).ready(function() {
+	 $("#dashboardMenu").click();
+	 clock();
+}); 
+</script> 
 </head>
 <body>
 <div class="loader"></div>
         <div id="main_header">
+        	<input type="hidden" id="lastVisit">
             <div id="rButton" class="hide btn_close">
 
             </div>
@@ -16,7 +24,8 @@
           
             </h1>
             <div id="user_info">
-               ${userMsg}
+               <div class="welcome"><spring:message code="label.welcomeMessage"/> ${userMsg}</div>-
+               <div class="date" id="welcomeDate"></div>
                 <div id="lang" class="desplegable autofold">
                     <div class="txt content_hide">
                         <span><spring:message code="language.${pageContext.response.locale}"/></span>
@@ -38,12 +47,12 @@
 	            <ul id="nav_icons">
 	                <sec:authorize access="hasAnyRole(${dashboardAccessAllowedRoles})">
 		                <li class="dashboard">
-		                    <a id="dashboardMenu" onclick="loadInnerSection('#'+this.id, '#primary', 'dashboard')"><span id="dashboard"><spring:message code="label.menu.dashboard"/></span></a>
+		                    <a id="dashboardMenu" onclick="loadInnerSectionMenu('#'+this.id, '#primary', 'dashboard')"><span id="dashboard"><spring:message code="label.menu.dashboard"/></span></a>
 		                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${terminalsAccessAllowedRoles})">
 		                <li class="terminals">
-		                    <a href="terminals"><span><spring:message code="label.menu.terminals"/></span></a>
+		                    <a id="terminalMenu" onclick="loadInnerSectionMenu('#'+this.id, '#primary', 'terminals')"><span><spring:message code="label.menu.terminals"/></span></a>
 		                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${reportsAccessAllowedRoles})">
@@ -79,10 +88,3 @@
 
     </body>
 </html>
-<script type="text/javascript">
-
- $( document ).ready(function() {
-	 $("#primary").load("dashboard");
-	 $("#dashboardMenu").addClass("after");
-}); 
-</script> 

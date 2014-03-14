@@ -1,3 +1,6 @@
+.showVertical{
+	display: inline;
+}
 .loader {
 	position: fixed;
 	left: 0px;
@@ -1891,6 +1894,7 @@ table th.order {
   padding-right: 2em;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
+  cursor: pointer;
 }
 /* line 36, ../sass/_table.scss */
 table th.order.bottom {

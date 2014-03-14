@@ -98,7 +98,7 @@ public class UPSGetXMLTask {
      * Scheduled task that checks the folder for XML, and calls the service to
      * begin the XML processing
      */
-    @Scheduled(cron = CRON_CONF)
+//    @Scheduled(cron = CRON_CONF)
     public void checkForUPSUpdates() {
 
 	List<String> filesPath = new ArrayList<String>();

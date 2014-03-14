@@ -1,9 +1,7 @@
 <%@tag description="Terminals location map" pageEncoding="UTF-8"%>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib tagdir="/WEB-INF/tags/utils/" prefix="utils"%>
-
 <c:choose>
 	<c:when test="${empty terminalIdsByLocation }">
 		<div class="message">
@@ -11,9 +9,6 @@
 		</div>
 	</c:when>
 	<c:otherwise>
-	
-		
-		
 		<div id="terminalsMap"> </div>
 		<div class="hide">
 			<div id="defaultInfoWindowContent" class="summaryContent"> 
@@ -31,10 +26,9 @@
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 		<script src="resources/js/markerClusterer.js"></script>
 		<script type="text/javascript" >
-		
 		$(function() {
-			terminalMap = new TerminalsMap();
-			terminalMap.initialize();
+		    terminalMap = new TerminalsMap();
+			terminalMap.initialize(); 
 		});
 		
 		function TerminalsMap() {
@@ -149,7 +143,6 @@
 			    ]
 			}
 		}
-		
 		</script>
 	</c:otherwise>
 </c:choose>

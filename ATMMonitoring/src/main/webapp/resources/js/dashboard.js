@@ -26,18 +26,13 @@ Array.prototype.move = function (old_index, new_index) {
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
 };
 
+//google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});
 
-//	google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});
-
-
-//	$(function() {
 function initDashboard() {
-	    initDashboardModel();
-	    initColumnsControl();
-	    
-	    window.onresize = onLoadDashboard;
-	}
-
+    initDashboardModel();
+    initColumnsControl();
+    window.onresize = onLoadDashboard;
+}
 
 // Model ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

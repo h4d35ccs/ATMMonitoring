@@ -1,9 +1,4 @@
-<%@tag description="Historical timeline" pageEncoding="UTF-8"%>
-<%@attribute name="historicalChanges" required="true" type="java.util.Map"%>
-<%@attribute name="timelineDates" required="true" type="java.util.Map"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@include file="includes/JspImports.jsp"%>
 <div class="botonera">
 	<a href="#" class="timelineZoom on" data-zoom-in="true"  >  </a>
 	<a href="#" class="timelineZoom off" data-zoom-in="false" >  </a>
@@ -27,18 +22,13 @@
 		</li>
 	</ul>
 </div>
-
 <script>
-    var Timeline_urlPrefix = 'resources/timeline/api/';
-    var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';       
-</script>
-<script src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
-<script src="resources/js/elementClusterer.js" type="text/javascript"></script>
 
-<script>
     /* window.onload = function() { executeOnTimelineLoaded(loadTimeline) }; */
-   	executeOnTimelineLoaded(loadTimeline);  
-    var tl;
+/*     
+   var Timeline_urlPrefix = 'resources/timeline/api/';
+   var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';   */
+   var tl;
     
     function loadTimeline() {
     	var elementsSize = 16;
@@ -241,4 +231,9 @@
         }
         return eventData;
     }  
+    
+    function initPageJS() {	
+    	
+ 	   executeOnTimelineLoaded(loadTimeline);  
+    }
 </script>
