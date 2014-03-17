@@ -1,12 +1,4 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@page pageEncoding="UTF-8"%>
-
-<t:osoco-wrapper titleCode="label.queryEngine" userMsg="${userMsg}"  section="help">
-	
+<%@include file="includes/JspImports.jsp"%>
 <div class="documentation">
 <div id="header_g">
 		<nav id="breadcrumb">
@@ -125,4 +117,3 @@
 				<p>Tristique? Pulvinar dis, porta! Integer? Nunc sit nisi vel, scelerisque aliquam phasellus dictumst, pid a risus mid platea tincidunt a vel, augue mid? Nunc lorem! Dolor natoque lorem elementum tristique dignissim placerat sed. Natoque, amet elementum sed? Rhoncus turpis a sociis auctor aliquam et cursus dapibus lectus porttitor proin.</p>
 		</div>
 	</div><!-- /scroll --></div>
-</t:osoco-wrapper>

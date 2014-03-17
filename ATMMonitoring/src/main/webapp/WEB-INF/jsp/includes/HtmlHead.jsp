@@ -3,6 +3,9 @@
         <meta http-equiv="Cache-Control" Content="public,max-age=31536000" />
         <base href="${base}"/>
         <link rel="stylesheet" type="text/css" href="resources/css/ncr_screen.css">
+        <link rel="stylesheet" type="text/css" href="resources/css/fullcalendar.css"/>
+    	<link rel="stylesheet" type="text/css" href="resources/css/fullcalendar.print.css" media="print"/>
+    	<link rel="stylesheet" type="text/css" href="resources/css/ncr_fullcalendar.css"/>
          <script src="resources/js/jquery-1.8.3.min.js"></script>
 			<script type="text/javascript">
 					$(window).load(function() {
@@ -20,19 +23,23 @@
 		<script type="text/javascript" src="resources/js/jquery.json2html.js"></script>
         <script type='text/javascript' src="resources/js/windowLocationHenhancer.js"></script>
         <script type='text/javascript' src="resources/js/menu.js"></script>
-        <script type='text/javascript' src="resources/js/application.js"></script>
         <script type='text/javascript' src='resources/js/jsapi.js'></script> 
-        <script>
-   	 			var Timeline_urlPrefix = 'resources/timeline/api/';
-    			var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';       
-	</script>
-        <script type='text/javascript' src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
+        <script type="text/javascript" src="resources/js/fullcalendar.min.js"></script>
+    	<script type="text/javascript" src="resources/js/scheduled.js"></script>
 		<script type='text/javascript' src="resources/js/elementClusterer.js" type="text/javascript"></script>
 	 	<script type="text/javascript">
 	 	 	google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});   
+
+	 	 	var Timeline_urlPrefix = 'resources/timeline/api/';
+			var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';
+			//varialbes for headers or dialogs that depends on spring
+			
+			var schUpDeleteConfirmation ="<spring:message code="label.scheduledUpdate.confirmDeletion"/>";
+
+			
     	</script>
-        <title><spring:message code="label.baseTitle"/></title>
-       
+    	<script type='text/javascript' src="resources/js/application.js"></script>
+        <title><spring:message code="label.baseTitle"/></title>   
         <!--[if lt IE 9]>
         <script type="text/javascript">
             document.createElement("nav");

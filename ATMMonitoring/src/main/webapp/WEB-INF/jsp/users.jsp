@@ -1,11 +1,4 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@page pageEncoding="UTF-8"%>
-
+<%@include file="includes/JspImports.jsp"%>%>
 <%
     String[] userSortColumns = { "username" , "firstname", "lastname" };
 	String[] userNotSortColumns = { "role", "bankCompany" };
@@ -15,12 +8,8 @@
     String[] roleSortColumns = { "name", "description"};
     request.setAttribute("roleSortColumns", roleSortColumns);
 %>
-
-<t:osoco-wrapper titleCode="label.usersManager" userMsg="${userMsg}"  section="users">
-
-	<jsp:attribute name="header">
-		<script type="text/javascript">
-        $(function() {
+<script type="text/javascript">
+	function initPageJS() {; 
             $("thead th.order").click(function(event) {
                 var headerUrl = $(this).find("a").attr("href");
                 document.location.href = headerUrl;
@@ -37,7 +26,7 @@
                 event.stopPropagation();
                 event.preventDefault();
                 var roleId= $(this).data('roleId');
-                if (confirm('Â¿EstÃ¡s seguro de que quieres borrar el rol?')) {
+                if (confirm('¿Estás seguro de que quieres borrar el rol?')) {
                     document.location.href = "users/roles/delete?roleId=" + roleId;
                 }
             });
@@ -46,11 +35,8 @@
                 event.preventDefault();
                 alert('No se puede borrar un rol con usuarios asignados.');
             });
-        });
+        };
     </script>
-	</jsp:attribute>
-
-	<jsp:body>
 		<div id="header_g">
 			<nav id="breadcrumb">
 				<ul>
@@ -122,16 +108,13 @@
 					</table>
 				</div>
 				<!-- /table_buttons -->
-
 				<div class="pagination">
 					<div class="t_number">
 						<span class="text">
 							${pagedListHolder1.source.size()}
 							<spring:message code="label.users"/>
 						</span>
-
 					</div>
-
 					<div class="p_number">
 						<c:if test="${pagedListHolder1.getPageCount() >
 							1 }">
@@ -142,11 +125,8 @@
 							<t:paging pagedListHolder="${pagedListHolder1}" pagedLink="users/list?p1=~&p2=${pagedListHolder2.page}&sort1=${sort1}&order1=${order1}&sort2=${sort2}&order2=${order2}"/>
 						</c:if>
 					</div>
-	
 				</div>
-	
 			</c:if>
-		
 			<h1>
 				<spring:message code="label.roles"/>
 			</h1>
@@ -155,7 +135,6 @@
 				${pagedListHolder2.source.size()}
 				<spring:message code="label.roles"/>
 			</h2>
-
 			<c:if  test="${empty pagedListHolder2.pageList}">
 				<div class="message">
 					<p>
@@ -205,7 +184,6 @@
 					</table>
 				</div>
 				<!-- /table_buttons -->
-
 				<div class="pagination">
 					<div class="t_number">
 						<span class="text">
@@ -214,7 +192,6 @@
 						</span>
 
 					</div>
-
 					<div class="p_number">
 						<c:if test="${pagedListHolder2.getPageCount() >
 							1 }">
@@ -247,10 +224,8 @@
 				<div class="botonera">
 					<input type="submit" class="btn" value="<spring:message code="label.role.addRole"/>"/>
 				</div>
-
 				</div>
 			</form:form>
-
 		<div class="hide">
 			<div id="help_pop" class="inline">
 				<!-- <div class="content">
@@ -296,7 +271,3 @@
 			</div>
 		</div>
 </div>
-
-</jsp:body>
-
-</t:osoco-wrapper>

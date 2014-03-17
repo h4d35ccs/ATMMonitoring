@@ -30,12 +30,12 @@ function countOccurences(mainStr, strToCount) {
 function loadInnerSection(elementID, url) {
 	$(elementID).empty();
 	$(elementID).load(url, function() {
-//		try {
-			initPageJS();
-//		} catch (err) {
-//			alert(err);
-			//in case that the initPage is not defined on the page
-//		}
+		//		try {
+		initPageJS();
+		//		} catch (err) {
+		//			alert(err);
+		//in case that the initPage is not defined on the page
+		//		}
 	});
 }
 
@@ -48,6 +48,7 @@ function loadInnerSection(elementID, url) {
 function loadInnerSectionMenu(link, elementID, url, segmentId) {
 
 	loadInnerSection(elementID, url);
+	changeURLmenu($(link).id);
 
 }
 /**
@@ -70,25 +71,64 @@ function loadInnerSectionFromForm(formId, elementID, otherElementID) {
 	});
 }
 /**
+ * ets the result of submitting a form and put it on a HTML element and calls the initPagesJS after load
+ * @param formId
+ * @param elementID
+ * @param otherElementID
+ */
+function loadInnerFromFormAndCallInit(formId, elementID) {
+	
+	// Get some values from elements on the page:
+	var $form = $(formId), term = $form.serializeArray(), url = $form
+			.attr("action");
+	// Send the data using post
+	$.post(url, term, function(data) {
+		// Put the results in a div
+		$(elementID).empty();
+		$(elementID).append(data);
+//		try {
+			initPageJS();
+			//		} catch (err) {
+			//			alert(err);
+			//in case that the initPage is not defined on the page
+			//		}
+	});
+}
+/**
  * Calls a controller and do not expect an answer
  * @param url
  */
-function loadPostRequestNoResponse(url){
+function loadPostRequestNoResponse(url) {
 	$.post(url);
 }
-function getDate(today){
-	
+/**
+ * Calls a controller and expects an response
+ * @param url
+ * @param elementID
+ * @param otherElementID
+ */
+function loadPostRequestResponse(url, elementID, otherElementID) {
+
+	$.post(url, function(data) {
+		// Put the results in a div
+		var content = $(data).find(otherElementID);
+		$(elementID).empty();
+		$(elementID).append(content);
+	});
+}
+function getDate(today) {
+
 	var dd = today.getDate();
-	var mm = today.getMonth()+1; //January is 0!
+	var mm = today.getMonth() + 1; //January is 0!
 	var yyyy = today.getFullYear();
-	
-	if(dd<10) {
-	    dd='0'+dd;
-	} 
-	if(mm<10) {
-	    mm='0'+mm;
-	} 
-	today = dd+'/'+mm+'/'+yyyy;
+
+	if (dd < 10) {
+		dd = '0' + dd;
+	}
+	if (mm < 10) {
+		mm = '0' + mm;
+	}
+	today = dd + '/' + mm + '/' + yyyy;
 	return today;
 }
 /**
@@ -103,7 +143,8 @@ function clock() {
 	// add a zero in front of numbers<10
 	m = checkTime(m);
 	s = checkTime(s);
-	$("#welcomeDate").empty().append(getDate(today)+" "+h + ":" + m + ":" + s);
+	$("#welcomeDate").empty().append(
+			getDate(today) + " " + h + ":" + m + ":" + s);
 	t = setTimeout(function() {
 		clock();
 	}, 500);
@@ -114,6 +155,25 @@ function checkTime(i) {
 		i = "0" + i;
 	}
 	return i;
+}
+/**
+ * Returns the value of a URL query param
+ * @param name
+ * @returns
+ */
+function getParameterByName(name) {
+
+	return decodeURIComponent((new RegExp('[?|&]' + name + '='
+			+ '([^&;]+?)(&|#|;|$)').exec(location.search) || [ , "" ])[1]
+			.replace(/\+/g, '%20'))
+			|| null;
+
+}
+
+function changeURLmenu(sectionName) {
+	//	var params = { "section": sectionName};
+	//	var str = $.param(params);
+	//	alert(str);
 }
 /************************************************* terminals functions ***************************/
 function onLoadModelCB() {
@@ -412,4 +472,34 @@ function showHiddenRow(name, rowNumber) {
 }
 function userQuerySelected() {
 	document.userQueriesForm.submit();
+}
+
+/***************************Scheduled update********************************/
+
+function deleteConfirmation( url, msg,elementID,msgDivId,notificationClass) {
+	var confirm = window.confirm(msg);
+	if (confirm == true) {
+		loadInnerSection(elementID, url);
+	}else{
+		$(msgDivId).empty();
+		$(msgDivId).removeClass(notificationClass);
+	}
+};
+
+/***************************help********************/
+/**
+ * Loads the inner content for the help section
+ */
+function loadHelpContent(linkId, linkClass, section, elementID) {
+	var baseHelpUrl = "resources/help/";
+	var lang = getParameterByName('lang');
+
+	if (lang == null || lang == "") {
+		lang = "en";
+	}
+	baseHelpUrl += lang + "/";
+	$(linkId).closest('ul').find('.' + linkClass).removeClass(linkClass);
+	$(linkId).addClass(linkClass);
+	$(elementID).load(baseHelpUrl + section + ".html");
+
 }

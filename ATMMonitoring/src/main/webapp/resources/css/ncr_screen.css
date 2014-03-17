@@ -1,5 +1,8 @@
-.showVertical{
+.showVertical li{
 	display: inline;
+}
+.clickeableMenu li,a{
+	cursor:pointer;
 }
 .loader {
 	position: fixed;

@@ -44,7 +44,7 @@
         </div> 
         <div id="main_menu">
 	        <nav id="main_nav" class="btn_close">
-	            <ul id="nav_icons">
+	            <ul id="nav_icons" class="clickeableMenu">
 	                <sec:authorize access="hasAnyRole(${dashboardAccessAllowedRoles})">
 		                <li class="dashboard">
 		                    <a id="dashboardMenu" onclick="loadInnerSectionMenu('#'+this.id, '#primary', 'dashboard')"><span id="dashboard"><spring:message code="label.menu.dashboard"/></span></a>
@@ -57,22 +57,22 @@
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${reportsAccessAllowedRoles})">
 		                <li class="reports">
-		                    <a href="externalreports"><span><spring:message code="label.menu.externalreports"/></span></a>
+		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'externalreports')"><span><spring:message code="label.menu.externalreports"/></span></a>
 		                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${schedulesAccessAllowedRoles})">
 	                <li class="schedule">
-	                    <a href="terminals/schedules/list"><span><spring:message code="label.menu.scheduler"/></span></a>
+	                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'terminals/schedules/list')"><span><spring:message code="label.menu.scheduler"/></span></a>
 	                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${usersAccessAllowedRoles})">
 		                <li class="users">
-		                    <a href="users"><span><spring:message code="label.menu.users"/></span></a>
+		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'users')"><span><spring:message code="label.menu.users"/></span></a>
 		                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${helpAccessAllowedRoles})">
 		                <li class="help">
-		                    <a href="help"><span><spring:message code="label.menu.help"/></span></a>
+		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'help')"><span><spring:message code="label.menu.help"/></span></a>
 		                </li>
 	                </sec:authorize>
 	            </ul>

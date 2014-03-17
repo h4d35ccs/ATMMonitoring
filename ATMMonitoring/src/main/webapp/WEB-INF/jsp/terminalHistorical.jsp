@@ -3,26 +3,27 @@
 	<a href="#" class="timelineZoom on" data-zoom-in="true"  >  </a>
 	<a href="#" class="timelineZoom off" data-zoom-in="false" >  </a>
 </div>
-
 <div class="history_legend">
 	<div id="timeline" style="height:120px"> </div>
-	<ul class="legend">
+	<ul class="legend showVertical">
 		<c:forEach items="${historicalChanges}" var="changesByType">
-		    <li class="showVertical"><c:set var="changeName" value="${changesByType.key.simpleName}"> </c:set>
+		    <li><c:set var="changeName" value="${changesByType.key.simpleName}"> </c:set>
 		    <img src="<c:url value="/resources/timeline/api/images/${changeName}.png" />" />
 		    <spring:message code="label.historical.${changeName}"/></li>
 		</c:forEach>	
-		<li class="showVertical">
+		<li>
 		    <img src="<c:url value="/resources/timeline/api/images/Current.png" />" />
 		    <spring:message code="label.historical.Current"/>
 		</li>
-		<li class="showVertical">
+		<li>
 		    <img src="<c:url value="/resources/timeline/api/images/Cluster.png" />" />
 		    <spring:message code="label.historical.Cluster"/>
 		</li>
 	</ul>
 </div>
+<script type='text/javascript' src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
 <script>
+
 
     /* window.onload = function() { executeOnTimelineLoaded(loadTimeline) }; */
 /*     

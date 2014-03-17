@@ -21,50 +21,49 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HelpController extends GenericController {
 
-    /**
-     * Show default help URL.
-     * 
-     * @param map
-     *            the map
-     * @param principal
-     *            the principal
-     * @param request
-     *            the request
-     * @return the petition response
-     */
-    @RequestMapping(value = "/help", method = RequestMethod.GET)
-    public String showHelp(Map<String, Object> map, Principal principal,
-	    HttpServletRequest request) {
-	String userMsg = "";
-	if (principal != null) {
-	    userMsg = this.getUserGreeting(principal, request);
+	/**
+	 * Show default help URL.
+	 * 
+	 * @param map
+	 *            the map
+	 * @param principal
+	 *            the principal
+	 * @param request
+	 *            the request
+	 * @return the petition response
+	 */
+	@RequestMapping(value = "/help", method = RequestMethod.GET)
+	public String showHelp() {
+		// String userMsg = "";
+		// if (principal != null) {
+		// userMsg = this.getUserGreeting(principal, request);
+		// }
+		// map.put("userMsg", userMsg);
+		return "helpTemplate";
 	}
-	map.put("userMsg", userMsg);
-	return "redirect:/help/user-main";
-    }
 
-    /**
-     * Show section help URL.
-     * 
-     * @param map
-     *            the map
-     * @param principal
-     *            the principal
-     * @param request
-     *            the request
-     * @return the petition response
-     */
-    @RequestMapping(value = "/help/{section}", method = RequestMethod.GET)
-    public String showDashboardHelp(@PathVariable("section") String section,
-	    Map<String, Object> map, Principal principal,
-	    HttpServletRequest request) {
-	String userMsg = "";
-	if (principal != null) {
-	    userMsg = this.getUserGreeting(principal, request);
-	}
-	map.put("userMsg", userMsg);
-	map.put("section", section);
-	return "helpTemplate";
-    }
+	// /**
+	// * Show section help URL.
+	// *
+	// * @param map
+	// * the map
+	// * @param principal
+	// * the principal
+	// * @param request
+	// * the request
+	// * @return the petition response
+	// */
+	// @RequestMapping(value = "/help/{section}", method = RequestMethod.GET)
+	// public String showDashboardHelp(@PathVariable("section") String section,
+	// Map<String, Object> map, Principal principal,
+	// HttpServletRequest request) {
+	// String userMsg = "";
+	// if (principal != null) {
+	// userMsg = this.getUserGreeting(principal, request);
+	// }
+	// map.put("userMsg", userMsg);
+	// map.put("section", section);
+	// return "helpTemplate";
+	// }
 
 }
