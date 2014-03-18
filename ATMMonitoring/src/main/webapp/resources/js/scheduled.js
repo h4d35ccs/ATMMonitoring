@@ -44,7 +44,7 @@ function initSchedulerCalendar() {
             day:      'día'
         },
         eventRender: function(event, element) {
-            element.find(".fc-event-inner").append("<a style='cursor:pointer;' class='close' onclick=\"deleteConfirmation('terminals/schedules/delete/" + event.id+"',schUpDeleteConfirmation,'#primary','#msgDivId','notification')\"; return false;'><span>delete</span></button>");
+            element.find(".fc-event-inner").append("<a style='cursor:pointer;' class='close' onclick=\"deleteConfirmation('terminals/schedules/delete/" + event.id+"',schUpDeleteConfirmation,'#primary','#notification','notification')\"; return false;'><span>delete</span></button>");
         }
     });
 }

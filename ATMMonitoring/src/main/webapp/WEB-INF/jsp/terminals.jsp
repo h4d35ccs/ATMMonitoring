@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<div  id="contentparent">
-			<div class="content" id="content">
+			<div class="content" id="contentTerminal">
 				<h1>
 					<spring:message code="label.terminals"/>
 				</h1>

@@ -23,19 +23,37 @@ function countOccurences(mainStr, strToCount) {
 	return mainStr.split(strToCount).length;
 }
 /**
+ * Fades a notification after some time
+ * @param msgDivId
+ * @param notificationClass
+ */
+function fadeNotification(msgDivId,notificationClass){
+	alert();
+	$(msgDivId).focus();
+	$(msgDivId).delay( 5000 ).fadeOut("slow", function (){
+		$(msgDivId).empty();
+		$(msgDivId).removeClass(notificationClass);
+	});
+}
+
+/**
  * Load an URL inside an element
  * @param elementID where the content is going to be shown
  * @param url the remote url to show
  */
 function loadInnerSection(elementID, url) {
 	$(elementID).empty();
-	$(elementID).load(url, function() {
-		//		try {
-		initPageJS();
-		//		} catch (err) {
-		//			alert(err);
-		//in case that the initPage is not defined on the page
-		//		}
+	$(elementID).load(url, function(data) {
+		if( !checkForError(data)){
+//			try {
+			
+			initPageJS();
+//			} catch (err) {
+			//			alert(err);
+			//in case that the initPage is not defined on the page
+			//		}
+		}
+
 	});
 }
 
@@ -64,34 +82,52 @@ function loadInnerSectionFromForm(formId, elementID, otherElementID) {
 			.attr("action");
 	// Send the data using post
 	$.post(url, term, function(data) {
+		if( !checkForError(data)){
 		// Put the results in a div
-		var content = $(data).find(otherElementID);
-		$(elementID).empty();
-		$(elementID).append(content);
+			var content = "";
+			if(otherElementID != null){
+//				content = $(data).filter(otherElementID);
+				content = $(otherElementID, data);
+				console.log(content);
+			}else{
+				content = data;
+			}
+				$(elementID).empty();
+				$(elementID).append(content);
+		}
 	});
 }
 /**
- * ets the result of submitting a form and put it on a HTML element and calls the initPagesJS after load
+ * gets the result of submitting a form and put it on a HTML element and calls the initPagesJS after load
  * @param formId
  * @param elementID
  * @param otherElementID
  */
-function loadInnerFromFormAndCallInit(formId, elementID) {
+function loadInnerFromFormAndCallInit(formId, elementID, otherElementID) {
 	
 	// Get some values from elements on the page:
 	var $form = $(formId), term = $form.serializeArray(), url = $form
 			.attr("action");
 	// Send the data using post
 	$.post(url, term, function(data) {
+		if( !checkForError(data)){
+			var content = "";
+			if(otherElementID != null){
+				content = $(data).filter(otherElementID);
+			}else{
+				content = data;
+			}
+		
 		// Put the results in a div
-		$(elementID).empty();
-		$(elementID).append(data);
-//		try {
-			initPageJS();
+			$(elementID).empty();
+			$(elementID).append(content);
+//			try {
+				initPageJS();
 			//		} catch (err) {
 			//			alert(err);
 			//in case that the initPage is not defined on the page
 			//		}
+			}
 	});
 }
 /**
@@ -110,10 +146,13 @@ function loadPostRequestNoResponse(url) {
 function loadPostRequestResponse(url, elementID, otherElementID) {
 
 	$.post(url, function(data) {
+		if( !checkForError(data)){
 		// Put the results in a div
-		var content = $(data).find(otherElementID);
-		$(elementID).empty();
-		$(elementID).append(content);
+			var content = $(data).filter(otherElementID);
+		
+			$(elementID).empty();
+			$(elementID).append(content);
+		}
 	});
 }
 function getDate(today) {
@@ -175,6 +214,33 @@ function changeURLmenu(sectionName) {
 	//	var str = $.param(params);
 	//	alert(str);
 }
+
+function showLoad(loadClass){
+		$("."+loadClass).fadeOut("fast");
+}
+/**
+ * Verify if the execution is an error page
+ * @param data
+ * @returns {Boolean}
+ */
+function checkForError(data){
+	var errorContent = $(data).filter("#error_box");
+	var hasError = false;
+	if(errorContent.length > 0){
+		hasError = true;
+		showError(data);
+	}
+	return hasError;
+}
+/**
+ * puts the error on the page
+ * @param errorData
+ */
+ function showError(errorData){
+	 $("#primary").empty();
+	  $("#primary").append(errorData);
+ }
+ 
 /************************************************* terminals functions ***************************/
 function onLoadModelCB() {
 	var value = $('#ManufacturerCombo').val();
@@ -480,6 +546,7 @@ function deleteConfirmation( url, msg,elementID,msgDivId,notificationClass) {
 	var confirm = window.confirm(msg);
 	if (confirm == true) {
 		loadInnerSection(elementID, url);
+		
 	}else{
 		$(msgDivId).empty();
 		$(msgDivId).removeClass(notificationClass);
@@ -502,4 +569,20 @@ function loadHelpContent(linkId, linkClass, section, elementID) {
 	$(linkId).addClass(linkClass);
 	$(elementID).load(baseHelpUrl + section + ".html");
 
+}
+
+/*********************** my queries ***************************/
+
+function changeRequestParam(formId, elementID, otherElementID,action){
+	var url = $(formId).attr("action");
+	url =  url.split('?')[0];
+	url = url+"?"+$.param({ 'action': action});
+	$(formId).attr('action',url);
+	loadInnerSectionFromForm(formId, elementID, otherElementID);
+}
+
+function deleteQuery(formId, elementID, otherElementID,action, deleteMsg){
+	if(confirm(deleteMsg)){
+		changeRequestParam(formId, elementID, otherElementID,action);
+	}
 }

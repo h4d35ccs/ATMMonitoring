@@ -15,6 +15,9 @@
     <div class="alert">
       <p><spring:message code="label.${error}"/></p>
     </div>
+    <script type="text/javascript">
+    	fadeNotification(msgDivId,notificationClass);
+    </script>
 </c:if>
 <form:form method="post" action="terminals/schedules/list" commandName="scheduledUpdate" id="newScheduled" onSubmit="false">
 
@@ -82,7 +85,7 @@
   </c:forEach>
  </form:select>
 <div class="botonera">
-  <button id="form-submit" class="form-submit" onClick="loadInnerFromFormAndCallInit('#newScheduled', '#primary'); return false;" ><spring:message code="label.scheduledUpdate.addScheduledUpdate"/></button> 
+  <button id="form-submit" class="form-submit" onClick="loadInnerFromFormAndCallInit('#newScheduled', '#primary', null); return false;" ><spring:message code="label.scheduledUpdate.addScheduledUpdate"/></button> 
   <input type="reset" class="btn cancel" value="<spring:message code="label.cancel"/>"/>
 </div>
 </form:form></div></div>

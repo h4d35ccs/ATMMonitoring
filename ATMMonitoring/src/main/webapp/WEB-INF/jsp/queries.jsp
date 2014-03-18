@@ -692,18 +692,19 @@
 							<li><label for="namequery"><spring:message code="label.name"/></label> <form:input type="text" path="name"/></li>
 							<li><label for="descriptionquery"><spring:message code="label.description"/></label> <form:textarea path="description"/></li>
 						</ul>
-						<div class="botonera"><input type="submit" class="save" id="save" name="save" value="<spring:message code="label.save"/>" /></div>
+						<div class="botonera"><button  class="save" id="save" name="save" onclick="changeRequestParam('#query', '#primary', '#queryList','save'); return false;"><spring:message code="label.save"/>" </button></div>
 					</div>
 				</div><!-- /desplegable -->
-				<input type="submit" class="form-submit play" name="execute" id="execute" value="<spring:message code="label.query.execute"/>"/>
-				<input type="submit" class="delete right" name="delete" id="delete" onclick="return confirm('¿Estás seguro que quieres borrar la consulta?')"
-						    <c:if test="${query.id == null}">disabled="disabled"</c:if> value="<spring:message code="label.query.delete"/> "/>
+				<button  class="form-submit play" name="execute" id="execute" onClick="changeRequestParam('#query', '#queryResults', '#content','execute'); return false;"><spring:message code="label.query.execute"/></button>
+				<button  class="delete right" name="delete" id="delete" onClick=" deleteQuery('#query', '#primary', '#queryList','delete','¿Estás seguro que quieres borrar la consulta?'); return false;"
+						    <c:if test="${query.id == null}">disabled="disabled"</c:if>><spring:message code="label.query.delete"/></button>
 				<input type="reset" class="cancel right" value="<spring:message code="label.cancel"/>" />
 				</form:form>
 			</div>
 		</div>
+		<div id="queryResults"></div>
 		<script type="text/javascript">
-		  function initPageJS() {; 
+		  function initPageJS() {
 					<t:queryCbJs query="${query}"/>
 					$('#queryName').val('');
 					displayOnLoad('terminal', 5);
@@ -768,197 +769,4 @@
 			       	 			}${not status1.last ? ',' : ''}
 			       		</c:forEach>
 			    };
-		/* 	    function displayOnLoad(name, maxValue) {
-			    	for (i=maxValue; i>1; i--) {
-			    		if ($('#' + name + 'Combo' + i + '1').val() != '') {
-			    			for (j=1; j<i; j++) {
-				    			showHiddenRow(name, j);
-			    			}
-			    			break;
-			    		}
-			    	}
-			    };
-			    function onLoadValueCB2(entity, maxNumber){
-			    	for (var number = 1; number <= maxNumber; number++) {
-				    	var value = $('#' + entity + 'Combo' + number + '1').val();
-				    	var $cb = $('#' + entity + 'Combo' + number + '2');
-				    	if (value == '') {
-				    		$cb.empty();
-							$cb.append($('<option selected="selected"></option>'));
-				    	} else {
-				    		$cb.prop('disabled', false);
-				    		var values = valuesTree[entity][value].values;
-				    		$('#' + entity + 'Combo' + number + '2 > option').each(function()
-									{
-										if (!(($(this).val() in values) || ($(this).val() == ''))) {
-											$(this).remove();
-										}
-									}
-				    		);
-				    		if ($cb.val() != '') {
-				    			$('#' + entity + 'Field' + number).prop('disabled', false);
-				    		}
-				    	}
-			    	}
-			    };
-			    function onLoadValueCB3(entity, maxNumber){
-			    	for (var number = 1; number <= maxNumber; number++) {
-				    	var value1 = $('#' + entity + 'Combo' + number + '1').val();
-				    	var $cb2 = $('#' + entity + 'Combo' + number + '2');
-				    	var $cb3 = $('#' + entity + 'Combo' + number + '3');
-				    	if (value1 == '') {
-				    		$cb2.empty();
-							$cb2.append($('<option selected="selected"></option>'));
-				    		$cb3.empty();
-							$cb3.append($('<option selected="selected"></option>'));
-				    	} else {
-				    		$cb2.prop('disabled', false);
-				    		var values = valuesTree[entity][value1].values;
-				    		$('#' + entity + 'Combo' + number + '2 > option').each(function()
-									{
-										if (!(($(this).val() in values) || ($(this).val() == ''))) {
-											$(this).remove();
-										}
-									});
-					    	var value2 = $cb2.val();
-					    	if (value2 == '') {
-					    		$cb3.empty();
-								$cb3.append($('<option selected="selected"></option>'));
-					    	} else {
-					    		$cb3.prop('disabled', false);
-					    		values = values[value2].values;
-					    		$('#' + entity + 'Combo' + number + '3 > option').each(function()
-										{
-											if (!(($(this).val() in values) || ($(this).val() == ''))) {
-												$(this).remove();
-											}
-										});
-					    	}
-				    		if ($cb3.val() != '') {
-				    			$('#' + entity + 'Field' + number).prop('disabled', false);
-				    		}
-				    	}
-			    	}
-			    };
-			    function ChangeValue2CB1(entity, number){
-					var $cb = $('#' + entity + 'Combo' + number + '2');
-					$cb.empty();
-					$cb.append($('<option selected="selected"></option>'));
-					if ($('#' + entity + 'Combo' + number + '1').val() != '') {
-						var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values;
-						var keys = $.map(values, function(v, i){
-							  return i;
-							});
-						keys.sort(function(a,b){
-						    var compA = values[a].label;
-						    var compB = values[b].label;
-						    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-						  });
-						$.each(keys, function(index, key) {
-							  $cb.append($('<option/>')
-							     .attr("value", key).text(values[key].label));
-						});
-					    $('#' + entity + 'CB' + number).prop('disabled', false);
-						$cb.prop('disabled', false);
-					} else {
-					    $('#' + entity + 'CB' + number).prop('disabled', true);
-						$cb.prop('disabled', true);
-					};
-				    $('#' + entity + 'Field' + number).prop('disabled', true);
-			    };
-			    function ChangeValue2CB2(entity, number){
-					if ($('#' + entity + 'Combo' + number + '2').val() != '') {
-						if (valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values) {
-						    $('#' + entity + 'Field' + number).prop('disabled', false);
-						} else {
-							$('#' + entity + 'Field' + number).prop('disabled', true);
-						}
-					} else {
-					    $('#' + entity + 'Field' + number).prop('disabled', true);
-					};
-			    };
-			    function ChangeValue3CB1(entity, number){
-					var $cb = $('#' + entity + 'Combo' + number + '2');
-					$cb.empty();
-					$cb.append($('<option selected="selected"></option>'));
-					if ($('#' + entity + 'Combo' + number + '1').val() != '') {
-						var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values;
-						var keys = $.map(values, function(v, i){
-							  return i;
-							});
-						keys.sort(function(a,b){
-						    var compA = values[a].label;
-						    var compB = values[b].label;
-						    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-						  });
-						$.each(keys, function(index, key) {
-							  $cb.append($('<option/>')
-							     .attr("value", key).text(values[key].label));
-						});
-					    $('#' + entity + 'CB' + number).prop('disabled', false);
-						$cb.prop('disabled', false);
-					} else {
-						$cb.prop('disabled', true);
-					};
-					$('#' + entity + 'Combo' + number + '3').prop('disabled', true);
-				    $('#' + entity + 'CB' + number).prop('disabled', true);
-				    $('#' + entity + 'Field' + number).prop('disabled', true);
-			    };
-			    function ChangeValue3CB2(entity, number){
-					var $cb = $('#' + entity + 'Combo' + number + '3');
-					$cb.empty();
-					$cb.append($('<option selected="selected"></option>'));
-					if ($('#' + entity + 'Combo' + number + '2').val() != '') {
-						var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values
-						var keys = $.map(values, function(v, i){
-							  return i;
-							});
-						keys.sort(function(a,b){
-						    var compA = values[a].label;
-						    var compB = values[b].label;
-						    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-						  });
-						$.each(keys, function(index, key) {
-							  $cb.append($('<option/>')
-							     .attr("value", key).text(values[key].label));
-						});
-					    $('#' + entity + 'CB' + number).prop('disabled', false);
-						$cb.prop('disabled', false);
-					} else {
-					    $('#' + entity + 'CB' + number).prop('disabled', true);
-						$cb.prop('disabled', true);
-					};
-				    $('#' + entity + 'Field' + number).prop('disabled', true);
-			    };
-			    function ChangeValue3CB3(entity, number){
-					if ($('#' + entity + 'Combo' + number + '3').val() != '') {
-						if (valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values[$('#' + entity + 'Combo' + number + '3').val()].values) {
-						    $('#' + entity + 'Field' + number).prop('disabled', false);
-						} else {
-							$('#' + entity + 'Field' + number).prop('disabled', true);
-						}
-					} else {
-					    $('#' + entity + 'Field' + number).prop('disabled', true);
-					};
-			    };
-			    function checkSaveExecute() {
-			    	if ($('#queryName').val().length > 0) {
-			    		if ($("#save_execute").button("option", "disabled")) {
-			    			$("#save_execute").button("option", "disabled", false);
-			    		}
-			    	} else {
-			    		if (!$("#save_execute").button("option", "disabled")) {
-			    			$("#save_execute").button("option", "disabled", true);
-			    		}
-			    	}
-			    }
-			    function showHiddenRow(name, rowNumber) {
-			    	$('#' + name + 'Row' + (rowNumber + 1)).removeClass('hidden');
-			    	$('#' + name + 'ShowButton' + rowNumber).addClass('hidden');
-			    }
-			    function userQuerySelected()
-			    {
-			    	document.userQueriesForm.submit();
-			    } */
 		    </script>
-		</div>

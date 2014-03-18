@@ -20,6 +20,9 @@
   <div class="notification" id="notification">
     <p><spring:message code="${success}" /></p>
   </div>
+  <script type="text/javascript">
+  	fadeNotification("#notification","notification");
+  </script>
   </c:if>
   </div>
 <div id="header_g">
@@ -36,7 +39,6 @@
 	  </nav>
 	</div>
 </div>
-
 <div id="schedulerList" class="scheduler hide">
 <div class="box">
 <h2><spring:message code="label.weeklyScheduledUpdates"/></h2>
@@ -103,7 +105,7 @@
         <td width="50px" class="center-cell">${scheduledUpdate.completeHour}</td>
         <td width="100px" class="center-cell">${scheduledUpdate.query.name}</td>
 		<td width="90px" class="center-cell">
-			<button onClick="deleteConfirmation('terminals/schedules/delete/${scheduledUpdate.id}',schUpDeleteConfirmation,'#primary','#msgDivId','notification')" class="form-submit delete right"><spring:message code="label.scheduledUpdate.deleteScheduledUpdate"/></button>
+			<button onClick="deleteConfirmation('terminals/schedules/delete/${scheduledUpdate.id}',schUpDeleteConfirmation,'#primary','#notification','notification')" class="form-submit delete right"><spring:message code="label.scheduledUpdate.deleteScheduledUpdate"/></button>
 		</td>
     </tr>
 </c:forEach>

@@ -10,7 +10,7 @@
 			<script type="text/javascript">
 					$(window).load(function() {
 						$(".loader").fadeOut("fast");
-					});
+					}); 
 			</script>
 	    <script type='text/javascript' src="resources/js/jquery-ui.min.js"></script>
 	    <script type='text/javascript' src="resources/js/jquery.ui.touch-punch.min.js"></script>
@@ -27,18 +27,16 @@
         <script type="text/javascript" src="resources/js/fullcalendar.min.js"></script>
     	<script type="text/javascript" src="resources/js/scheduled.js"></script>
 		<script type='text/javascript' src="resources/js/elementClusterer.js" type="text/javascript"></script>
+
 	 	<script type="text/javascript">
 	 	 	google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});   
-
 	 	 	var Timeline_urlPrefix = 'resources/timeline/api/';
 			var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';
-			//varialbes for headers or dialogs that depends on spring
-			
+			//variables for headers or dialogs that depends on spring
 			var schUpDeleteConfirmation ="<spring:message code="label.scheduledUpdate.confirmDeletion"/>";
-
-			
     	</script>
     	<script type='text/javascript' src="resources/js/application.js"></script>
+    	<script type="text/javascript" src="resources/js/purl.js"></script>
         <title><spring:message code="label.baseTitle"/></title>   
         <!--[if lt IE 9]>
         <script type="text/javascript">
