@@ -9,7 +9,7 @@
          <script src="resources/js/jquery-1.8.3.min.js"></script>
 			<script type="text/javascript">
 					$(window).load(function() {
-						$(".loader").fadeOut("fast");
+						$(".loader").fadeOut("slow");
 					}); 
 			</script>
 	    <script type='text/javascript' src="resources/js/jquery-ui.min.js"></script>
@@ -34,6 +34,8 @@
 			var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';
 			//variables for headers or dialogs that depends on spring
 			var schUpDeleteConfirmation ="<spring:message code="label.scheduledUpdate.confirmDeletion"/>";
+			var terminalsUpdate = "<spring:message code="label.terminal.requestSnmpUpdateFrameTitle"/>";
+			var terminalsUpdateError = "<spring:message code="label.terminal.error.requestSnmpUpdate"/>";
     	</script>
     	<script type='text/javascript' src="resources/js/application.js"></script>
     	<script type="text/javascript" src="resources/js/purl.js"></script>

@@ -13,10 +13,10 @@
 	  <div class="content">
 	    <h1><spring:message code="label.queries.mine"/></h1>
 	    <div class="botonera">
-	      <a href="queries/create" class="btn right"><spring:message code="label.query.new"/></a>
+	      <button onclick="loadInnerSection('#primary','queries/create')" class="btn right"><spring:message code="label.query.new"/></button>
 	    </div>
 	    <c:if test="${success != null}">
-	       <div id="notificationDiv" class="notification"><p><spring:message code="${success}"/>:)</p>
+	       <div id="notificationDiv" class="notification"><p><spring:message code="${success}"/></p>
 	       <script type="text/javascript">
 	       		fadeNotification("#notificationDiv","notification");
 	       </script>
@@ -32,16 +32,16 @@
 	    <div id="pagTable">
 	      <table class="link">
 				<tr>
+				<%-- deleteQueryIcon('#primary','queries/delete?queryId=${query.id}', '¿Estás seguro que quieres borrar la consulta?') --%>
 			          <th><spring:message code="label.query.name"/></th>
 			          <th><spring:message code="label.creationDate"/></th>
 			          <th><spring:message code="label.description"/></th>
 				</tr>
-				
 				<c:forEach items="${pagedListHolder.pageList}" var="query">
-				  <tr class="queryRow" onclick="loadInnerSection('#primary','queries/show?queryId=${query.id}')">
+				  <tr class="queryRow"  data-query-id="${query.id}">
 				    <td class="editable w33, clickeableMenu">
 			              <div class="relative">
-					<div class="icons_action"><a href="#" class="delete" data-query-id="${query.id}"><span><spring:message code="label.delete"/></span></a></div>
+					<div class="icons_action"><a class="delete" data-query-id="${query.id}"><span><spring:message code="label.delete"/></span></a></div>
 					<a onclick="loadInnerSection('#primary','queries/show?queryId=${query.id}')">${query.name}</a></div></td>
 			            <td class="nowrap">${query.creationDateShort}</td>
 			            <td>${query.description}</td>
@@ -65,16 +65,17 @@
 	        $("tr.queryRow").click(function(event) {
 	            event.preventDefault();
 	            var queryId = $(this).data('queryId');
-	            window.location.assignWithBase("queries/show?queryId=" + queryId);
+	            loadInnerSection("#primary","queries/show?queryId="+ queryId);
 	        });
 	
 	        $(".delete").click(function(event) {
 	            event.stopPropagation();
 	            event.preventDefault();
 	            var queryId= $(this).data('queryId');
-	            if (confirm('¿Estás seguro que quieres borrar la consulta?')) {
+	            /* if (confirm('¿Estás seguro que quieres borrar la consulta?')) {
 	                window.location.assignWithBase("queries/delete?queryId=" + queryId);
-	            }
+	            } */
+	            deleteQueryIcon("#primary","queries/delete?queryId="+ queryId, "¿Estás seguro que quieres borrar la consulta?");
 	        });
 	    }
 	  </script>

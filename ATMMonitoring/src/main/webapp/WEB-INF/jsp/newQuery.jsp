@@ -1,12 +1,4 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@page pageEncoding="UTF-8"%>
-
-<t:osoco-wrapper titleCode="label.queryEngine" userMsg="${userMsg}"  section="terminals">
-
+<%@include file="includes/JspImports.jsp"%>
 				<div id="header_g">
 					<nav id="breadcrumb">
 						<ul>
@@ -19,7 +11,6 @@
 						</ul>
 					</nav>
 				</div>
-
 				<div class="content">
 	<h1><spring:message code="label.query.new"/></h1>
 	<div class="botonera"><a href="queries" class="btn back left"><spring:message code="label.query.return"/></a></div>
@@ -71,7 +62,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="terminalShowButton${i}" onclick="showHiddenRow('terminal', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="terminalShowButton${i}" onclick="showHiddenRow('terminal', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -140,7 +131,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="hardwareDeviceShowButton${i}" onclick="showHiddenRow('hardwareDevice', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="hardwareDeviceShowButton${i}" onclick="showHiddenRow('hardwareDevice', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -193,7 +184,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="financialDeviceShowButton${i}" onclick="showHiddenRow('financialDevice', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="financialDeviceShowButton${i}" onclick="showHiddenRow('financialDevice', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -246,7 +237,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="xfsComponentShowButton${i}" onclick="showHiddenRow('xfsComponent', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="xfsComponentShowButton${i}" onclick="showHiddenRow('xfsComponent', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -299,7 +290,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="jxfsComponentShowButton${i}" onclick="showHiddenRow('jxfsComponent', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="jxfsComponentShowButton${i}" onclick="showHiddenRow('jxfsComponent', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -357,7 +348,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="operatingSystemShowButton${i}" onclick="showHiddenRow('operatingSystem', ${i})"  class="btn add"><span>AÃ±adir</span></div>
+											<div id="operatingSystemShowButton${i}" onclick="showHiddenRow('operatingSystem', ${i})"  class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -410,7 +401,7 @@
 										</td>
 									<c:if test="${!status.last}">
 										<td class="btn_add">
-											<div id="internetExplorerShowButton${i}" onclick="showHiddenRow('internetExplorer', ${i})" class="btn add"><span>AÃ±adir</span></div>
+											<div id="internetExplorerShowButton${i}" onclick="showHiddenRow('internetExplorer', ${i})" class="btn add"><span>Añadir</span></div>
 										</td>
 									</c:if>
 									<c:if test="${status.last}">
@@ -425,24 +416,16 @@
 			<table class="query-form">
 				<tr>
 					<th>
-
 						<spring:message code="label.query.field"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.not"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.comparison"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.value"/>
-
 					</th>
 					<th></th>
 				</tr>
@@ -471,7 +454,7 @@
 							</td>
 						<c:if test="${!status.last}">
 							<td class="btn_add">
-								<div id="hotfixShowButton${i}" onclick="showHiddenRow('hotfix', ${i})" class="btn add"><span>AÃ±adir</span></div>
+								<div id="hotfixShowButton${i}" onclick="showHiddenRow('hotfix', ${i})" class="btn add"><span>Añadir</span></div>
 							</td>
 						</c:if>
 						<c:if test="${status.last}">
@@ -486,24 +469,16 @@
 			<table class="query-form">
 				<tr>
 					<th>
-
 						<spring:message code="label.query.field"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.not"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.comparison"/>
-
 					</th>
 					<th>
-
 						<spring:message code="label.query.value"/>
-
 					</th>
 					<th></th>
 				</tr>
@@ -533,7 +508,7 @@
 						</td>
 					<c:if test="${!status.last}">
 						<td class="btn_add">
-							<div id="softwareShowButton${i}" onclick="showHiddenRow('software', ${i})"  class="btn add"><span>AÃ±adir</span></div>
+							<div id="softwareShowButton${i}" onclick="showHiddenRow('software', ${i})"  class="btn add"><span>Añadir</span></div>
 						</td>
 					</c:if>
 					<c:if test="${status.last}">
@@ -587,7 +562,7 @@
 					</td>
 				<c:if test="${!status.last}">
 					<td class="btn_add">
-						<div id="featSwShowButton${i}" onclick="showHiddenRow('featSw', ${i})" class="btn add"><span>AÃ±adir</span></div>
+						<div id="featSwShowButton${i}" onclick="showHiddenRow('featSw', ${i})" class="btn add"><span>Añadir</span></div>
 					</td>
 				</c:if>
 				<c:if test="${status.last}">
@@ -602,24 +577,16 @@
 		<table class="query-form">
 		<tr>
 			<th>
-
 				<spring:message code="label.query.field"/>
-
 			</th>
 			<th>
-
 				<spring:message code="label.query.not"/>
-
 			</th>
 			<th>
-
 				<spring:message code="label.query.comparison"/>
-
 			</th>
 			<th>
-
 				<spring:message code="label.query.value"/>
-
 			</th>
 			<th></th>
 		</tr>
@@ -649,7 +616,7 @@
 				</td>
 			<c:if test="${!status.last}">
 				<td class="btn_add">
-					<div id="xfsSwShowButton${i}" onclick="showHiddenRow('xfsSw', ${i})" class="add btn"><span>AÃ±adir</span></div>
+					<div id="xfsSwShowButton${i}" onclick="showHiddenRow('xfsSw', ${i})" class="add btn"><span>Añadir</span></div>
 				</td>
 			</c:if>
 			<c:if test="${status.last}">
@@ -665,36 +632,18 @@
 			<div class="hide collapsible">
 				<ul>
 					<li><label for="namequery">Nombre</label> <form:input type="text" path="name"/></li>
-					<li><label for="descriptionquery">DescripciÃ³n</label> <form:textarea path="description"/></li>
+					<li><label for="descriptionquery">Descripción</label> <form:textarea path="description"/></li>
 				</ul>
-				<div class="botonera"><input type="submit" id="save" name="save" class="save" value="<spring:message code="label.save"/>" /></div>
+				<div class="botonera"><button  class="save" id="save" name="save" onclick="changeRequestParam('#query', '#primary', '#queryList','save'); return false;"><spring:message code="label.save"/>" </button></div>
 			</div>
 		</div><!-- /desplegable -->
-
-		<input type="submit" class="form-submit play" name="execute" id="execute" value="<spring:message code="label.query.execute"/>"/>
+		<button  class="form-submit play" name="execute" id="execute" onClick="changeRequestParam('#query', '#queryResults', '#content','execute'); return false;"><spring:message code="label.query.execute"/></button>
 		<input type="reset" class="cancel right" value="<spring:message code="label.cancel"/>" />
 	</div>
-
 </form:form>
-
-
 </div>
+<div id="queryResults"></div>
 <script type="text/javascript">
-	    $(document).ready(function(){
-			<t:queryCbJs query="${query}"/>
-			$('#queryName').val('');
-			displayOnLoad('terminal', 5);
-			displayOnLoad('hardwareDevice', 5);
-			displayOnLoad('financialDevice', 5);
-			displayOnLoad('xfsComponent', 5);
-			displayOnLoad('jxfsComponent', 5);
-			displayOnLoad('operatingSystem', 5);
-			displayOnLoad('internetExplorer', 2);
-			displayOnLoad('hotfix', 5);
-			displayOnLoad('software', 5);
-			displayOnLoad('featSw', 5);
-			displayOnLoad('xfsSw', 5);
-		});
 	    var valuesTree = {
 	        	<c:forEach items="${values.keySet()}" var="key" varStatus="status1">
 	        		<c:set var="value" value="${values.get(key)}"/>
@@ -734,139 +683,21 @@
 	       	 			}${not status1.last ? ',' : ''}
 	       		</c:forEach>
 	    };
-	    function displayOnLoad(name, maxValue) {
-	    	for (i=maxValue; i>1; i--) {
-	    		if ($('#' + name + 'Combo' + i + '1').val() != '') {
-	    			for (j=1; j<i; j++) {
-		    			showHiddenRow(name, j);
-	    			}
-	    			break;
-	    		}
-	    	}
-	    };
-	    function ChangeValue2CB1(entity, number){
-			var $cb = $('#' + entity + 'Combo' + number + '2');
-			$cb.empty();
-			$cb.append($('<option selected="selected"></option>'));
-			if ($('#' + entity + 'Combo' + number + '1').val() != '') {
-				var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values;
-				var keys = $.map(values, function(v, i){
-					  return i;
-					});
-				keys.sort(function(a,b){
-				    var compA = values[a].label;
-				    var compB = values[b].label;
-				    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-				  });
-				$.each(keys, function(index, key) {
-					  $cb.append($('<option/>')
-					     .attr("value", key).text(values[key].label));
-				});
-			    $('#' + entity + 'CB' + number).prop('disabled', false);
-				$cb.prop('disabled', false);
-			} else {
-			    $('#' + entity + 'CB' + number).prop('disabled', true);
-				$cb.prop('disabled', true);
-			};
-		    $('#' + entity + 'Field' + number).prop('disabled', true);
-	    };
-	    function ChangeValue2CB2(entity, number){
-			if ($('#' + entity + 'Combo' + number + '2').val() != '') {
-				if (valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values) {
-				    $('#' + entity + 'Field' + number).prop('disabled', false);
-				} else {
-					$('#' + entity + 'Field' + number).prop('disabled', true);
-				}
-			} else {
-			    $('#' + entity + 'Field' + number).prop('disabled', true);
-			};
-	    };
-	    function ChangeValue3CB1(entity, number){
-			var $cb = $('#' + entity + 'Combo' + number + '2');
-			$cb.empty();
-			$cb.append($('<option selected="selected"></option>'));
-			if ($('#' + entity + 'Combo' + number + '1').val() != '') {
-				var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values;
-				var keys = $.map(values, function(v, i){
-					  return i;
-					});
-				keys.sort(function(a,b){
-				    var compA = values[a].label;
-				    var compB = values[b].label;
-				    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-				  });
-				$.each(keys, function(index, key) {
-					  $cb.append($('<option/>')
-					     .attr("value", key).text(values[key].label));
-				});
-			    $('#' + entity + 'CB' + number).prop('disabled', false);
-				$cb.prop('disabled', false);
-			} else {
-				$cb.prop('disabled', true);
-			};
-			$('#' + entity + 'Combo' + number + '3').prop('disabled', true);
-		    $('#' + entity + 'CB' + number).prop('disabled', true);
-		    $('#' + entity + 'Field' + number).prop('disabled', true);
-	    };
-	    function ChangeValue3CB2(entity, number){
-			var $cb = $('#' + entity + 'Combo' + number + '3');
-			$cb.empty();
-			$cb.append($('<option selected="selected"></option>'));
-			if ($('#' + entity + 'Combo' + number + '2').val() != '') {
-				var values = valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values
-				var keys = $.map(values, function(v, i){
-					  return i;
-					});
-				keys.sort(function(a,b){
-				    var compA = values[a].label;
-				    var compB = values[b].label;
-				    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-				  });
-				$.each(keys, function(index, key) {
-					  $cb.append($('<option/>')
-					     .attr("value", key).text(values[key].label));
-				});
-			    $('#' + entity + 'CB' + number).prop('disabled', false);
-				$cb.prop('disabled', false);
-			} else {
-			    $('#' + entity + 'CB' + number).prop('disabled', true);
-				$cb.prop('disabled', true);
-			};
-		    $('#' + entity + 'Field' + number).prop('disabled', true);
-	    };
-	    function ChangeValue3CB3(entity, number){
-			if ($('#' + entity + 'Combo' + number + '3').val() != '') {
-				if (valuesTree[entity][$('#' + entity + 'Combo' + number + '1').val()].values[$('#' + entity + 'Combo' + number + '2').val()].values[$('#' + entity + 'Combo' + number + '3').val()].values) {
-				    $('#' + entity + 'Field' + number).prop('disabled', false);
-				} else {
-					$('#' + entity + 'Field' + number).prop('disabled', true);
-				}
-			} else {
-			    $('#' + entity + 'Field' + number).prop('disabled', true);
-			};
-	    };
-	    function checkSaveExecute() {
-	    	if ($('#queryName').val().length > 0) {
-	    		if ($("#save_execute").button("option", "disabled")) {
-	    			$("#save_execute").button("option", "disabled", false);
-	    		}
-	    	} else {
-	    		if (!$("#save_execute").button("option", "disabled")) {
-	    			$("#save_execute").button("option", "disabled", true);
-	    		}
-	    	}
-	    }
-	    function showHiddenRow(name, rowNumber) {
-	    	$('#' + name + 'Row' + (rowNumber + 1)).removeClass('hidden');
-	    	$('#' + name + 'ShowButton' + rowNumber).addClass('hidden');
-	    }
-	    function userQuerySelected()
-	    {
-	    	document.userQueriesForm.submit();
-	    }
+	    function initPageJS() {
+			<t:queryCbJs query="${query}"/>
+			$('#queryName').val('');
+			displayOnLoad('terminal', 5);
+			displayOnLoad('hardwareDevice', 5);
+			displayOnLoad('financialDevice', 5);
+			displayOnLoad('xfsComponent', 5);
+			displayOnLoad('jxfsComponent', 5);
+			displayOnLoad('operatingSystem', 5);
+			displayOnLoad('internetExplorer', 2);
+			displayOnLoad('hotfix', 5);
+			displayOnLoad('software', 5);
+			displayOnLoad('featSw', 5);
+			displayOnLoad('xfsSw', 5);
+		}
     </script>
-					</div><!-- /collapsible -->
-
+	</div><!-- /collapsible -->
 </div>
-
-</t:osoco-wrapper>

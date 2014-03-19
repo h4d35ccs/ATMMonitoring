@@ -4,7 +4,8 @@ function defaultInitTabs() {
 	$('.sub_nav li').removeClass('current');
 	$('.sub_nav li:first').addClass('current'); // activo el primer tab
 	$('.sub_nav li').click(function(event) {
-		$('.sub_nav li').removeClass('current'); // borro estilo current de todos los li
+		$('.sub_nav li').removeClass('current'); // borro estilo current de
+		// todos los li
 		$(this).addClass('current');
 		var tab_click = $('.sub_nav li').index(this);
 		$('#tabs .content_tab').hide();
@@ -24,34 +25,38 @@ function countOccurences(mainStr, strToCount) {
 }
 /**
  * Fades a notification after some time
+ * 
  * @param msgDivId
  * @param notificationClass
  */
-function fadeNotification(msgDivId,notificationClass){
-	alert();
+function fadeNotification(msgDivId, notificationClass) {
+
 	$(msgDivId).focus();
-	$(msgDivId).delay( 5000 ).fadeOut("slow", function (){
-		$(msgDivId).empty();
+	$(msgDivId).delay(10000).fadeOut("slow", function() {
+    	$(msgDivId).empty();
 		$(msgDivId).removeClass(notificationClass);
 	});
 }
 
 /**
  * Load an URL inside an element
- * @param elementID where the content is going to be shown
- * @param url the remote url to show
+ * 
+ * @param elementID
+ *            where the content is going to be shown
+ * @param url
+ *            the remote url to show
  */
 function loadInnerSection(elementID, url) {
 	$(elementID).empty();
 	$(elementID).load(url, function(data) {
-		if( !checkForError(data)){
-//			try {
-			
+		if (!checkForError(data)) {
+			// try {
+
 			initPageJS();
-//			} catch (err) {
-			//			alert(err);
-			//in case that the initPage is not defined on the page
-			//		}
+			// } catch (err) {
+			// alert(err);
+			// in case that the initPage is not defined on the page
+			// }
 		}
 
 	});
@@ -59,9 +64,13 @@ function loadInnerSection(elementID, url) {
 
 /**
  * Load an URL inside an element
- * @param link where the click is made
- * @param elementID where the content is going to be shown
- * @param url the remote url to show
+ * 
+ * @param link
+ *            where the click is made
+ * @param elementID
+ *            where the content is going to be shown
+ * @param url
+ *            the remote url to show
  */
 function loadInnerSectionMenu(link, elementID, url, segmentId) {
 
@@ -71,67 +80,51 @@ function loadInnerSectionMenu(link, elementID, url, segmentId) {
 }
 /**
  * Gets the result of submitting a form and put it on a HTML element
- * @param formId id of the form
- * @param elementID parent element where the result of the query will be put
- * @param otherElementID result to be put inside the parent
- */
-function loadInnerSectionFromForm(formId, elementID, otherElementID) {
-
-	// Get some values from elements on the page:
-	var $form = $(formId), term = $form.serializeArray(), url = $form
-			.attr("action");
-	// Send the data using post
-	$.post(url, term, function(data) {
-		if( !checkForError(data)){
-		// Put the results in a div
-			var content = "";
-			if(otherElementID != null){
-//				content = $(data).filter(otherElementID);
-				content = $(otherElementID, data);
-				console.log(content);
-			}else{
-				content = data;
-			}
-				$(elementID).empty();
-				$(elementID).append(content);
-		}
-	});
-}
-/**
- * gets the result of submitting a form and put it on a HTML element and calls the initPagesJS after load
+ * 
  * @param formId
+ *            id of the form
  * @param elementID
+ *            parent element where the result of the query will be put
  * @param otherElementID
+ *            result to be put inside the parent
  */
-function loadInnerFromFormAndCallInit(formId, elementID, otherElementID) {
-	
+function loadInnerSectionFromForm(formId, elementID) {
 	// Get some values from elements on the page:
 	var $form = $(formId), term = $form.serializeArray(), url = $form
 			.attr("action");
-	// Send the data using post
-	$.post(url, term, function(data) {
-		if( !checkForError(data)){
-			var content = "";
-			if(otherElementID != null){
-				content = $(data).filter(otherElementID);
-			}else{
-				content = data;
-			}
-		
-		// Put the results in a div
-			$(elementID).empty();
-			$(elementID).append(content);
-//			try {
-				initPageJS();
-			//		} catch (err) {
-			//			alert(err);
-			//in case that the initPage is not defined on the page
-			//		}
-			}
+	$(elementID).load(url, term, function(data) {
+
+		if (!checkForError(data)) {
+			// try {
+
+			initPageJS();
+			// } catch (err) {
+			// alert(err);
+			// in case that the initPage is not defined on the page
+			// }
+		}
+
 	});
+	// Send the data using post
+	// $.post(url, term, function(data) {
+	// if( !checkForError(data)){
+	// // Put the results in a div
+	// var content = "";
+	// if(otherElementID != null){
+	// // content = $(data).filter(otherElementID);
+	// content = $(otherElementID, data);
+	// console.log(content);
+	// }else{
+	// content = data;
+	// }
+	// $(elementID).empty();
+	// $(elementID).append(content);
+	// }
+	// });
 }
 /**
  * Calls a controller and do not expect an answer
+ * 
  * @param url
  */
 function loadPostRequestNoResponse(url) {
@@ -139,6 +132,7 @@ function loadPostRequestNoResponse(url) {
 }
 /**
  * Calls a controller and expects an response
+ * 
  * @param url
  * @param elementID
  * @param otherElementID
@@ -146,10 +140,10 @@ function loadPostRequestNoResponse(url) {
 function loadPostRequestResponse(url, elementID, otherElementID) {
 
 	$.post(url, function(data) {
-		if( !checkForError(data)){
-		// Put the results in a div
+		if (!checkForError(data)) {
+			// Put the results in a div
 			var content = $(data).filter(otherElementID);
-		
+
 			$(elementID).empty();
 			$(elementID).append(content);
 		}
@@ -158,7 +152,7 @@ function loadPostRequestResponse(url, elementID, otherElementID) {
 function getDate(today) {
 
 	var dd = today.getDate();
-	var mm = today.getMonth() + 1; //January is 0!
+	var mm = today.getMonth() + 1; // January is 0!
 	var yyyy = today.getFullYear();
 
 	if (dd < 10) {
@@ -171,8 +165,8 @@ function getDate(today) {
 	return today;
 }
 /**
- * clock and dateto show on the app
- * base code taken from : http://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock
+ * clock and dateto show on the app base code taken from :
+ * http://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock
  */
 function clock() {
 	var today = new Date();
@@ -196,7 +190,107 @@ function checkTime(i) {
 	return i;
 }
 /**
+ * Calls an controller to init a task such an update
+ * @param url
+ * @param data
+ * @param methodType POST or GET
+ * @param msgElementId
+ * @param msgClass
+ * @param msgClassError
+ * @param msg
+ * @param errorMsg
+ */
+function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
+		msg, errorMsg) {
+	$.ajax({
+		url : url, // JQuery loads serverside.php
+		data : data, // Send value of the clicked button
+		type : methodType,// we post or get the value
+		dataType : 'json', // Choosing a JSON datatype
+		success : function(data) { // Variable data contains the data we get
+			// from servers
+			$(msgElementId).empty();
+			//because of fade animation can have style display none
+			var attr =  $(msgElementId).attr("style"); 
+			if (typeof attr !== 'undefined' && attr !== false){
+				
+				$(msgElementId).removeAttr("style");
+			}
+			
+			console.log($(msgElementId));
+			var msgClassToAdd = "";
+			var msgContent = "";
+
+			if (data.response == "success") {
+
+				msgClassToAdd = msgClass;
+				msgContent = msg;
+
+			} else if (data.response == "error") {
+
+				msgClassToAdd = msgClassError;
+				msgContent = errorMsg;
+			}
+			// shows the notification
+			$(msgElementId).append("<p>"+msgContent+"<p>");
+			$(msgElementId).addClass(msgClassToAdd);
+			console.log($(msgElementId));
+			fadeNotification(msgElementId, msgClassToAdd);
+			console.log($(msgElementId));
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			$(msgElementId).append(errorMsg + " " + xhr.status);
+			$(msgElementId).addClass("<p>"+msgClassError+"<p>");
+			fadeNotification(msgElementId, msgClassError);
+		}
+
+	});
+}
+/**
+ * Gets the image to show in the atm details
+ * @param url
+ * @param imgElementId
+ * @param methodType
+ * @param manFPicPath
+ * @param noFotoPath
+ * @param imgLoaderId
+ */
+function getAtmPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId) {
+	var  noPhoto = "no_photo.png";
+	$(imgLoaderId).show();
+	$.ajax({
+		url : url, // JQuery loads serverside.php 
+		type : methodType,// we post or get the value
+		dataType : 'json', // Choosing a JSON datatype
+		success : function(data) {
+			//i make sure that the element has no picture
+			$(imgElementId).attr("src","");
+			
+			if(data.imagetype == "atm" ){
+				
+				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
+			
+			}else if(data.imagetype == "manufacturer"){
+				
+				$(imgElementId).attr("src",manFPicPath+data.imagename);
+				
+			}else if(data.imagetype == "nophoto"){
+				
+				$(imgElementId).attr("src",noFotoPath+noPhoto);
+			}
+			
+			$(imgLoaderId).hide();
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			$(imgElementId).attr("src",noFotoPath+noPhoto);
+			$(imgLoaderId).hide();
+		}
+
+	});
+}
+/**
  * Returns the value of a URL query param
+ * 
  * @param name
  * @returns
  */
@@ -210,23 +304,24 @@ function getParameterByName(name) {
 }
 
 function changeURLmenu(sectionName) {
-	//	var params = { "section": sectionName};
-	//	var str = $.param(params);
-	//	alert(str);
+	// var params = { "section": sectionName};
+	// var str = $.param(params);
+	// alert(str);
 }
 
-function showLoad(loadClass){
-		$("."+loadClass).fadeOut("fast");
+function showLoad(loadClass) {
+	$("." + loadClass).fadeOut("slow");
 }
 /**
  * Verify if the execution is an error page
+ * 
  * @param data
  * @returns {Boolean}
  */
-function checkForError(data){
+function checkForError(data) {
 	var errorContent = $(data).filter("#error_box");
 	var hasError = false;
-	if(errorContent.length > 0){
+	if (errorContent.length > 0) {
 		hasError = true;
 		showError(data);
 	}
@@ -234,14 +329,18 @@ function checkForError(data){
 }
 /**
  * puts the error on the page
+ * 
  * @param errorData
  */
- function showError(errorData){
-	 $("#primary").empty();
-	  $("#primary").append(errorData);
- }
- 
-/************************************************* terminals functions ***************************/
+function showError(errorData) {
+	$("#primary").empty();
+	$("#primary").append(errorData);
+}
+
+/**
+ * ****************terminals functions
+ * **********************************
+ */
 function onLoadModelCB() {
 	var value = $('#ManufacturerCombo').val();
 	var $cb = $('#ModelsCombo');
@@ -257,9 +356,9 @@ function onLoadModelCB() {
 		});
 	}
 	if (!$cb.val()) {
-		var photoUrl = valuesTree[value]['photoUrl'];
-		$('.photo a').attr("href", photoUrl);
-		$('.photo img').attr("src", photoUrl);
+//		var photoUrl = valuesTree[value]['photoUrl'];
+//		$('.photo a').attr("href", photoUrl);
+//		$('.photo img').attr("src", photoUrl);
 	}
 };
 
@@ -327,9 +426,9 @@ function ChangeModel() {
 				'terminals/models/image/' + $cb1.val() + '?width=200');
 	}
 	if (!$cb1.val()) {
-		var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
-		$('.photo a').attr("href", photoUrl);
-		$('.photo img').attr("src", photoUrl);
+//		var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
+//		$('.photo a').attr("href", photoUrl);
+//		$('.photo img').attr("src", photoUrl);
 	}
 };
 
@@ -337,7 +436,10 @@ function requestSnmpUpdate() {
 	window.location.assignWithBase("terminals/request/${terminal.id}");
 }
 
-/************************************************* queries functions ***************************/
+/**
+ * ******** queries functions
+ * **************************
+ */
 function displayOnLoad(name, maxValue) {
 	for (i = maxValue; i > 1; i--) {
 		if ($('#' + name + 'Combo' + i + '1').val() != '') {
@@ -540,20 +642,20 @@ function userQuerySelected() {
 	document.userQueriesForm.submit();
 }
 
-/***************************Scheduled update********************************/
+/** *************************Scheduled update******************************* */
 
-function deleteConfirmation( url, msg,elementID,msgDivId,notificationClass) {
+function deleteConfirmation(url, msg, elementID, msgDivId, notificationClass) {
 	var confirm = window.confirm(msg);
 	if (confirm == true) {
 		loadInnerSection(elementID, url);
-		
-	}else{
+
+	} else {
 		$(msgDivId).empty();
 		$(msgDivId).removeClass(notificationClass);
 	}
 };
 
-/***************************help********************/
+/** *************************help******************* */
 /**
  * Loads the inner content for the help section
  */
@@ -571,18 +673,37 @@ function loadHelpContent(linkId, linkClass, section, elementID) {
 
 }
 
-/*********************** my queries ***************************/
-
-function changeRequestParam(formId, elementID, otherElementID,action){
+/** ********************* my queries ************************** */
+/**
+ * Submit the query form and adds a param to execute an especific action such as
+ * execute or delete
+ */
+function changeRequestParam(formId, elementID, otherElementID, action) {
 	var url = $(formId).attr("action");
-	url =  url.split('?')[0];
-	url = url+"?"+$.param({ 'action': action});
-	$(formId).attr('action',url);
+	url = url.split('?')[0];
+	url = url + "?" + $.param({
+		'action' : action
+	});
+	$(formId).attr('action', url);
 	loadInnerSectionFromForm(formId, elementID, otherElementID);
 }
+/**
+ * Deletes a query from the details page
+ * 
+ * @param formId
+ * @param elementID
+ * @param otherElementID
+ * @param action
+ * @param deleteMsg
+ */
+function deleteQuery(formId, elementID, otherElementID, action, deleteMsg) {
+	if (confirm(deleteMsg)) {
+		changeRequestParam(formId, elementID, otherElementID, action);
+	}
+}
 
-function deleteQuery(formId, elementID, otherElementID,action, deleteMsg){
-	if(confirm(deleteMsg)){
-		changeRequestParam(formId, elementID, otherElementID,action);
+function deleteQueryIcon(elementID, url, deleteMsg) {
+	if (confirm(deleteMsg)) {
+		loadInnerSection(elementID, url);
 	}
 }

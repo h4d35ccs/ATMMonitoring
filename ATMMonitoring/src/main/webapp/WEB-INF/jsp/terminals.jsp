@@ -34,6 +34,7 @@
 						<p>${success}</p>
 					</div>
 				</c:if>
+				<div id="ajaxMsg"><p id="ajaxMsg"></p></div>
 				<c:if  test="${empty pagedListHolder.pageList}">
 					<div class="message">
 						<p> <spring:message code="label.terminal.noTerminals"/> </p>

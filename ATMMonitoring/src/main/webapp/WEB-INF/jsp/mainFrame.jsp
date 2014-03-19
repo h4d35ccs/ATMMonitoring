@@ -16,12 +16,10 @@
         <div id="main_header">
         	<input type="hidden" id="lastVisit">
             <div id="rButton" class="hide btn_close">
-
             </div>
             <h1>
 	                <a href="dashboard"><img src="resources/images/general/logo.png"/></a>
 	                <div id="headName"><span><acronym title="Hardware and Software Asset Management">HSAM</acronym></span></div>
-          
             </h1>
             <div id="user_info">
                <div class="welcome"><spring:message code="label.welcomeMessage"/> ${userMsg}</div>-
@@ -79,12 +77,9 @@
 	        </nav>
 		</div>
         <div id="main" class="btn_close">
-            <div id="primary">
-                
-            </div>
+            <div id="primary"></div>
             <!-- /primary -->
         </div>
         <!-- /#main -->
-
     </body>
 </html>

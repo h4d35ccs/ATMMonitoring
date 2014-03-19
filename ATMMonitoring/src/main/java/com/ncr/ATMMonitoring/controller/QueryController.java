@@ -148,7 +148,7 @@ public class QueryController extends GenericController {
 	 *            the principal
 	 * @return the petition response
 	 */
-	@RequestMapping(value = "/queries/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/queries/delete")
 	public String deleteUserQuery(Integer queryId, Map<String, Object> map,
 			HttpServletRequest request, Principal principal,final RedirectAttributes redirectAttributes) {
 

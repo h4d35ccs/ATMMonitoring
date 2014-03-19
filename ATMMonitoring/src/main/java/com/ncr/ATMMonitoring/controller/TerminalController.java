@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +34,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Auditable;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
@@ -119,32 +123,47 @@ public class TerminalController extends GenericController {
 	 *            the query id
 	 * @param principal
 	 *            the principal
-	 * @param redirectAttributes
-	 *            the redirect attributes
-	 * @return the petition response
 	 */
 	@RequestMapping(value = "/terminals/request", method = RequestMethod.GET)
+	@ResponseBody
 	public String requestTerminalsUpdateByQuery(String queryId,
-			Principal principal, RedirectAttributes redirectAttributes) {
-		if ((queryId != null) && (principal != null)) {
-			Query query = queryService.getQuery(Integer.parseInt(queryId));
-			if (this.queryService.queryBelongToUser(query, principal.getName())) {
-				this.atmservice.atmSnmpUpdate(query);
-			}
-		} else {
-			this.atmservice.atmSnmpUpdate(null);
-			redirectAttributes.addFlashAttribute("success",
-					"success.snmpUpdateAll");
-		}
+			Principal principal) {
 
+		// final Map<String, String> response = new HashMap<String, String>();
+		// final String responseKey = "response";
+		// String responseType ="success";
+		boolean isError = false;
 		try {
-			// We wait to avoid not loading the recently added DB data
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			if ((queryId != null) && (principal != null)) {
+				Query query = queryService.getQuery(Integer.parseInt(queryId));
+				if (this.queryService.queryBelongToUser(query,
+						principal.getName())) {
+					this.atmservice.atmSnmpUpdate(query);
+				}
+			} else {
+				this.atmservice.atmSnmpUpdate(null);
+				// redirectAttributes.addFlashAttribute("success",
+				// "success.snmpUpdateAll");
+			}
 
-		return "redirect:/terminals/list";
+		} catch (Exception e) {
+			isError = true;
+			logger.error(
+					"An error occurs while calling service to execute update:"
+							+ e.getMessage(), e);
+		}
+		// response.put(responseKey, responseType);
+		// Gson gson = new GsonBuilder().create();
+		// String json = gson.toJson(response);
+		// try {
+		// // We wait to avoid not loading the recently added DB data
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+
+		// return "redirect:/terminals/list";
+		return this.generateJsonResponse(isError);
 	}
 
 	/**
@@ -159,12 +178,15 @@ public class TerminalController extends GenericController {
 	 * @return the petition response
 	 */
 	@RequestMapping("/terminals/request/{terminalId}")
+	@ResponseBody
 	public String requestTerminalUpdateById(
 			@PathVariable("terminalId") Integer terminalId,
 			RedirectAttributes redirectAttributes, Principal principal) {
 		Terminal terminal = this.atmservice.atmSnmpUpdate(terminalId);
+		boolean isError = false;
 		if (terminal == null) {
-			return "redirect:/terminals/list";
+			// return "redirect:/terminals/list";
+			isError = true;
 		}
 		// try {
 		// logger.debug("request snmp update for terminal" + terminalId);
@@ -192,14 +214,15 @@ public class TerminalController extends GenericController {
 		// return "redirect:/terminals/details/" + terminalId;
 		// }
 
-//		try {
-//			// We wait to avoid not loading the recently added DB data
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// // We wait to avoid not loading the recently added DB data
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
 
-		return "redirect:/terminals/details/" + terminalId;
+		// return "redirect:/terminals/details/" + terminalId;
+		return this.generateJsonResponse(isError);
 	}
 
 	/**
@@ -1074,7 +1097,7 @@ public class TerminalController extends GenericController {
 		Terminal terminal = this.atmservice.getATMById(terminalId);
 		Map<Class<? extends Auditable>, Map<Date, Integer>> historicalChanges = terminal
 				.buildHistoricalChanges();
-		System.out.println("historicalChanges-->"+historicalChanges);
+		System.out.println("historicalChanges-->" + historicalChanges);
 		map.put("historicalChanges", historicalChanges);
 		return "terminalHistorical";
 	}
@@ -1102,4 +1125,76 @@ public class TerminalController extends GenericController {
 
 		return terminalsLocationsInfo;
 	}
+
+	/**
+	 * Sends the ATM photo in json format<br>
+	 * {imagename:"name of the image", imagetype:
+	 * "type of picture, atm or manufacturer", imagebinary:"base64 binary file"}
+	 * 
+	 * @param terminalId
+	 * @return String i json format
+	 */
+	@RequestMapping("/terminals/details/photo/{terminalId}")
+	@ResponseBody
+	public String getTerminalImage(
+			@PathVariable("terminalId") Integer terminalId) {
+		final Map<String, String> response = new HashMap<String, String>();
+		final String imageNameKey = "imagename";
+		final String imageTypeKey = "imagetype";
+		final String imagekey = "imagebinary";
+		String imagename = null;
+		String imageType = "nophoto";
+		String imageBase64 = null;
+
+		try {
+			Terminal atm = this.atmservice.getATMById(terminalId);
+
+			if ((atm != null) && (atm.getTerminalModel() != null)) {
+
+				if (atm.getTerminalModel().getPhoto() != null) {
+					imageType = "atm";
+					imagename = atm.getTerminalModel().getModel() + ".png";
+					byte[] ImageBytes = atm.getTerminalModel().getPhoto();
+					imageBase64 = Base64.encodeBase64String(ImageBytes);
+
+				} else if (atm.getTerminalModel().getManufacturer() != null) {
+					imageType = "manufacturer";
+					imagename = atm.getTerminalModel().getManufacturer()
+							.toLowerCase()
+							+ ".png";
+				}
+
+			}
+		} catch (Exception e) {
+			// if an error occurs, i will not crash the user interface, i show
+			// them the no picture img
+			logger.error("can not get the picture of the ATM: " + terminalId
+					+ "due an error " + e.getMessage()
+					+ ". The Atm will show no picture image", e);
+		}
+		response.put(imageNameKey, imagename);
+		response.put(imageTypeKey, imageType);
+		response.put(imagekey, imageBase64);
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(response);
+	}
+
+	/**
+	 * Generates a JSON response like {response: success}
+	 * 
+	 * @param isError
+	 * @return String
+	 */
+	private String generateJsonResponse(boolean isError) {
+		final Map<String, String> response = new HashMap<String, String>();
+		final String responseKey = "response";
+		String responseType = "success";
+		if (isError) {
+			responseType = "error";
+		}
+		response.put(responseKey, responseType);
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(response);
+	}
+
 }

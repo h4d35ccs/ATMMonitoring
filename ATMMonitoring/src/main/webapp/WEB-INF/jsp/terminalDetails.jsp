@@ -1,7 +1,5 @@
 <%@include file="includes/JspImports.jsp"%>
 <%@taglib uri="http://www.ncr.com/tags" prefix="ncr"%>
-<script type="text/javascript"> 
-	    </script>
 <div id="header_g">
 	<nav id="breadcrumb">
 		<ul>
@@ -45,7 +43,7 @@
 			<p>${timeout}</p>
 		</div>
 	</c:if>
-
+	<div id="ajaxMsg"><p id="ajaxMsg"></p></div>
 	<div class="action_box data desplegable">
 		<h2 class="txt last">
 			<spring:message code="label.terminalDetails" />
@@ -57,14 +55,15 @@
 		<div class="collapsible last">
 			<div class="model">
 				<div class="photo">
-					<a href='<ncr:terminalModelPhotoUrl atm="${terminal}" />'
+					<%-- <a href='<ncr:terminalModelPhotoUrl atm="${terminal}" />'
 						class="colorbox"> <img
 						src='<ncr:terminalModelPhotoUrl atm="${terminal}" width="300" />'
-						width="300" />
+						width="300" /> --%>
+						<img id="atmPicture" src="" width="300">
+						<img id="imgLoader" src="resources/images/icons/icon_loader.gif" />
 						<div class="zoom"></div>
 					</a>
 				</div>
-
 				<div class="desplegable">
 					<div class="txt content_hide">
 						<span><spring:message code="label.moreInfo" /></span>
@@ -253,7 +252,8 @@
 
 								<input type="submit" class="btn"
 									value="<spring:message code="label.terminal.updateTerminal"/>" />
-								<button class="btn update" onclick="loadPostRequestNoResponse('terminals/request/${terminal.id}')"><spring:message
+									
+								<button class="btn update" onclick="callTask('terminals/request/${terminal.id}',{},'POST', '#ajaxMsg','notification','alert', terminalsUpdate,terminalsUpdateError)"><spring:message
 										code="label.terminal.requestSingleSnmpUpdate" /></button> <input
 									id="cancelEdit" type="reset" class="cancel right"
 									value="<spring:message code="label.cancel"/>" />
@@ -275,7 +275,7 @@
 					</sec:authorize>
 					<sec:authorize
 						access="hasAnyRole(${terminalsUpdateRequestAllowedRoles})">
-						<button class="btn update" onclick="loadPostRequestNoResponse('terminals/request/${terminal.id}')"><spring:message
+						<button class="btn update" onclick="callTask('terminals/request/${terminal.id}',{},'POST', '#ajaxMsg','notification','alert', terminalsUpdate,terminalsUpdateError)"><spring:message
 								code="label.terminal.requestSingleSnmpUpdate" /></button>
 					</sec:authorize>
 				</div>
@@ -1752,8 +1752,16 @@
 		   	 			}${not status1.last ? ',' : ''}
 		   		</c:forEach>
 		};
+		
 		function initPageJS() {
-			loadElements(callInit());
+			loadElements();
+			callInit();
+			getAtmPic("terminals/details/photo/${terminal.id}",
+					"#atmPicture","GET",
+					"resources/images/logo/",
+					"resources/images/ejemplo/",
+					"#imgLoader");
+		
 	 	 }
 
 	 	 function callInit(){
@@ -1768,9 +1776,10 @@
 		        
 		 	initTabs();
 	        onLoadModelCB();
+	       
 		}
 
-	    function loadElements(callback){
+	    function loadElements(){
 	    	
 	        	$("#TestChromatable").chromatable({
 					width: "1015px",
@@ -1789,7 +1798,5 @@
 					height: "150px",
 					scrolling: "yes"
 				});
-
-				callback();
 		    } 
 	    </script>
