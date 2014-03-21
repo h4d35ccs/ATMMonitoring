@@ -43,7 +43,7 @@
 			<p>${timeout}</p>
 		</div>
 	</c:if>
-	<div id="ajaxMsg"><p id="ajaxMsg"></p></div>
+	<div id="ajaxMsg"></div>
 	<div class="action_box data desplegable">
 		<h2 class="txt last">
 			<spring:message code="label.terminalDetails" />
@@ -55,14 +55,11 @@
 		<div class="collapsible last">
 			<div class="model">
 				<div class="photo">
-					<%-- <a href='<ncr:terminalModelPhotoUrl atm="${terminal}" />'
-						class="colorbox"> <img
-						src='<ncr:terminalModelPhotoUrl atm="${terminal}" width="300" />'
-						width="300" /> --%>
-						<img id="atmPicture" src="" width="300">
-						<img id="imgLoader" src="resources/images/icons/icon_loader.gif" />
-						<div class="zoom"></div>
-					</a>
+					    <a id="clickeablePhoto" href="" class="colorbox"> 
+							<img id="atmPicture" src="" width="300">
+							<img id="imgLoader" src="resources/images/icons/icon_loader.gif" />
+							<div class="zoom"></div>
+						</a>
 				</div>
 				<div class="desplegable">
 					<div class="txt content_hide">
@@ -1710,7 +1707,10 @@
 																							</div>
 																							<!-- /tabs -->
 																							</div> --%>
-																							<script type="text/javascript">
+<script src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
+<script src="resources/js/elementClusterer.js" type="text/javascript"></script>
+<script type="text/javascript">
+
 		function initTabs() {
 		   defaultInitTabs();
 		    
@@ -1760,7 +1760,7 @@
 					"#atmPicture","GET",
 					"resources/images/logo/",
 					"resources/images/ejemplo/",
-					"#imgLoader");
+					"#imgLoader","#clickeablePhoto");
 		
 	 	 }
 

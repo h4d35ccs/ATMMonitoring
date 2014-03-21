@@ -1,4 +1,4 @@
-<%@include file="includes/JspImports.jsp"%>
+<%@include file="includes/JspImports.jsp" %>
 	<div id="error_box">
 		<div class="message_box">
 			<h1><spring:message code="label.error.errorPageTitle"/></h1>

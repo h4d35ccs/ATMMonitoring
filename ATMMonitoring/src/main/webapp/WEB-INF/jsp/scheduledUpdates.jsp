@@ -163,7 +163,7 @@
         <td width="50px" class="center-cell">${scheduledUpdate.completeHour}</td>
         <td width="100px" class="center-cell">${scheduledUpdate.query.name}</td>
 		<td width="90px" class="center-cell">
-			<button onClick="deleteScheduledUpdate('${scheduledUpdate.id}',scheduledUpdateConfirmDeletion)" class="form-submit delete right"><spring:message code="label.scheduledUpdate.deleteScheduledUpdate"/></button>
+			<button onClick="deleteConfirmation('terminals/schedules/delete/${scheduledUpdate.id}',schUpDeleteConfirmation,'#primary','#notification','notification')" class="form-submit delete right"><spring:message code="label.scheduledUpdate.deleteScheduledUpdate"/></button>
 		</td>
     </tr>
 </c:forEach>

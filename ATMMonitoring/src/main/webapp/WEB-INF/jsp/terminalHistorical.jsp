@@ -21,16 +21,8 @@
 		</li>
 	</ul>
 </div>
-<script type='text/javascript' src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
 <script>
-
-
-    /* window.onload = function() { executeOnTimelineLoaded(loadTimeline) }; */
-/*     
-   var Timeline_urlPrefix = 'resources/timeline/api/';
-   var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';   */
    var tl;
-    
     function loadTimeline() {
     	var elementsSize = 16;
     	var eventSource = new Timeline.DefaultEventSource();

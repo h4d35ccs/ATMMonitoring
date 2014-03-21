@@ -10,7 +10,7 @@
 			<div class="botonera">
 				<ul>
 					<sec:authorize access="hasAnyRole(${terminalsManagementAllowedRoles})">
-						<li> <a href="terminals/new" class="btn add"> <spring:message code="label.terminal.new"/> </a> </li>
+						<li> <button onclick="loadInnerSection('#primary', 'terminals/new')" class="btn add"> <spring:message code="label.terminal.new"/> </button> </li>
 					</sec:authorize>
 				</ul>
 			</div>

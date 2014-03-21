@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,8 +38,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ncr.ATMMonitoring.controller.propertyeditor.DatePropertyEditor;
 import com.ncr.ATMMonitoring.pojo.Auditable;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
@@ -499,12 +496,12 @@ public class TerminalController extends GenericController {
 
 		this.atmservice.addUpdateATM(terminal, ATMFacade.ADD);
 
-		try {
-			// We wait to avoid not loading the recently added DB data
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// // We wait to avoid not loading the recently added DB data
+		// Thread.sleep(500);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
 
 		map.clear();
 		return "redirect:/terminals/list";
@@ -1097,7 +1094,6 @@ public class TerminalController extends GenericController {
 		Terminal terminal = this.atmservice.getATMById(terminalId);
 		Map<Class<? extends Auditable>, Map<Date, Integer>> historicalChanges = terminal
 				.buildHistoricalChanges();
-		System.out.println("historicalChanges-->" + historicalChanges);
 		map.put("historicalChanges", historicalChanges);
 		return "terminalHistorical";
 	}
@@ -1138,13 +1134,13 @@ public class TerminalController extends GenericController {
 	@ResponseBody
 	public String getTerminalImage(
 			@PathVariable("terminalId") Integer terminalId) {
-		final Map<String, String> response = new HashMap<String, String>();
-		final String imageNameKey = "imagename";
-		final String imageTypeKey = "imagetype";
-		final String imagekey = "imagebinary";
+		// final Map<String, String> response = new HashMap<String, String>();
+		// // final String imageNameKey = "imagename";
+		// // final String imageTypeKey = "imagetype";
+		// // final String imagekey = "imagebinary";
 		String imagename = null;
 		String imageType = "nophoto";
-		String imageBase64 = null;
+		byte[] imageBytes = null;
 
 		try {
 			Terminal atm = this.atmservice.getATMById(terminalId);
@@ -1153,9 +1149,10 @@ public class TerminalController extends GenericController {
 
 				if (atm.getTerminalModel().getPhoto() != null) {
 					imageType = "atm";
-					imagename = atm.getTerminalModel().getModel() + ".png";
-					byte[] ImageBytes = atm.getTerminalModel().getPhoto();
-					imageBase64 = Base64.encodeBase64String(ImageBytes);
+					imagename = atm.getTerminalModel().getProductClass()
+							+ ".png";
+					imageBytes = atm.getTerminalModel().getPhoto();
+					// imageBase64 = Base64.encodeBase64String(ImageBytes);
 
 				} else if (atm.getTerminalModel().getManufacturer() != null) {
 					imageType = "manufacturer";
@@ -1167,34 +1164,35 @@ public class TerminalController extends GenericController {
 			}
 		} catch (Exception e) {
 			// if an error occurs, i will not crash the user interface, i show
-			// them the no picture img
+			// then the no picture img
 			logger.error("can not get the picture of the ATM: " + terminalId
 					+ "due an error " + e.getMessage()
 					+ ". The Atm will show no picture image", e);
 		}
-		response.put(imageNameKey, imagename);
-		response.put(imageTypeKey, imageType);
-		response.put(imagekey, imageBase64);
-		Gson gson = new GsonBuilder().create();
-		return gson.toJson(response);
+
+		return this.generatelImageForJson(imagename, imageType, imageBytes,
+				null);
+
 	}
 
-	/**
-	 * Generates a JSON response like {response: success}
-	 * 
-	 * @param isError
-	 * @return String
-	 */
-	private String generateJsonResponse(boolean isError) {
-		final Map<String, String> response = new HashMap<String, String>();
-		final String responseKey = "response";
-		String responseType = "success";
-		if (isError) {
-			responseType = "error";
+	@RequestMapping("/terminals/model/photo/{modelId}")
+	@ResponseBody
+	public String getTerminalModelImage(@PathVariable("modelId") Integer modelId) {
+		byte[] imageBytes = null;
+		String imagename = null;
+		String imageType = "nophoto";
+
+		TerminalModel atmModel = this.atmservice.getATMModel(modelId);
+
+		if ((atmModel != null) && (atmModel.getPhoto() != null)) {
+
+			imagename = atmModel.getProductClass() + ".png";
+			imageBytes = atmModel.getPhoto();
+			imageType = "model";
+
 		}
-		response.put(responseKey, responseType);
-		Gson gson = new GsonBuilder().create();
-		return gson.toJson(response);
-	}
+		return this.generatelImageForJson(imagename, imageType, imageBytes,
+				null);
 
+	}
 }

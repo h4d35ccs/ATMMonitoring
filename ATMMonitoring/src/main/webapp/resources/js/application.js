@@ -50,13 +50,13 @@ function loadInnerSection(elementID, url) {
 	$(elementID).empty();
 	$(elementID).load(url, function(data) {
 		if (!checkForError(data)) {
-			// try {
+		 try {
 
 			initPageJS();
-			// } catch (err) {
+		 } catch (err) {
 			// alert(err);
 			// in case that the initPage is not defined on the page
-			// }
+		 }
 		}
 
 	});
@@ -95,13 +95,13 @@ function loadInnerSectionFromForm(formId, elementID) {
 	$(elementID).load(url, term, function(data) {
 
 		if (!checkForError(data)) {
-			// try {
+		 try {
 
 			initPageJS();
-			// } catch (err) {
+		 } catch (err) {
 			// alert(err);
 			// in case that the initPage is not defined on the page
-			// }
+		 }
 		}
 
 	});
@@ -246,48 +246,7 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 
 	});
 }
-/**
- * Gets the image to show in the atm details
- * @param url
- * @param imgElementId
- * @param methodType
- * @param manFPicPath
- * @param noFotoPath
- * @param imgLoaderId
- */
-function getAtmPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId) {
-	var  noPhoto = "no_photo.png";
-	$(imgLoaderId).show();
-	$.ajax({
-		url : url, // JQuery loads serverside.php 
-		type : methodType,// we post or get the value
-		dataType : 'json', // Choosing a JSON datatype
-		success : function(data) {
-			//i make sure that the element has no picture
-			$(imgElementId).attr("src","");
-			
-			if(data.imagetype == "atm" ){
-				
-				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
-			
-			}else if(data.imagetype == "manufacturer"){
-				
-				$(imgElementId).attr("src",manFPicPath+data.imagename);
-				
-			}else if(data.imagetype == "nophoto"){
-				
-				$(imgElementId).attr("src",noFotoPath+noPhoto);
-			}
-			
-			$(imgLoaderId).hide();
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			$(imgElementId).attr("src",noFotoPath+noPhoto);
-			$(imgLoaderId).hide();
-		}
 
-	});
-}
 /**
  * Returns the value of a URL query param
  * 
@@ -319,11 +278,13 @@ function showLoad(loadClass) {
  * @returns {Boolean}
  */
 function checkForError(data) {
-	var errorContent = $(data).filter("#error_box");
+
+	var errorContent = $(data).find("#error_box");
 	var hasError = false;
 	if (errorContent.length > 0) {
 		hasError = true;
-		showError(data);
+		console.log(errorContent)
+		showError(errorContent);
 	}
 	return hasError;
 }
@@ -335,6 +296,18 @@ function checkForError(data) {
 function showError(errorData) {
 	$("#primary").empty();
 	$("#primary").append(errorData);
+}
+/**
+ * gets the lang from the url
+ * @returns {String}
+ */
+function getLangFromUrl(){
+	var lang = getParameterByName('lang');
+
+	if (lang == null || lang == "") {
+		lang = "en";
+	}
+	return lang;
 }
 
 /**
@@ -397,17 +370,17 @@ function ChangeManufacturer() {
 	$('#field_depth').text('');
 	$('#field_min_weight').text('');
 	$('#field_max_weight').text('');
-	var photoUrl;
-	if ($cb2.val()) {
-		photoUrl = valuesTree[$cb2.val()]['photoUrl'];
-	} else {
-		photoUrl = '<ncr:terminalModelPhotoUrl />'
-	}
-	$('.photo a').attr("href", photoUrl);
-	$('.photo img').attr("src", photoUrl);
+//	var photoUrl;
+//	if ($cb2.val()) {
+////		photoUrl = valuesTree[$cb2.val()]['photoUrl'];
+//	} else {
+////		photoUrl = '<ncr:terminalModelPhotoUrl />'
+//	}
+////	$('.photo a').attr("href", photoUrl);
+////	$('.photo img').attr("src", photoUrl);
 };
 
-function ChangeModel() {
+function ChangeModel(imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
 	var $cb1 = $('#ModelsCombo');
 	var $cb2 = $('#ManufacturerCombo');
 	if (($cb1.val() != '') && ($cb2.val() != '')) {
@@ -421,21 +394,97 @@ function ChangeModel() {
 		$('#field_depth').text(values.depth);
 		$('#field_min_weight').text(values.min_weight);
 		$('#field_max_weight').text(values.max_weight);
-		$('.photo a').attr("href", 'terminals/models/image/' + $cb1.val());
-		$('.photo img').attr("src",
-				'terminals/models/image/' + $cb1.val() + '?width=200');
+		
 	}
-	if (!$cb1.val()) {
-//		var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
-//		$('.photo a').attr("href", photoUrl);
-//		$('.photo img').attr("src", photoUrl);
-	}
+//	if (!$cb1.val()) {
+////		var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
+////		$('.photo a').attr("href", photoUrl);
+////		$('.photo img').attr("src", photoUrl);
+//	}
+	 getAtmModelPic("terminals/model/photo/"+$cb1.val(),imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick);
 };
 
 function requestSnmpUpdate() {
 	window.location.assignWithBase("terminals/request/${terminal.id}");
 }
+/************terminal details/new******************/
 
+/**
+ * Gets the image to show in the atm details
+ * @param url
+ * @param imgElementId
+ * @param methodType
+ * @param manFPicPath
+ * @param noFotoPath
+ * @param imgLoaderId
+ */
+function getAtmPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
+	var  noPhoto = "no_photo.png";
+	$(imgLoaderId).show();
+	$.ajax({
+		url : url, // JQuery loads serverside.php 
+		type : methodType,// we post or get the value
+		dataType : 'json', // Choosing a JSON datatype
+		success : function(data) {
+			//i make sure that the element has no picture
+			$(imgElementId).attr("src","");
+			$(zoomClick).attr("href",""); 
+			
+			if(data.imagetype == "atm" ){
+				
+				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
+				$(zoomClick).attr("href","data:image/png;base64,"+data.imagebinary); 
+			
+			}else if(data.imagetype == "manufacturer"){
+				
+				$(imgElementId).attr("src",manFPicPath+data.imagename);
+				
+			}else if(data.imagetype == "nophoto"){
+				
+				$(imgElementId).attr("src",noFotoPath+noPhoto);
+			}
+			
+			$(imgLoaderId).hide();
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			$(imgElementId).attr("src",noFotoPath+noPhoto);
+			$(imgLoaderId).hide();
+		}
+
+	});
+}
+
+function getAtmModelPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
+	var  noPhoto = "no_photo.png";
+	$(imgLoaderId).show();
+	$.ajax({
+		url : url, // JQuery loads serverside.php 
+		type : methodType,// we post or get the value
+		dataType : 'json', // Choosing a JSON datatype
+		success : function(data) {
+			//i make sure that the element has no picture
+			$(imgElementId).attr("src","");
+			$(zoomClick).attr("href",""); 
+			
+			if(data.imagetype == "model" ){
+				
+				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
+				$(zoomClick).attr("href","data:image/png;base64,"+data.imagebinary); 
+			
+			}else if(data.imagetype == "nophoto"){
+				
+				$(imgElementId).attr("src",noFotoPath+noPhoto);
+			}
+			
+			$(imgLoaderId).hide();
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			$(imgElementId).attr("src",noFotoPath+noPhoto);
+			$(imgLoaderId).hide();
+		}
+
+	});
+}
 /**
  * ******** queries functions
  * **************************
@@ -642,6 +691,41 @@ function userQuerySelected() {
 	document.userQueriesForm.submit();
 }
 
+
+/**
+ * Fill the first combobox from the query page
+ * @param optionType
+ * @param firstCombo
+ */
+function loadQueryOptions(optionType,firstCombo){
+	
+	if($(firstCombo).find('option').length <= 1 ){
+	
+		var lang = getLangFromUrl();
+		$(firstCombo).empty();
+		$(firstCombo).append("<option></option>");
+		$.ajax({
+			url : "queries/combos/"+optionType+"/"+lang, // JQuery loads serverside.php 
+			type : "GET",// we post or get the value
+			dataType : 'json', // Choosing a JSON datatype
+			success : function(data) {
+				savedOptions = data.selectoptions;
+				
+				jQuery.each(savedOptions, function(key,data) {
+					var comboOption= "<option value="+key+">"+data+"</option>";
+					$(firstCombo).append(comboOption);
+				
+				});
+			
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+				
+			}
+	
+		});
+	}
+}
+
 /** *************************Scheduled update******************************* */
 
 function deleteConfirmation(url, msg, elementID, msgDivId, notificationClass) {
@@ -661,11 +745,8 @@ function deleteConfirmation(url, msg, elementID, msgDivId, notificationClass) {
  */
 function loadHelpContent(linkId, linkClass, section, elementID) {
 	var baseHelpUrl = "resources/help/";
-	var lang = getParameterByName('lang');
-
-	if (lang == null || lang == "") {
-		lang = "en";
-	}
+	var lang = getLangFromUrl();
+	
 	baseHelpUrl += lang + "/";
 	$(linkId).closest('ul').find('.' + linkClass).removeClass(linkClass);
 	$(linkId).addClass(linkClass);
@@ -706,4 +787,37 @@ function deleteQueryIcon(elementID, url, deleteMsg) {
 	if (confirm(deleteMsg)) {
 		loadInnerSection(elementID, url);
 	}
+}
+/********************* Users ******************************/
+/**
+ * Adds a new role calling the remote controler, if succeed it will load the new page
+ */
+function addNewRole(formId,methodType,errorDivIdElement,errorClass,errorMsg,toFillElemnent){
+	
+	var $form = $(formId), term = $form.serializeArray(), url = $form
+	.attr("action");
+	
+	$.ajax({
+		url : url, // JQuery loads serverside.php
+		data : term, // Send value of the clicked button
+		type : methodType,// we post or get the value
+		dataType : 'json', // Choosing a JSON datatype
+		success : function(data) { // Variable data contains the data 
+			if (!checkForError(data)) {	
+				if (data.response == "success") {
+					var redirect = data.redirect;
+					loadInnerSection(toFillElemnent, redirect);
+				}else if(data.response == "error" && data.duplicatedname == "true" ){
+					$(errorDivIdElement).empty();
+					$(errorDivIdElement).append("<div class="+errorClass+">"+errorMsg+"</div>");
+				}
+			}
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			$(toFillElemnent).empty();
+			$(toFillElemnent).append(xhr.responseText);
+			
+		}
+	
+	});
 }

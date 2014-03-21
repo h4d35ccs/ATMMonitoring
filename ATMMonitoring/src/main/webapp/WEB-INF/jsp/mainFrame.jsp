@@ -3,16 +3,29 @@
 <html>
 <head>
 <%@include file="includes/HtmlHead.jsp" %>
-<script type="text/javascript">
-
- $( document ).ready(function() {
-	 $("#dashboardMenu").click();
-	 clock();
-}); 
-</script> 
+<c:if test="${exception == null}">
+	<c:if test="${empty error}">
+		<script type="text/javascript">
+			var mainContent ="#dashboardMenu";
+				$( document ).ready(function() {
+					 $(mainContent).click();
+					 clock();
+				}); 
+		</script> 
+	</c:if>
+	<c:if test="${!empty error}">
+			<script type="text/javascript">
+			<%-- an 404 or 403 has occur so i load the content--%>
+				$( document ).ready(function() {
+					loadInnerSection("#primary","show${error}");
+				});
+			</script>
+	</c:if>
+	</c:if>
 </head>
 <body>
 <div class="loader"></div>
+      <div id="mainContent"> 
         <div id="main_header">
         	<input type="hidden" id="lastVisit">
             <div id="rButton" class="hide btn_close">
@@ -55,31 +68,43 @@
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${reportsAccessAllowedRoles})">
 		                <li class="reports">
-		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'externalreports')"><span><spring:message code="label.menu.externalreports"/></span></a>
+		                    <a id="externalReportsMenu" onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'externalreports')"><span><spring:message code="label.menu.externalreports"/></span></a>
 		                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${schedulesAccessAllowedRoles})">
 	                <li class="schedule">
-	                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'terminals/schedules/list')"><span><spring:message code="label.menu.scheduler"/></span></a>
+	                    <a id="scheduleMenu" onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'terminals/schedules/list')"><span><spring:message code="label.menu.scheduler"/></span></a>
 	                </li>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${usersAccessAllowedRoles})">
 		                <li class="users">
-		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'users')"><span><spring:message code="label.menu.users"/></span></a>
+		                    <a id ="userMenu" onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'users')"><span><spring:message code="label.menu.users"/></span></a>
 		                </li>
+		                <script>mainContent ="#userMenu";</script>
 	                </sec:authorize>
 	                <sec:authorize access="hasAnyRole(${helpAccessAllowedRoles})">
 		                <li class="help">
-		                    <a onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'help')"><span><spring:message code="label.menu.help"/></span></a>
+		                    <a id ="helpMenu" onClick="loadInnerSectionMenu('#'+this.id, '#primary', 'help')"><span><spring:message code="label.menu.help"/></span></a>
 		                </li>
 	                </sec:authorize>
 	            </ul>
 	        </nav>
 		</div>
         <div id="main" class="btn_close">
+            <c:if test="${exception == null}">  
             <div id="primary"></div>
             <!-- /primary -->
+            </c:if>
+            <c:if test="${exception != null}">
+            	<div id="primary">
+            	   <%@include file="error.jsp" %>
+           	 </div>
+            </c:if>
+            <div> 
+    
+            </div>
         </div>
         <!-- /#main -->
+        </div>
     </body>
 </html>

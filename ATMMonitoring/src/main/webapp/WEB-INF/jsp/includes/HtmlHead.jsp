@@ -7,11 +7,20 @@
     	<link rel="stylesheet" type="text/css" href="resources/css/fullcalendar.print.css" media="print"/>
     	<link rel="stylesheet" type="text/css" href="resources/css/ncr_fullcalendar.css"/>
          <script src="resources/js/jquery-1.8.3.min.js"></script>
+		<c:if test="${empty error}">
 			<script type="text/javascript">
 					$(window).load(function() {
 						$(".loader").fadeOut("slow");
 					}); 
 			</script>
+		</c:if>
+		<c:if test="${!empty error}">
+			<script type="text/javascript">
+			$(window).load(function() {
+				$(".loader").removeClass("loader");
+			}); 
+			</script>
+		</c:if>
 	    <script type='text/javascript' src="resources/js/jquery-ui.min.js"></script>
 	    <script type='text/javascript' src="resources/js/jquery.ui.touch-punch.min.js"></script>
 	    <script type='text/javascript' src='resources/js/jquery.colorbox-min.js'></script>
@@ -26,7 +35,6 @@
         <script type='text/javascript' src='resources/js/jsapi.js'></script> 
         <script type="text/javascript" src="resources/js/fullcalendar.min.js"></script>
     	<script type="text/javascript" src="resources/js/scheduled.js"></script>
-		<script type='text/javascript' src="resources/js/elementClusterer.js" type="text/javascript"></script>
 
 	 	<script type="text/javascript">
 	 	 	google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});   

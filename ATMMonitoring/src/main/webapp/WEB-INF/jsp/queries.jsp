@@ -24,7 +24,7 @@
 							<form:form method="post" action="queries/results" commandName="query">
 								   <form:hidden path="id"/>			   
 		
-								<h2 class="txt content_hide" id="terminalSection">
+								<h2 class="txt content_hide" id="terminalSection" ">
 									<spring:message code="label.query.terminalSection"/>
 								</h2>
 								
@@ -49,13 +49,14 @@
 											<tr id="terminalRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 											>
 											<td>
-												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('terminal',${i})">
+												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('terminal',${i})" 
+												onClick="loadQueryOptions('terminal','#'+this.id,terminalDataOptions)">
 													<form:option value="" label=""/>
-													<c:forEach items="${values.get('terminal').keySet()}" var="value">
+													<%-- <c:forEach items="${values.get('terminal').keySet()}" var="value">
 														<form:option value="${value}">
 															<spring:message code="label.terminal.${value}"/>
 														</form:option>
-													</c:forEach>
+													</c:forEach>  --%>
 												</form:select>
 											</td>
 											<td>
@@ -124,15 +125,16 @@
 										<tr id="hardwareDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 										>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue3CB1('hardwareDevice', ${i})">
+											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue3CB1('hardwareDevice', ${i})"
+											onClick="loadQueryOptions('hardwareDevice','#'+this.id)">
 												<form:option value="" label=""/>
-												<c:forEach items="${values.get('hardwareDevice').keySet()}" var="value">
+												<%-- <c:forEach items="${values.get('hardwareDevice').keySet()}" var="value">
 													<c:if test="${value != 'allHwDevices'}">
 														<form:option value="${value}">
 															<spring:message code="label.hardwareDevice.${value}"/>
 														</form:option>
 													</c:if>
-												</c:forEach>
+												</c:forEach> --%>
 											</form:select>
 										</td>
 										<td>
@@ -191,13 +193,14 @@
 								<c:forEach var="i" begin="1" end="5" varStatus="status">
 									<tr id="financialDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('financialDevice', ${i})">
+										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('financialDevice', ${i})"
+										onClick="loadQueryOptions('financialDevice','#'+this.id)">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('financialDevice').keySet()}" var="value">
+											<%-- <c:forEach items="${values.get('financialDevice').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.financialDevice.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -246,13 +249,14 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="xfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsComponent', ${i})">
+										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsComponent', ${i})"
+											onClick="loadQueryOptions('xfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('xfsComponent').keySet()}" var="value">
+											<%-- <c:forEach items="${values.get('xfsComponent').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.xfsComponent.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -304,13 +308,15 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="jxfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('jxfsComponent', ${i})">
+										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('jxfsComponent', ${i})"
+											onClick="loadQueryOptions('jxfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('jxfsComponent').keySet()}" var="value">
+											
+											<%-- <c:forEach items="${values.get('jxfsComponent').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.jxfsComponent.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -369,13 +375,15 @@
 								<tr id="operatingSystemRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 								>
 								<td>
-									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('operatingSystem', ${i})">
+									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('operatingSystem', ${i})"
+										onClick="loadQueryOptions('operatingSystem','#'+this.id)">
 										<form:option value="" label=""/>
-										<c:forEach items="${values.get('operatingSystem').keySet()}" var="value">
+										
+										<%-- <c:forEach items="${values.get('operatingSystem').keySet()}" var="value">
 											<form:option value="${value}">
 												<spring:message code="label.operatingSystem.${value}"/>
 											</form:option>
-										</c:forEach>
+										</c:forEach> --%>
 									</form:select>
 								</td>
 								<td>
@@ -425,13 +433,14 @@
 							<tr id="internetExplorerRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 							>
 							<td>
-								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('internetExplorer', ${i})">
+								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('internetExplorer', ${i})"
+									onClick="loadQueryOptions('internetExplorer','#'+this.id)">
 									<form:option value="" label=""/>
-									<c:forEach items="${values.get('internetExplorer').keySet()}" var="value">
+									<%-- <c:forEach items="${values.get('internetExplorer').keySet()}" var="value">
 										<form:option value="${value}">
 											<spring:message code="label.internetExplorer.${value}"/>
 										</form:option>
-									</c:forEach>
+									</c:forEach> --%>
 								</form:select>
 							</td>
 							<td>
@@ -481,13 +490,14 @@
 						<tr id="hotfixRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 						>
 						<td>
-							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('hotfix', ${i})">
+							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('hotfix', ${i})"
+								onClick="loadQueryOptions('hotfix','#'+this.id)">
 								<form:option value="" label=""/>
-								<c:forEach items="${values.get('hotfix').keySet()}" var="value">
+								<%-- <c:forEach items="${values.get('hotfix').keySet()}" var="value">
 									<form:option value="${value}">
 										<spring:message code="label.hotfix.${value}"/>
 									</form:option>
-								</c:forEach>
+								</c:forEach> --%>
 							</form:select>
 						</td>
 						<td>
@@ -537,13 +547,14 @@
 					<tr id="softwareRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 					>
 					<td>
-						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('software', ${i})">
+						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('software', ${i})"
+								onClick="loadQueryOptions('software','#'+this.id)">
 							<form:option value="" label=""/>
-							<c:forEach items="${values.get('software').keySet()}" var="value">
+							<%-- <c:forEach items="${values.get('software').keySet()}" var="value">
 								<form:option value="${value}">
 									<spring:message code="label.software.${value}"/>
 								</form:option>
-							</c:forEach>
+							</c:forEach> --%>
 						</form:select>
 					</td>
 					<td>
@@ -594,13 +605,14 @@
 				<tr id="featSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 				>
 				<td>
-					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('featSw', ${i})">
+					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('featSw', ${i})"
+							onClick="loadQueryOptions('featSw','#'+this.id)">
 						<form:option value="" label=""/>
-						<c:forEach items="${values.get('featSw').keySet()}" var="value">
+						<%-- <c:forEach items="${values.get('featSw').keySet()}" var="value">
 							<form:option value="${value}">
 								<spring:message code="label.featSw.${value}"/>
 							</form:option>
-						</c:forEach>
+						</c:forEach> --%>
 					</form:select>
 				</td>
 				<td>
@@ -650,13 +662,14 @@
 			<tr id="xfsSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 			>
 			<td>
-				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsSw', ${i})">
+				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsSw', ${i})"
+					onClick="loadQueryOptions('xfsSw','#'+this.id)">
 					<form:option value="" label=""/>
-					<c:forEach items="${values.get('xfsSw').keySet()}" var="value">
+					<%-- <c:forEach items="${values.get('xfsSw').keySet()}" var="value">
 						<form:option value="${value}">
 							<spring:message code="label.xfsSw.${value}"/>
 						</form:option>
-					</c:forEach>
+					</c:forEach> --%>
 				</form:select>
 			</td>
 			<td>
@@ -704,6 +717,7 @@
 		</div>
 		<div id="queryResults"></div>
 		<script type="text/javascript">
+			var terminalDataOptions = null;
 		  function initPageJS() {
 					<t:queryCbJs query="${query}"/>
 					$('#queryName').val('');
