@@ -181,4 +181,19 @@ public abstract class GenericController {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(response);
 	}
+	
+	/**
+	 * Generate a json for comboboxes
+	 * 
+	 * @param options
+	 * @return
+	 */
+	protected String generateComboboxOptionsJSON(Map<String, String> options) {
+
+		final Map<String, Object> responseMap = new HashMap<String, Object>();
+		responseMap.put("selectoptions", options);
+		responseMap.put("optionslength", options.size());
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(responseMap);
+	}
 }

@@ -33,7 +33,7 @@ function fadeNotification(msgDivId, notificationClass) {
 
 	$(msgDivId).focus();
 	$(msgDivId).delay(10000).fadeOut("slow", function() {
-    	$(msgDivId).empty();
+		$(msgDivId).empty();
 		$(msgDivId).removeClass(notificationClass);
 	});
 }
@@ -50,13 +50,13 @@ function loadInnerSection(elementID, url) {
 	$(elementID).empty();
 	$(elementID).load(url, function(data) {
 		if (!checkForError(data)) {
-		 try {
+			try {
 
-			initPageJS();
-		 } catch (err) {
-			// alert(err);
-			// in case that the initPage is not defined on the page
-		 }
+				initPageJS();
+			} catch (err) {
+				// alert(err);
+				// in case that the initPage is not defined on the page
+			}
 		}
 
 	});
@@ -95,13 +95,13 @@ function loadInnerSectionFromForm(formId, elementID) {
 	$(elementID).load(url, term, function(data) {
 
 		if (!checkForError(data)) {
-		 try {
+			try {
 
-			initPageJS();
-		 } catch (err) {
-			// alert(err);
-			// in case that the initPage is not defined on the page
-		 }
+				initPageJS();
+			} catch (err) {
+				// alert(err);
+				// in case that the initPage is not defined on the page
+			}
 		}
 
 	});
@@ -191,9 +191,11 @@ function checkTime(i) {
 }
 /**
  * Calls an controller to init a task such an update
+ * 
  * @param url
  * @param data
- * @param methodType POST or GET
+ * @param methodType
+ *            POST or GET
  * @param msgElementId
  * @param msgClass
  * @param msgClassError
@@ -210,13 +212,13 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 		success : function(data) { // Variable data contains the data we get
 			// from servers
 			$(msgElementId).empty();
-			//because of fade animation can have style display none
-			var attr =  $(msgElementId).attr("style"); 
-			if (typeof attr !== 'undefined' && attr !== false){
-				
+			// because of fade animation can have style display none
+			var attr = $(msgElementId).attr("style");
+			if (typeof attr !== 'undefined' && attr !== false) {
+
 				$(msgElementId).removeAttr("style");
 			}
-			
+
 			console.log($(msgElementId));
 			var msgClassToAdd = "";
 			var msgContent = "";
@@ -232,7 +234,7 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 				msgContent = errorMsg;
 			}
 			// shows the notification
-			$(msgElementId).append("<p>"+msgContent+"<p>");
+			$(msgElementId).append("<p>" + msgContent + "<p>");
 			$(msgElementId).addClass(msgClassToAdd);
 			console.log($(msgElementId));
 			fadeNotification(msgElementId, msgClassToAdd);
@@ -240,7 +242,7 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			$(msgElementId).append(errorMsg + " " + xhr.status);
-			$(msgElementId).addClass("<p>"+msgClassError+"<p>");
+			$(msgElementId).addClass("<p>" + msgClassError + "<p>");
 			fadeNotification(msgElementId, msgClassError);
 		}
 
@@ -299,9 +301,10 @@ function showError(errorData) {
 }
 /**
  * gets the lang from the url
+ * 
  * @returns {String}
  */
-function getLangFromUrl(){
+function getLangFromUrl() {
 	var lang = getParameterByName('lang');
 
 	if (lang == null || lang == "") {
@@ -311,8 +314,7 @@ function getLangFromUrl(){
 }
 
 /**
- * ****************terminals functions
- * **********************************
+ * ****************terminals functions **********************************
  */
 function onLoadModelCB() {
 	var value = $('#ManufacturerCombo').val();
@@ -329,9 +331,9 @@ function onLoadModelCB() {
 		});
 	}
 	if (!$cb.val()) {
-//		var photoUrl = valuesTree[value]['photoUrl'];
-//		$('.photo a').attr("href", photoUrl);
-//		$('.photo img').attr("src", photoUrl);
+		// var photoUrl = valuesTree[value]['photoUrl'];
+		// $('.photo a').attr("href", photoUrl);
+		// $('.photo img').attr("src", photoUrl);
 	}
 };
 
@@ -370,17 +372,18 @@ function ChangeManufacturer() {
 	$('#field_depth').text('');
 	$('#field_min_weight').text('');
 	$('#field_max_weight').text('');
-//	var photoUrl;
-//	if ($cb2.val()) {
-////		photoUrl = valuesTree[$cb2.val()]['photoUrl'];
-//	} else {
-////		photoUrl = '<ncr:terminalModelPhotoUrl />'
-//	}
-////	$('.photo a').attr("href", photoUrl);
-////	$('.photo img').attr("src", photoUrl);
+	// var photoUrl;
+	// if ($cb2.val()) {
+	// // photoUrl = valuesTree[$cb2.val()]['photoUrl'];
+	// } else {
+	// // photoUrl = '<ncr:terminalModelPhotoUrl />'
+	// }
+	// // $('.photo a').attr("href", photoUrl);
+	// // $('.photo img').attr("src", photoUrl);
 };
 
-function ChangeModel(imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
+function ChangeModel(imgElementId, methodType, manFPicPath, noFotoPath,
+		imgLoaderId, zoomClick) {
 	var $cb1 = $('#ModelsCombo');
 	var $cb2 = $('#ManufacturerCombo');
 	if (($cb1.val() != '') && ($cb2.val() != '')) {
@@ -394,23 +397,25 @@ function ChangeModel(imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,
 		$('#field_depth').text(values.depth);
 		$('#field_min_weight').text(values.min_weight);
 		$('#field_max_weight').text(values.max_weight);
-		
+
 	}
-//	if (!$cb1.val()) {
-////		var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
-////		$('.photo a').attr("href", photoUrl);
-////		$('.photo img').attr("src", photoUrl);
-//	}
-	 getAtmModelPic("terminals/model/photo/"+$cb1.val(),imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick);
+	// if (!$cb1.val()) {
+	// // var photoUrl = valuesTree[$cb2.val()]['photoUrl'];
+	// // $('.photo a').attr("href", photoUrl);
+	// // $('.photo img').attr("src", photoUrl);
+	// }
+	getAtmModelPic("terminals/model/photo/" + $cb1.val(), imgElementId,
+			methodType, manFPicPath, noFotoPath, imgLoaderId, zoomClick);
 };
 
 function requestSnmpUpdate() {
 	window.location.assignWithBase("terminals/request/${terminal.id}");
 }
-/************terminal details/new******************/
+/** **********terminal details/new***************** */
 
 /**
  * Gets the image to show in the atm details
+ * 
  * @param url
  * @param imgElementId
  * @param methodType
@@ -418,76 +423,81 @@ function requestSnmpUpdate() {
  * @param noFotoPath
  * @param imgLoaderId
  */
-function getAtmPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
-	var  noPhoto = "no_photo.png";
+function getAtmPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
+		imgLoaderId, zoomClick) {
+	var noPhoto = "no_photo.png";
 	$(imgLoaderId).show();
 	$.ajax({
-		url : url, // JQuery loads serverside.php 
+		url : url, // JQuery loads serverside.php
 		type : methodType,// we post or get the value
 		dataType : 'json', // Choosing a JSON datatype
 		success : function(data) {
-			//i make sure that the element has no picture
-			$(imgElementId).attr("src","");
-			$(zoomClick).attr("href",""); 
-			
-			if(data.imagetype == "atm" ){
-				
-				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
-				$(zoomClick).attr("href","data:image/png;base64,"+data.imagebinary); 
-			
-			}else if(data.imagetype == "manufacturer"){
-				
-				$(imgElementId).attr("src",manFPicPath+data.imagename);
-				
-			}else if(data.imagetype == "nophoto"){
-				
-				$(imgElementId).attr("src",noFotoPath+noPhoto);
+			// i make sure that the element has no picture
+			$(imgElementId).attr("src", "");
+			$(zoomClick).attr("href", "");
+
+			if (data.imagetype == "atm") {
+
+				$(imgElementId).attr("src",
+						"data:image/png;base64," + data.imagebinary);
+				$(zoomClick).attr("href",
+						"data:image/png;base64," + data.imagebinary);
+
+			} else if (data.imagetype == "manufacturer") {
+
+				$(imgElementId).attr("src", manFPicPath + data.imagename);
+
+			} else if (data.imagetype == "nophoto") {
+
+				$(imgElementId).attr("src", noFotoPath + noPhoto);
 			}
-			
+
 			$(imgLoaderId).hide();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			$(imgElementId).attr("src",noFotoPath+noPhoto);
+			$(imgElementId).attr("src", noFotoPath + noPhoto);
 			$(imgLoaderId).hide();
 		}
 
 	});
 }
 
-function getAtmModelPic(url,imgElementId,methodType,manFPicPath,noFotoPath,imgLoaderId,zoomClick) {
-	var  noPhoto = "no_photo.png";
+function getAtmModelPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
+		imgLoaderId, zoomClick) {
+	var noPhoto = "no_photo.png";
 	$(imgLoaderId).show();
 	$.ajax({
-		url : url, // JQuery loads serverside.php 
+		url : url, // JQuery loads serverside.php
 		type : methodType,// we post or get the value
 		dataType : 'json', // Choosing a JSON datatype
 		success : function(data) {
-			//i make sure that the element has no picture
-			$(imgElementId).attr("src","");
-			$(zoomClick).attr("href",""); 
-			
-			if(data.imagetype == "model" ){
-				
-				$(imgElementId).attr("src","data:image/png;base64,"+data.imagebinary);
-				$(zoomClick).attr("href","data:image/png;base64,"+data.imagebinary); 
-			
-			}else if(data.imagetype == "nophoto"){
-				
-				$(imgElementId).attr("src",noFotoPath+noPhoto);
+			// i make sure that the element has no picture
+			$(imgElementId).attr("src", "");
+			$(zoomClick).attr("href", "");
+
+			if (data.imagetype == "model") {
+
+				$(imgElementId).attr("src",
+						"data:image/png;base64," + data.imagebinary);
+				$(zoomClick).attr("href",
+						"data:image/png;base64," + data.imagebinary);
+
+			} else if (data.imagetype == "nophoto") {
+
+				$(imgElementId).attr("src", noFotoPath + noPhoto);
 			}
-			
+
 			$(imgLoaderId).hide();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			$(imgElementId).attr("src",noFotoPath+noPhoto);
+			$(imgElementId).attr("src", noFotoPath + noPhoto);
 			$(imgLoaderId).hide();
 		}
 
 	});
 }
 /**
- * ******** queries functions
- * **************************
+ * ******** queries functions **************************
  */
 function displayOnLoad(name, maxValue) {
 	for (i = maxValue; i > 1; i--) {
@@ -500,7 +510,7 @@ function displayOnLoad(name, maxValue) {
 	}
 };
 function onLoadValueCB2(entity, maxNumber) {
-	for (var number = 1; number <= maxNumber; number++) {
+	for ( var number = 1; number <= maxNumber; number++) {
 		var value = $('#' + entity + 'Combo' + number + '1').val();
 		var $cb = $('#' + entity + 'Combo' + number + '2');
 		if (value == '') {
@@ -521,7 +531,7 @@ function onLoadValueCB2(entity, maxNumber) {
 	}
 };
 function onLoadValueCB3(entity, maxNumber) {
-	for (var number = 1; number <= maxNumber; number++) {
+	for ( var number = 1; number <= maxNumber; number++) {
 		var value1 = $('#' + entity + 'Combo' + number + '1').val();
 		var $cb2 = $('#' + entity + 'Combo' + number + '2');
 		var $cb3 = $('#' + entity + 'Combo' + number + '3');
@@ -691,38 +701,103 @@ function userQuerySelected() {
 	document.userQueriesForm.submit();
 }
 
-
 /**
- * Fill the first combobox from the query page
+ * Fill the first combobox field from the query page
+ * 
  * @param optionType
- * @param firstCombo
+ * @param fieldCombo
  */
-function loadQueryOptions(optionType,firstCombo){
-	
-	if($(firstCombo).find('option').length <= 1 ){
-	
+function loadQueryOptions(optionType, fieldCombo) {
+
+	if ($(fieldCombo).find('option').length <= 1) {
+
 		var lang = getLangFromUrl();
-		$(firstCombo).empty();
-		$(firstCombo).append("<option></option>");
+		$(fieldCombo).empty();
+		$(fieldCombo).append("<option></option>");
 		$.ajax({
-			url : "queries/combos/"+optionType+"/"+lang, // JQuery loads serverside.php 
+			url : "queries/combos/" + optionType + "/" + lang, // JQuery loads
+																// serverside.php
 			type : "GET",// we post or get the value
 			dataType : 'json', // Choosing a JSON datatype
 			success : function(data) {
 				savedOptions = data.selectoptions;
-				
-				jQuery.each(savedOptions, function(key,data) {
-					var comboOption= "<option value="+key+">"+data+"</option>";
-					$(firstCombo).append(comboOption);
-				
+
+				jQuery.each(savedOptions, function(key, data) {
+					var comboOption = "<option value=" + key + ">" + data
+							+ "</option>";
+					$(fieldCombo).append(comboOption);
+
 				});
-			
+
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
-				
+
 			}
-	
+
 		});
+	}
+}
+/**
+ * Loads the content of the comparision textbox based on the value get from the field combo
+ * @param optionType
+ * @param fieldCombo
+ * @param comparisonCombo
+ * @param checkbox
+ */
+function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,checkbox) {
+
+		var lang = getLangFromUrl();
+		$(comparisonCombo).empty();
+		$(comparisonCombo).append("<option></option>");
+		var fieldName = $(fieldCombo).val();
+		if (fieldName != "") {
+			
+			$(comparisonCombo).prop('disabled', false);
+			$(checkbox).prop('disabled', false);
+
+			$.ajax({
+				url : "queries/combos/comparison/" + optionType + "/"
+						+ fieldName + "/" + lang, // JQuery loads
+													// serverside.php
+				type : "GET",// we post or get the value
+				dataType : 'json', // Choosing a JSON datatype
+				success : function(data) {
+					savedOptions = data.selectoptions;
+
+					jQuery.each(savedOptions, function(key, data) {
+						var comboOption = "<option value=" + key + ">" + data
+								+ "</option>";
+						$(comparisonCombo).append(comboOption);
+
+					});
+
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
+
+				}
+
+			});
+		}else{
+			
+			$(comparisonCombo).empty();
+			$(comparisonCombo).append("<option></option>");
+			$(comparisonCombo).prop('disabled', true);
+			$(checkbox).prop('disabled', true);
+		}
+
+}
+/**
+ * Enable or disable the value textbox after selecting some comparision
+ * @param comparisonCombo
+ * @param textField
+ */
+function onChangeComparisonEnableDisableText(comparisonCombo,textField) {
+	var comparisonValue = $(comparisonCombo).val();
+	if (comparisonValue != "" && comparisonValue != 'is_null') {
+		$(textField).prop('disabled', false);
+	}else{
+		$(textField).prop('disabled', true);
+		$(textField).attr('value',"");
 	}
 }
 
@@ -746,7 +821,7 @@ function deleteConfirmation(url, msg, elementID, msgDivId, notificationClass) {
 function loadHelpContent(linkId, linkClass, section, elementID) {
 	var baseHelpUrl = "resources/help/";
 	var lang = getLangFromUrl();
-	
+
 	baseHelpUrl += lang + "/";
 	$(linkId).closest('ul').find('.' + linkClass).removeClass(linkClass);
 	$(linkId).addClass(linkClass);
@@ -788,36 +863,41 @@ function deleteQueryIcon(elementID, url, deleteMsg) {
 		loadInnerSection(elementID, url);
 	}
 }
-/********************* Users ******************************/
+/** ******************* Users ***************************** */
 /**
- * Adds a new role calling the remote controler, if succeed it will load the new page
+ * Adds a new role calling the remote controler, if succeed it will load the new
+ * page
  */
-function addNewRole(formId,methodType,errorDivIdElement,errorClass,errorMsg,toFillElemnent){
-	
+function addNewRole(formId, methodType, errorDivIdElement, errorClass,
+		errorMsg, toFillElemnent) {
+
 	var $form = $(formId), term = $form.serializeArray(), url = $form
-	.attr("action");
-	
+			.attr("action");
+
 	$.ajax({
 		url : url, // JQuery loads serverside.php
 		data : term, // Send value of the clicked button
 		type : methodType,// we post or get the value
 		dataType : 'json', // Choosing a JSON datatype
-		success : function(data) { // Variable data contains the data 
-			if (!checkForError(data)) {	
+		success : function(data) { // Variable data contains the data
+			if (!checkForError(data)) {
 				if (data.response == "success") {
 					var redirect = data.redirect;
 					loadInnerSection(toFillElemnent, redirect);
-				}else if(data.response == "error" && data.duplicatedname == "true" ){
+				} else if (data.response == "error"
+						&& data.duplicatedname == "true") {
 					$(errorDivIdElement).empty();
-					$(errorDivIdElement).append("<div class="+errorClass+">"+errorMsg+"</div>");
+					$(errorDivIdElement).append(
+							"<div class=" + errorClass + ">" + errorMsg
+									+ "</div>");
 				}
 			}
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			$(toFillElemnent).empty();
 			$(toFillElemnent).append(xhr.responseText);
-			
+
 		}
-	
+
 	});
 }

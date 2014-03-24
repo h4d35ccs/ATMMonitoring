@@ -1,4 +1,5 @@
 <%@include file="includes/JspImports.jsp"%>
+
 						<div id="header_g">
 							<nav id="breadcrumb">
 								<ul>
@@ -49,8 +50,8 @@
 											<tr id="terminalRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 											>
 											<td>
-												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('terminal',${i})" 
-												onClick="loadQueryOptions('terminal','#'+this.id,terminalDataOptions)">
+												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('terminal','#'+this.id,'#terminalCombo${i}2','#terminalCB${i}')" 
+												onClick="loadQueryOptions('terminal','#'+this.id)">
 													<form:option value="" label=""/>
 													<%-- <c:forEach items="${values.get('terminal').keySet()}" var="value">
 														<form:option value="${value}">
@@ -63,13 +64,13 @@
 												<form:checkbox path="terminalCB${i}" id="terminalCB${i}" disabled="true"/>
 											</td>
 											<td>
-												<form:select path="terminalCombo${i}2" id="terminalCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('terminal',${i})">
+												<form:select path="terminalCombo${i}2" id="terminalCombo${i}2" class="query_selectors" size="1" disabled="true" onchange ="onChangeComparisonEnableDisableText('#'+this.id,'#terminalField${i}')">
 													<form:option value="" label=""/>
-													<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+													<%-- -><c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 														<form:option value="${value}">
 															<spring:message code="label.query.operation.${value}"/>
 														</form:option>
-													</c:forEach>
+													</c:forEach>--%>
 												</form:select>
 											</td>
 											<td>
@@ -140,11 +141,11 @@
 										<td>
 											<form:select path="hardwareDeviceCombo${i}2" id="hardwareDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue3CB2('hardwareDevice', ${i})">
 												<form:option value="" label=""/>
-												<c:forEach items="${values.get('hardwareDevice').get('allHwDevices').keySet()}" var="value">
+												<%-- <c:forEach items="${values.get('hardwareDevice').get('allHwDevices').keySet()}" var="value">
 													<form:option value="${value}">
 														<spring:message code="label.hardwareDevice.${value}"/>
 													</form:option>
-												</c:forEach>
+												</c:forEach>--%>
 											</form:select>
 										</td>
 										<td>
@@ -153,11 +154,11 @@
 										<td>
 											<form:select path="hardwareDeviceCombo${i}3" id="hardwareDeviceCombo${i}3" class="query_selectors" size="1" disabled="true" onchange="ChangeValue3CB3('hardwareDevice', ${i})">
 												<form:option value="" label=""/>
-												<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+												<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 													<form:option value="${value}">
 														<spring:message code="label.query.operation.${value}"/>
 													</form:option>
-												</c:forEach>
+												</c:forEach> --%>
 											</form:select>
 										</td>
 										<td>
@@ -193,7 +194,7 @@
 								<c:forEach var="i" begin="1" end="5" varStatus="status">
 									<tr id="financialDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('financialDevice', ${i})"
+										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('financialDevice','#'+this.id,'#financialDeviceCombo${i}2','#financialDeviceCB${i}')"
 										onClick="loadQueryOptions('financialDevice','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('financialDevice').keySet()}" var="value">
@@ -207,13 +208,13 @@
 										<form:checkbox path="financialDeviceCB${i}" id="financialDeviceCB${i}" disabled="true"/>
 									</td>
 									<td>
-										<form:select path="financialDeviceCombo${i}2" id="financialDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('financialDevice', ${i})">
+										<form:select path="financialDeviceCombo${i}2" id="financialDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#financialDeviceField${i}')">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.query.operation.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -249,7 +250,8 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="xfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsComponent', ${i})"
+										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" 
+										onchange="loadQueryComparisonOptions('xfsComponent','#'+this.id,'#xfsComponentCombo${i}2','#xfsComponentCB${i}')"
 											onClick="loadQueryOptions('xfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('xfsComponent').keySet()}" var="value">
@@ -263,13 +265,13 @@
 										<form:checkbox path="xfsComponentCB${i}" id="xfsComponentCB${i}" disabled="true"/>
 									</td>
 									<td>
-										<form:select path="xfsComponentCombo${i}2" id="xfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('xfsComponent', ${i})">
+										<form:select path="xfsComponentCombo${i}2" id="xfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsComponentField${i}')">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.query.operation.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -308,7 +310,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="jxfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('jxfsComponent', ${i})"
+										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('jxfsComponent','#'+this.id,'#jxfsComponentCombo${i}2','#jxfsComponentCB${i}')"
 											onClick="loadQueryOptions('jxfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											
@@ -323,13 +325,13 @@
 										<form:checkbox path="jxfsComponentCB${i}" id="jxfsComponentCB${i}" disabled="true"/>
 									</td>
 									<td>
-										<form:select path="jxfsComponentCombo${i}2" id="jxfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('jxfsComponent', ${i})">
+										<form:select path="jxfsComponentCombo${i}2" id="jxfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#jxfsComponentField${i}')">
 											<form:option value="" label=""/>
-											<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
 													<spring:message code="label.query.operation.${value}"/>
 												</form:option>
-											</c:forEach>
+											</c:forEach> --%>
 										</form:select>
 									</td>
 									<td>
@@ -375,7 +377,7 @@
 								<tr id="operatingSystemRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 								>
 								<td>
-									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('operatingSystem', ${i})"
+									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('operatingSystem','#'+this.id,'#operatingSystemCombo${i}2','#operatingSystemCB${i}')"
 										onClick="loadQueryOptions('operatingSystem','#'+this.id)">
 										<form:option value="" label=""/>
 										
@@ -390,13 +392,13 @@
 									<form:checkbox path="operatingSystemCB${i}" id="operatingSystemCB${i}" disabled="true"/>
 								</td>
 								<td>
-									<form:select path="operatingSystemCombo${i}2" id="operatingSystemCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('operatingSystem', ${i})">
+									<form:select path="operatingSystemCombo${i}2" id="operatingSystemCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#operatingSystemField${i}')">
 										<form:option value="" label=""/>
-										<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+										<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 											<form:option value="${value}">
 												<spring:message code="label.query.operation.${value}"/>
 											</form:option>
-										</c:forEach>
+										</c:forEach> --%>
 									</form:select>
 								</td>
 								<td>
@@ -433,7 +435,7 @@
 							<tr id="internetExplorerRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 							>
 							<td>
-								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('internetExplorer', ${i})"
+								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('internetExplorer','#'+this.id,'#internetExplorerCombo${i}2','#internetExplorerCB${i}')"
 									onClick="loadQueryOptions('internetExplorer','#'+this.id)">
 									<form:option value="" label=""/>
 									<%-- <c:forEach items="${values.get('internetExplorer').keySet()}" var="value">
@@ -447,13 +449,13 @@
 								<form:checkbox path="internetExplorerCB${i}" id="internetExplorerCB${i}" disabled="true"/>
 							</td>
 							<td>
-								<form:select path="internetExplorerCombo${i}2" id="internetExplorerCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('internetExplorer', ${i})">
+								<form:select path="internetExplorerCombo${i}2" id="internetExplorerCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#internetExplorerField${i}')">
 									<form:option value="" label=""/>
-									<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+									<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 										<form:option value="${value}">
 											<spring:message code="label.query.operation.${value}"/>
 										</form:option>
-									</c:forEach>
+									</c:forEach> --%>
 								</form:select>
 							</td>
 							<td>
@@ -490,7 +492,7 @@
 						<tr id="hotfixRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 						>
 						<td>
-							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('hotfix', ${i})"
+							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('hotfix','#'+this.id,'#hotfixCombo${i}2','#hotfixCB${i}')"
 								onClick="loadQueryOptions('hotfix','#'+this.id)">
 								<form:option value="" label=""/>
 								<%-- <c:forEach items="${values.get('hotfix').keySet()}" var="value">
@@ -504,13 +506,13 @@
 							<form:checkbox path="hotfixCB${i}" id="hotfixCB${i}" disabled="true"/>
 						</td>
 						<td>
-							<form:select path="hotfixCombo${i}2" id="hotfixCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('hotfix', ${i})">
+							<form:select path="hotfixCombo${i}2" id="hotfixCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hotfixField${i}')">
 								<form:option value="" label=""/>
-								<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+								<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 									<form:option value="${value}">
 										<spring:message code="label.query.operation.${value}"/>
 									</form:option>
-								</c:forEach>
+								</c:forEach> --%>
 							</form:select>
 						</td>
 						<td>
@@ -547,7 +549,7 @@
 					<tr id="softwareRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 					>
 					<td>
-						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('software', ${i})"
+						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('software','#'+this.id,'#softwareCombo${i}2','#softwareCB${i}')"
 								onClick="loadQueryOptions('software','#'+this.id)">
 							<form:option value="" label=""/>
 							<%-- <c:forEach items="${values.get('software').keySet()}" var="value">
@@ -561,13 +563,13 @@
 						<form:checkbox path="softwareCB${i}" id="softwareCB${i}" disabled="true"/>
 					</td>
 					<td>
-						<form:select path="softwareCombo${i}2" id="softwareCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('software', ${i})">
+						<form:select path="softwareCombo${i}2" id="softwareCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#softwareField${i}')">
 							<form:option value="" label=""/>
-							<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+							<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 								<form:option value="${value}">
 									<spring:message code="label.query.operation.${value}"/>
 								</form:option>
-							</c:forEach>
+							</c:forEach> --%>
 						</form:select>
 					</td>
 					<td>
@@ -605,7 +607,7 @@
 				<tr id="featSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 				>
 				<td>
-					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('featSw', ${i})"
+					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('featSw','#'+this.id,'#featSwCombo${i}2','#featSwCB${i}')"
 							onClick="loadQueryOptions('featSw','#'+this.id)">
 						<form:option value="" label=""/>
 						<%-- <c:forEach items="${values.get('featSw').keySet()}" var="value">
@@ -619,13 +621,13 @@
 					<form:checkbox path="featSwCB${i}" id="featSwCB${i}" disabled="true"/>
 				</td>
 				<td>
-					<form:select path="featSwCombo${i}2" id="featSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('featSw', ${i})">
+					<form:select path="featSwCombo${i}2" id="featSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#featSwField${i}')">
 						<form:option value="" label=""/>
-						<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+						<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 							<form:option value="${value}">
 								<spring:message code="label.query.operation.${value}"/>
 							</form:option>
-						</c:forEach>
+						</c:forEach> --%>
 					</form:select>
 				</td>
 				<td>
@@ -662,7 +664,7 @@
 			<tr id="xfsSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 			>
 			<td>
-				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue2CB1('xfsSw', ${i})"
+				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsSw','#'+this.id,'#xfsSwCombo${i}2','#xfsSwCB${i}')"
 					onClick="loadQueryOptions('xfsSw','#'+this.id)">
 					<form:option value="" label=""/>
 					<%-- <c:forEach items="${values.get('xfsSw').keySet()}" var="value">
@@ -676,13 +678,13 @@
 				<form:checkbox path="xfsSwCB${i}" id="xfsSwCB${i}" disabled="true"/>
 			</td>
 			<td>
-				<form:select path="xfsSwCombo${i}2" id="xfsSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue2CB2('xfsSw', ${i})">
+				<form:select path="xfsSwCombo${i}2" id="xfsSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsSwField${i}')">
 					<form:option value="" label=""/>
-					<c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+					<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 						<form:option value="${value}">
 							<spring:message code="label.query.operation.${value}"/>
 						</form:option>
-					</c:forEach>
+					</c:forEach> --%>
 				</form:select>
 			</td>
 			<td>
@@ -717,9 +719,10 @@
 		</div>
 		<div id="queryResults"></div>
 		<script type="text/javascript">
-			var terminalDataOptions = null;
+		var queryInitValues = jQuery.parseJSON( ${queryJson});
 		  function initPageJS() {
-					<t:queryCbJs query="${query}"/>
+			
+				<t:queryCbJs query="${query}"/>
 					$('#queryName').val('');
 					displayOnLoad('terminal', 5);
 					displayOnLoad('hardwareDevice', 5);
@@ -744,43 +747,5 @@
 					onLoadValueCB2('internetExplorer', 2);
 					onLoadValueCB3('hardwareDevice', 5);
 				}
-			    var valuesTree = {
-			        	<c:forEach items="${values.keySet()}" var="key" varStatus="status1">
-			        		<c:set var="value" value="${values.get(key)}"/>
-			       	 '${key}': {
-							<c:forEach items="${value.keySet()}" var="subkey" varStatus="status2">
-				        		<c:set var="subvalue" value="${value.get(subkey)}"/>
-								'${subkey}': 
-									{
-										label: <c:if test="${(key != 'allOperations') && (subkey != 'allHwDevices')}">'<spring:message code="label.${key}.${subkey}"/>'</c:if><c:if test="${(key == 'allOperations') || (subkey == 'allHwDevices')}">''</c:if>,
-										values: {
-											<c:forEach items="${subvalue.keySet()}" var="subsubkey" varStatus="status3">
-							        		<c:set var="subsubvalue" value="${subvalue.get(subsubkey)}"/>
-											'${subsubkey}': 
-												{
-													<c:if test="${subsubvalue.getClass().getSimpleName() == 'TreeMap'}">
-													label: <c:if test="${key != 'allOperations'}">'<spring:message code="label.${key}.${subsubkey}"/>'</c:if><c:if test="${key == 'allOperations'}">''</c:if>,
-													values: {
-														<c:forEach items="${subsubvalue.keySet()}" var="subsubsubkey" varStatus="status4">
-										        		<c:set var="subsubsubvalue" value="${subsubvalue.get(subsubsubkey)}"/>
-														'${subsubsubkey}': 
-														{
-															label: '<spring:message code="label.query.operation.${subsubsubkey}"/>',
-															values: ${subsubsubvalue}
-														}${not status4.last ? ',' : ''}
-														</c:forEach>
-													}
-													</c:if>
-													<c:if test="${subsubvalue.getClass().getSimpleName() != 'TreeMap'}">
-													label: '<spring:message code="label.query.operation.${subsubkey}"/>',
-													values: ${subsubvalue}
-													</c:if>
-												}${not status3.last ? ',' : ''}
-											</c:forEach>
-										}
-									}${not status2.last ? ',' : ''}
-							</c:forEach>
-			       	 			}${not status1.last ? ',' : ''}
-			       		</c:forEach>
-			    };
+				
 		    </script>

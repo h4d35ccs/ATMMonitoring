@@ -1,6 +1,9 @@
 package com.ncr.ATMMonitoring.pojo;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,25 +47,25 @@ public class Query implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	/** The comboboxes data for the query designer. */
-    private static final Map<String, Map> comboboxes;
+    private static final Map<String, Map> comboboxes  = new TreeMap<String, Map>();
 
-    static {
-	comboboxes = new TreeMap<String, Map>();
-	comboboxes.put("terminal", Terminal.getComboboxes());
-	comboboxes.put("financialDevice", FinancialDevice.getComboboxes());
-	comboboxes.put("xfsComponent", XfsComponent.getComboboxes());
-	comboboxes.put("jxfsComponent", JxfsComponent.getComboboxes());
-	comboboxes.put("hotfix", Hotfix.getComboboxes());
-	comboboxes.put("internetExplorer", InternetExplorer.getComboboxes());
-	comboboxes.put("operatingSystem", OperatingSystem.getComboboxes());
-	comboboxes.put("software", Software.getComboboxes());
-	comboboxes.put("xfsSw", Software.getComboboxes());
-	comboboxes.put("featSw", Software.getComboboxes());
-	comboboxes.put("hardwareDevice", HardwareDevice.getComboboxes());
-	Map<String, Map> aux = new HashMap<String, Map>();
-	aux.put("allOperations", Operation.getOperationsByType(DataType.ALL));
-	comboboxes.put("allOperations", aux);
-    }
+//    static {
+//	comboboxes = new TreeMap<String, Map>();
+//	comboboxes.put("terminal", Terminal.getComboboxes());
+//	comboboxes.put("financialDevice", FinancialDevice.getComboboxes());
+//	comboboxes.put("xfsComponent", XfsComponent.getComboboxes());
+//	comboboxes.put("jxfsComponent", JxfsComponent.getComboboxes());
+//	comboboxes.put("hotfix", Hotfix.getComboboxes());
+//	comboboxes.put("internetExplorer", InternetExplorer.getComboboxes());
+//	comboboxes.put("operatingSystem", OperatingSystem.getComboboxes());
+//	comboboxes.put("software", Software.getComboboxes());
+//	comboboxes.put("xfsSw", Software.getComboboxes());
+//	comboboxes.put("featSw", Software.getComboboxes());
+//	comboboxes.put("hardwareDevice", HardwareDevice.getComboboxes());
+//	Map<String, Map> aux = new HashMap<String, Map>();
+//	aux.put("allOperations", Operation.getOperationsByType(DataType.ALL));
+//	comboboxes.put("allOperations", aux);
+//    }
 
     /** The id. */
     @Id
@@ -6004,5 +6007,7 @@ public class Query implements Serializable {
     public void setJxfsComponentField5(String jxfsComponentField5) {
 	this.jxfsComponentField5 = jxfsComponentField5;
     }
+    
+   
 
 }

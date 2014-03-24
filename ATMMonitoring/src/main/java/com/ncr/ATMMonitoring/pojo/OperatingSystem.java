@@ -78,53 +78,45 @@ public class OperatingSystem {
 	private String manufacturer;
 
 	/** The major version. */
-	@ComboQueryOption
+	@ComboQueryOption(versionComparison= ComboQueryOption.USE_VERSION_COMPARISON)
 	@Column(name = "major_version")
 	private Integer majorVersion;
 
 	/** The minor version. */
-	@ComboQueryOption
 	@Column(name = "minor_version")
 	private Integer minorVersion;
 
 	/** The build version. */
-	@ComboQueryOption
 	@Column(name = "build_version")
 	private Integer buildVersion;
 
 	/** The revision version. */
-	@ComboQueryOption
 	@Column(name = "revision_version")
 	private Integer revisionVersion;
 
 	/** The remaining version. */
-	@ComboQueryOption
 	@Column(name = "remaining_version")
 	@Type(type = "text")
 	private String remainingVersion;
 
 	/** The service pack major version. */
-	@ComboQueryOption
+	@ComboQueryOption(versionComparison= ComboQueryOption.USE_VERSION_COMPARISON)
 	@Column(name = "service_pack_major_version")
 	private Integer servicePackMajorVersion;
 
 	/** The service pack minor version. */
-	@ComboQueryOption
 	@Column(name = "service_pack_minor_version")
 	private Integer servicePackMinorVersion;
 
 	/** The service pack build version. */
-	@ComboQueryOption
 	@Column(name = "service_pack_build_version")
 	private Integer servicePackBuildVersion;
 
 	/** The service pack revision version. */
-	@ComboQueryOption
 	@Column(name = "service_pack_revision_version")
 	private Integer servicePackRevisionVersion;
 
 	/** The service pack remaining version. */
-	@ComboQueryOption
 	@Column(name = "service_pack_remaining_version")
 	@Type(type = "text")
 	private String servicePackRemainingVersion;

@@ -1,4 +1,5 @@
 <%@include file="includes/JspImports.jsp" %>
+<div>
 	<div id="error_box">
 		<div class="message_box">
 			<h1><spring:message code="label.error.errorPageTitle"/></h1>
@@ -13,3 +14,4 @@
 		<c:out value="${element}"/></br>
 	  </c:forEach>
 	</div>
+</div>

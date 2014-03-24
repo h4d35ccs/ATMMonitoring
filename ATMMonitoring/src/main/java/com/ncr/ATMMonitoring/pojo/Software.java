@@ -99,27 +99,23 @@ public class Software {
 	private String vendor;
 
 	/** The major version. */
-	@ComboQueryOption
+	@ComboQueryOption(versionComparison = ComboQueryOption.USE_VERSION_COMPARISON)
 	@Column(name = "major_version")
 	private Integer majorVersion;
 
 	/** The minor version. */
-	@ComboQueryOption
 	@Column(name = "minor_version")
 	private Integer minorVersion;
 
 	/** The build version. */
-	@ComboQueryOption
 	@Column(name = "build_version")
 	private Integer buildVersion;
 
 	/** The revision version. */
-	@ComboQueryOption
 	@Column(name = "revision_version")
 	private Integer revisionVersion;
 
 	/** The remaining version. */
-	@ComboQueryOption
 	@Column(name = "remaining_version")
 	@Type(type = "text")
 	private String remainingVersion;
