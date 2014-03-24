@@ -1,33 +1,28 @@
 package com.ncr.ATMMonitoring.controller;
 
+import static com.ncr.ATMMonitoring.controller.helper.QueryCombosHelper.generateComboOptionsByDataType;
+import static com.ncr.ATMMonitoring.controller.helper.QueryCombosHelper.generateDeviceTypeFieldComboOptions;
+import static com.ncr.ATMMonitoring.controller.helper.QueryCombosHelper.generateFieldComboOptions;
+import static com.ncr.ATMMonitoring.controller.helper.QueryCombosHelper.generateHardwareDeviceComboOptions;
+import static com.ncr.ATMMonitoring.controller.helper.QueryCombosHelper.getQueryCombosActualValues;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,6 +45,7 @@ import org.springframework.web.util.WebUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ncr.ATMMonitoring.pojo.FinancialDevice;
+import com.ncr.ATMMonitoring.pojo.HardwareDevice;
 import com.ncr.ATMMonitoring.pojo.Hotfix;
 import com.ncr.ATMMonitoring.pojo.InternetExplorer;
 import com.ncr.ATMMonitoring.pojo.JxfsComponent;
@@ -58,7 +54,6 @@ import com.ncr.ATMMonitoring.pojo.Query;
 import com.ncr.ATMMonitoring.pojo.Software;
 import com.ncr.ATMMonitoring.pojo.Terminal;
 import com.ncr.ATMMonitoring.pojo.XfsComponent;
-import com.ncr.ATMMonitoring.pojo.annotation.ComboQueryOption;
 import com.ncr.ATMMonitoring.service.QueryService;
 
 /**
@@ -160,15 +155,17 @@ public class QueryController extends GenericController {
 		if (queryId != null) {
 			query = queryService.getQuery(queryId);
 		}
-
+		Locale locale = RequestContextUtils.getLocale(request);
 		// if (principal != null) {
 		// userMsg = this.getUserGreeting(principal, request);
 		// }
 		Gson gson = new GsonBuilder().create();
 		map.put("userMsg", userMsg);
 		map.put("query", query);
-		map.put("queryJson", (gson.toJson(this.getQueryCombosActualValues(query))));
-		// map.put("values", Query.getComboboxes());
+		 map.put("queryJson",
+		 (gson.toJson(getQueryCombosActualValues(query, locale))));
+		 
+//		map.put("values", Query.getComboboxes());
 		return "queries";
 
 	}
@@ -510,52 +507,52 @@ public class QueryController extends GenericController {
 			@PathVariable("locale") String localeParam) {
 
 		Map<String, String> options = null;
-		String messageKeyBase = "label." + comboType;
+		
 		Locale locale = getLocale(localeParam);
 
 		switch (comboType) {
 		case COMBO_TYPE_TERMINAL:
-			options = generateFieldComboOptions(Terminal.class, messageKeyBase,
+			options = generateFieldComboOptions(Terminal.class, comboType,
 					locale);
 			break;
 		case COMBO_TYPE_FINANCIALDEVICE:
 			options = generateFieldComboOptions(FinancialDevice.class,
-					messageKeyBase, locale);
+					comboType, locale);
 			break;
 		case COMBO_TYPE_XFSCOMPONENT:
 			options = generateFieldComboOptions(XfsComponent.class,
-					messageKeyBase, locale);
+					comboType, locale);
 			break;
 		case COMBO_TYPE_JXFSCOMPONENT:
 			options = generateFieldComboOptions(JxfsComponent.class,
-					messageKeyBase, locale);
+					comboType, locale);
 			break;
 		case COMBO_TYPE_HOTFIX:
-			options = generateFieldComboOptions(Hotfix.class, messageKeyBase,
+			options = generateFieldComboOptions(Hotfix.class, comboType,
 					locale);
 			break;
 		case COMBO_TYPE_IEXPLORER:
 			options = generateFieldComboOptions(InternetExplorer.class,
-					messageKeyBase, locale);
+					comboType, locale);
 			break;
 		case COMBO_TYPE_OS:
 			options = generateFieldComboOptions(OperatingSystem.class,
-					messageKeyBase, locale);
+					comboType, locale);
 			break;
 		case COMBO_TYPE_SOFTWARE:
-			options = generateFieldComboOptions(Software.class, messageKeyBase,
+			options = generateFieldComboOptions(Software.class, comboType,
 					locale);
 			break;
 		case COMBO_TYPE_XFSSW:
-			options = generateFieldComboOptions(Software.class, messageKeyBase,
+			options = generateFieldComboOptions(Software.class, comboType,
 					locale);
 			break;
 		case COMBO_TYPE_FEATSW:
-			options = generateFieldComboOptions(Software.class, messageKeyBase,
+			options = generateFieldComboOptions(Software.class, comboType,
 					locale);
 			break;
 		case COMBO_TYPE_HWDEVICE:
-			options = generateHardwareDeviceComboOptions(locale, messageKeyBase);
+			options = generateHardwareDeviceComboOptions(locale);
 			break;
 
 		default:
@@ -565,6 +562,14 @@ public class QueryController extends GenericController {
 		return generateComboboxOptionsJSON(this.sortHashMapByValues(options));
 	}
 
+	/**
+	 * Generates the options for the comparison combobox
+	 * 
+	 * @param comboType
+	 * @param fieldname
+	 * @param localeParam
+	 * @return String
+	 */
 	@RequestMapping(value = "/queries/combos/comparison/{comboType}/{fieldname}/{locale}", method = RequestMethod.GET)
 	@ResponseBody
 	public String getComboOptionsComparisionOperation(
@@ -617,8 +622,8 @@ public class QueryController extends GenericController {
 					locale);
 			break;
 		case COMBO_TYPE_HWDEVICE:
-			// options = generateHardwareDeviceComboOptions(locale,
-			// messageKeyBase);
+			 options = generateComboOptionsByDataType(HardwareDevice.class,fieldname,locale);
+	
 			break;
 
 		default:
@@ -626,6 +631,72 @@ public class QueryController extends GenericController {
 					+ comboType);
 		}
 
+		return this.generateComboboxOptionsJSON(this
+				.sortHashMapByValues(options));
+	}
+
+	@RequestMapping(value = "/queries/combos/comparison/{deviceType}/{locale}", method = RequestMethod.GET)
+	@ResponseBody
+	public String getComboOptionsFieldsByDeviceType(
+			@PathVariable("deviceType") String deviceType,
+			@PathVariable("locale") String localeParam) {
+
+		Map<String, String> options = null;
+		Locale locale = getLocale(localeParam);
+
+		options = generateDeviceTypeFieldComboOptions(HardwareDevice.class,deviceType, locale);
+//		switch (deviceType) {
+//		case ComboQueryOption.GROUP_HARDWARE_1394_CONTROLLER:
+//			generateDeviceTypeFieldComboOptions(HardwareDevice.class,deviceType)
+			
+//			break;
+//
+//		case ComboQueryOption.GROUP_HARDWARE_BASE_BOARD:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_BIOS:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_CDROM_DRIVE:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_COMPUTER_SYSTEM:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_DESKTOP_MONITOR:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_DISK_DRIVE:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_DISPLAY_CONFIGURATION:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_FLOPPY_DRIVE:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_KEYBOARD:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_LOGICAL_DISK:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_NETWORK_ADAPTER:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_PARALLEL_PORT:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_PHYSICAL_MEMORY:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_POINTING_DEVICE:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_PROCESSOR:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_SCSI_CONTROLLER:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_SERIAL_PORT:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_SOUND_DEVICE:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_SYSTEM_SLOT:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_USB_CONTROLLER:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_USB_HUB:
+//			break;
+//		case ComboQueryOption.GROUP_HARDWARE_VIDEO_CONTROLLER:
+//			break;
+//
+//		}
 		return this.generateComboboxOptionsJSON(this
 				.sortHashMapByValues(options));
 	}
@@ -647,329 +718,6 @@ public class QueryController extends GenericController {
 		}
 		return locale;
 	}
-
-	/**
-	 * Returns the map with the options to use in a query combobox
-	 * 
-	 * @param entity
-	 * @param messageKeyBase
-	 * @param options
-	 * @param rb
-	 */
-	private Map<String, String> generateFieldComboOptions(Class<?> entity,
-			String messageKeyBase, Locale locale) {
-
-		Map<String, String> options = new HashMap<>();
-		ResourceBundle rb = this.getResourceBundle(locale);
-
-		for (String option : this.entityFieldNamesToComboBox(entity)) {
-			try {
-				options.put(option, rb.getString(messageKeyBase + "." + option));
-			} catch (MissingResourceException e) {
-				logger.debug("the field name: "
-						+ option
-						+ " does not have an property key to show in the combo, is an valid combo option?");
-			}
-		}
-		return options;
-	}
-
-	/**
-	 * generates the map of options to use in a query data types combobox
-	 * 
-	 * @param entity
-	 * @param fieldname
-	 * @param locale
-	 * @return
-	 */
-	private Map<String, String> generateComboOptionsByDataType(Class<?> entity,
-			String fieldname, Locale locale) {
-		Map<String, String> options = new HashMap<>();
-		ResourceBundle rb = this.getResourceBundle(locale);
-		final String messageKeyBase = "label.query.operation";
-		for (String option : this.entityFieldDataTypeKeysToComboBox(entity,
-				fieldname)) {
-			try {
-				options.put(option, rb.getString(messageKeyBase + "." + option));
-			} catch (MissingResourceException e) {
-				logger.debug("the fieldtype name: "
-						+ option
-						+ " does not have an property key to show in the combo, is an valid combo option?");
-			}
-		}
-		return options;
-	}
-
-	/**
-	 * Gets all the field names from the class that have present the annotation
-	 * {@link ComboQueryOption} and put them into a list
-	 * 
-	 * @param entityClass
-	 * @return List<String>
-	 */
-	private List<String> entityFieldNamesToComboBox(Class<?> entityClass) {
-		Field[] fields = entityClass.getDeclaredFields();
-		final List<String> comboOptions = new ArrayList<String>();
-
-		for (Field field : fields) {
-
-			if (field.isAnnotationPresent(ComboQueryOption.class)) {
-				comboOptions.add(field.getName());
-			}
-		}
-		return comboOptions;
-	}
-
-	/**
-	 * Gets the options keys for a combobox asociated to datatypes
-	 * 
-	 * @param entityClass
-	 * @param fieldname
-	 * @return
-	 */
-	private List<String> entityFieldDataTypeKeysToComboBox(
-			Class<?> entityClass, String fieldname) {
-
-		List<String> dataTypeOptionsKeys = new ArrayList<String>();
-		try {
-
-			Field field = entityClass.getDeclaredField(fieldname);
-			ComboQueryOption queryOptionAnnoation = field
-					.getAnnotation(ComboQueryOption.class);
-
-			if (queryOptionAnnoation.versionComparison()) {
-
-				dataTypeOptionsKeys = QueryController
-						.getVersionOperationsComboBoxOptions();
-
-			} else {
-
-				Class<?> type = field.getType();
-
-				if (type.equals(String.class)) {
-					dataTypeOptionsKeys = QueryController
-							.getStringOperationsComboBoxOptions();
-				} else if (type.equals(Boolean.class)
-						|| type.equals(boolean.class)) {
-
-				} else if ((type.equals(Integer.class) || type
-						.equals(int.class))
-						|| (type.equals(Float.class) || type
-								.equals(float.class))
-						|| (type.equals(Double.class) || type
-								.equals(double.class))) {
-
-					dataTypeOptionsKeys = QueryController
-							.getNumericalOperationsComboBoxOptions();
-
-				} else if (type.equals(Date.class)
-						|| type.equals(Timestamp.class)) {
-
-					dataTypeOptionsKeys = QueryController
-							.getDateOperationsComboBoxOptions();
-				}
-			}
-
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return dataTypeOptionsKeys;
-	}
-
-	/**
-	 * 
-	 * @param locale
-	 * @return
-	 */
-	private ResourceBundle getResourceBundle(Locale locale) {
-		return ResourceBundle.getBundle("messages", locale);
-	}
-
-	/**
-	 * 
-	 * @param locale
-	 * @param messageKeyBase
-	 * @return
-	 */
-	private Map<String, String> generateHardwareDeviceComboOptions(
-			Locale locale, String messageKeyBase) {
-
-		Map<String, String> options = new HashMap<String, String>();
-		ResourceBundle rb = this.getResourceBundle(locale);
-
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_COMPUTER_SYSTEM,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_COMPUTER_SYSTEM));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_PROCESSOR,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_PROCESSOR));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_PHYSICAL_MEMORY,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_PHYSICAL_MEMORY));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_DISK_DRIVE,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_DISK_DRIVE));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_LOGICAL_DISK,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_LOGICAL_DISK));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_BASE_BOARD,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_BASE_BOARD));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_NETWORK_ADAPTER,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_NETWORK_ADAPTER));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_FLOPPY_DRIVE,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_FLOPPY_DRIVE));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_CDROM_DRIVE,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_CDROM_DRIVE));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_SOUND_DEVICE,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_SOUND_DEVICE));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_DISPLAY_CONFIGURATION,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_DISPLAY_CONFIGURATION));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_USB_CONTROLLER,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_USB_CONTROLLER));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_USB_HUB,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_USB_HUB));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_SERIAL_PORT,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_SERIAL_PORT));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_PARALLEL_PORT,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_PARALLEL_PORT));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_1394_CONTROLLER,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_1394_CONTROLLER));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_SCSI_CONTROLLER,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_SCSI_CONTROLLER));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_DESKTOP_MONITOR,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_DESKTOP_MONITOR));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_KEYBOARD,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_KEYBOARD));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_POINTING_DEVICE,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_POINTING_DEVICE));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_SYSTEM_SLOT,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_SYSTEM_SLOT));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_BIOS,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_BIOS));
-		options.put(
-				ComboQueryOption.GROUP_HARDWARE_VIDEO_CONTROLLER,
-				rb.getString(messageKeyBase + "."
-						+ ComboQueryOption.GROUP_HARDWARE_VIDEO_CONTROLLER));
-		return options;
-	}
-
-	/**
-	 * Gets the query operations related to String types
-	 * 
-	 * @return
-	 */
-	private static List<String> getStringOperationsComboBoxOptions() {
-		List<String> option = new ArrayList<String>();
-		option.add("greater_str");// Alphabetically After//
-		option.add("geq_str");// Alphabetically After or Equals//
-		option.add("less_str");// Alphabetically Before//
-		option.add("leq_str");// Alphabetically Before or Equals//
-		option.add("contains");// Contains//
-		option.add("contains_case");// Contains (case sensitive)//
-		option.add("ends_with");// Ends With//
-		option.add("ends_with_case");// Ends With (case sensitive)//
-		option.add("eq_str");// Equals//
-		option.add("eq_str_case");// Equals (case sensitive)//
-		option.add("is_null");// Is Null//
-		option.add("starts_with");// Starts With//
-		option.add("starts_with_case");// Starts With (case sensitive)//
-		return option;
-
-	}
-
-	/**
-	 * Gets the query operations related to date types
-	 * 
-	 * @return List<String>
-	 */
-	private static List<String> getDateOperationsComboBoxOptions() {
-		List<String> option = new ArrayList<String>();
-		option.add("date_greater");// After Date;//
-		option.add("date_geq");// After or Exact Date;//
-		option.add("date_less");// Before Date;//
-		option.add("date_leq");// Before or Exact Date;//
-		option.add("date_eq");// Exact Date;//
-		option.add("is_null");// Is Null;//
-		return option;
-	}
-
-	/**
-	 * Gets the query operations related to Software versions related types
-	 * 
-	 * @return List<String>
-	 */
-	private static List<String> getVersionOperationsComboBoxOptions() {
-		List<String> option = new ArrayList<String>();
-		option.add("v_greater");// After Version;//
-		option.add("v_geq");// After or Exact Version;//
-		option.add("v_less");// Before Version;//
-		option.add("v_leq");// Before or Exact Version;//
-		option.add("v_eq");// Exact Version;//
-		option.add("is_null");// Is Null;//
-		option.add("v_under");// Under Version;//
-		return option;
-	}
-
-	/**
-	 * Gets the query operations related to numerical types
-	 * 
-	 * @return List<String>
-	 */
-	private static List<String> getNumericalOperationsComboBoxOptions() {
-		List<String> option = new ArrayList<String>();
-		option.add("less");// <;//
-		option.add("eq");// =;//
-		option.add("greater");// );//;//
-		option.add("is_null");// Is Null;//
-		option.add("leq");// ²;//
-		option.add("geq");// ³;//
-		return option;
-	}
-
 	/**
 	 * Sorts the contents of a map based on the values
 	 * 
@@ -1008,84 +756,5 @@ public class QueryController extends GenericController {
 		return sortedMap;
 	}
 
-	private Map<String, String> getQueryCombosActualValues(Query query) {
-		Map<String, String> comboActualValues = new HashMap<String, String>();
-		Field[] fields = query.getClass().getDeclaredFields();
-		Locale locale = this.getLocale(query.getLocale());
-		ResourceBundle rb = this.getResourceBundle(locale);
-		Pattern patternComboFields = Pattern.compile("Combo\\d1");
-		Pattern patternComboComparison = Pattern.compile("Combo2\\d");
-		Matcher matcherComboFields = null;
-		Matcher matcherComboComparison = null;
 
-		for (int i = 0; i < fields.length; i++) {
-			Field field = fields[i];
-
-			if (field.isAnnotationPresent(Column.class)
-					&& !field.isAnnotationPresent(Id.class)) {
-				String fieldName = field.getName();
-				// gets only those field needed to fill the combos
-				if (fieldName.contains("Combo") || fieldName.contains("Field")
-						|| fieldName.contains("CB")) {
-
-					String getMethodName = "get"
-							+ fieldName.substring(0, 1).toUpperCase()
-							+ fieldName.substring(1, fieldName.length());
-					try {
-
-						Method getMethod = query.getClass().getDeclaredMethod(
-								getMethodName, new Class<?>[] {});
-						String getMethodValue = getMethod.invoke(query,
-								new Object[] {}).toString();
-						comboActualValues.put(fieldName, getMethodValue);
-						// i try yo get the labels for the combos only if there
-						// is some value
-						if (!getMethodValue.equals("")) {
-							matcherComboFields = patternComboFields
-									.matcher(fieldName);
-							matcherComboComparison = patternComboComparison
-									.matcher(fieldName);
-							String messageBundleKey = "label.";
-
-							if (matcherComboFields.find()) {
-
-								String groupBase = fieldName
-										.split(patternComboFields.pattern())[0];
-								messageBundleKey += groupBase + "."
-										+ getMethodValue;
-
-								comboActualValues.put(fieldName + "Label",
-										rb.getString(messageBundleKey));
-
-								comboActualValues.put(fieldName + "Group",
-										groupBase);
-							} else if (matcherComboComparison.find()) {
-								String groupBase = fieldName
-										.split(patternComboComparison.pattern())[0];
-								messageBundleKey += "query.operation"
-										+ getMethodValue;
-								comboActualValues.put(fieldName + "Label",
-										rb.getString(messageBundleKey));
-
-								comboActualValues.put(fieldName + "Group",
-										groupBase);
-							}
-
-						}
-
-					} catch (NoSuchMethodException | SecurityException
-							| IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
-						comboActualValues.put(fieldName,"");
-						e.printStackTrace();
-					}
-
-					
-				}
-			}
-		}
-		
-		
-		return comboActualValues;
-	}
 }

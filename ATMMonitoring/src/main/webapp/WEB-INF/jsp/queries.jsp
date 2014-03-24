@@ -126,7 +126,7 @@
 										<tr id="hardwareDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 										>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="ChangeValue3CB1('hardwareDevice', ${i})"
+											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryHardwareFieldsOptions('#'+this.id, '#hardwareDeviceCombo${i}2')"
 											onClick="loadQueryOptions('hardwareDevice','#'+this.id)">
 												<form:option value="" label=""/>
 												<%-- <c:forEach items="${values.get('hardwareDevice').keySet()}" var="value">
@@ -135,30 +135,30 @@
 															<spring:message code="label.hardwareDevice.${value}"/>
 														</form:option>
 													</c:if>
-												</c:forEach> --%>
+												</c:forEach>  --%>
 											</form:select>
 										</td>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}2" id="hardwareDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="ChangeValue3CB2('hardwareDevice', ${i})">
+											<form:select path="hardwareDeviceCombo${i}2" id="hardwareDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="loadQueryComparisonOptions('hardwareDevice','#'+this.id,'#hardwareDeviceCombo${i}3','#hardwareDeviceCB${i}')">
 												<form:option value="" label=""/>
-												<%-- <c:forEach items="${values.get('hardwareDevice').get('allHwDevices').keySet()}" var="value">
+												<%--  <c:forEach items="${values.get('hardwareDevice').get('allHwDevices').keySet()}" var="value">
 													<form:option value="${value}">
 														<spring:message code="label.hardwareDevice.${value}"/>
 													</form:option>
-												</c:forEach>--%>
+												</c:forEach> --%>
 											</form:select>
 										</td>
 										<td>
 											<form:checkbox path="hardwareDeviceCB${i}" id="hardwareDeviceCB${i}" disabled="true"/>
 										</td>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}3" id="hardwareDeviceCombo${i}3" class="query_selectors" size="1" disabled="true" onchange="ChangeValue3CB3('hardwareDevice', ${i})">
+											<form:select path="hardwareDeviceCombo${i}3" id="hardwareDeviceCombo${i}3" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hardwareDeviceField${i}')">
 												<form:option value="" label=""/>
-												<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
+												<%--  <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 													<form:option value="${value}">
 														<spring:message code="label.query.operation.${value}"/>
 													</form:option>
-												</c:forEach> --%>
+												</c:forEach>  --%>
 											</form:select>
 										</td>
 										<td>
@@ -719,7 +719,9 @@
 		</div>
 		<div id="queryResults"></div>
 		<script type="text/javascript">
-		var queryInitValues = jQuery.parseJSON( ${queryJson});
+		
+		var queryInitValues = ${queryJson};
+		
 		  function initPageJS() {
 			
 				<t:queryCbJs query="${query}"/>
@@ -747,5 +749,43 @@
 					onLoadValueCB2('internetExplorer', 2);
 					onLoadValueCB3('hardwareDevice', 5);
 				}
-				
+		<%--   var valuesTree = {
+		        	<c:forEach items="${values.keySet()}" var="key" varStatus="status1">
+		        		<c:set var="value" value="${values.get(key)}"/>
+		       	 '${key}': {
+						<c:forEach items="${value.keySet()}" var="subkey" varStatus="status2">
+			        		<c:set var="subvalue" value="${value.get(subkey)}"/>
+							'${subkey}': 
+								{
+									label: <c:if test="${(key != 'allOperations') && (subkey != 'allHwDevices')}">'<spring:message code="label.${key}.${subkey}"/>'</c:if><c:if test="${(key == 'allOperations') || (subkey == 'allHwDevices')}">''</c:if>,
+									values: {
+										<c:forEach items="${subvalue.keySet()}" var="subsubkey" varStatus="status3">
+						        		<c:set var="subsubvalue" value="${subvalue.get(subsubkey)}"/>
+										'${subsubkey}': 
+											{
+												<c:if test="${subsubvalue.getClass().getSimpleName() == 'TreeMap'}">
+												label: <c:if test="${key != 'allOperations'}">'<spring:message code="label.${key}.${subsubkey}"/>'</c:if><c:if test="${key == 'allOperations'}">''</c:if>,
+												values: {
+													<c:forEach items="${subsubvalue.keySet()}" var="subsubsubkey" varStatus="status4">
+									        		<c:set var="subsubsubvalue" value="${subsubvalue.get(subsubsubkey)}"/>
+													'${subsubsubkey}': 
+													{
+														label: '<spring:message code="label.query.operation.${subsubsubkey}"/>',
+														values: ${subsubsubvalue}
+													}${not status4.last ? ',' : ''}
+													</c:forEach>
+												}
+												</c:if>
+												<c:if test="${subsubvalue.getClass().getSimpleName() != 'TreeMap'}">
+												label: '<spring:message code="label.query.operation.${subsubkey}"/>',
+												values: ${subsubvalue}
+												</c:if>
+											}${not status3.last ? ',' : ''}
+										</c:forEach>
+									}
+								}${not status2.last ? ',' : ''}
+						</c:forEach>
+		       	 			}${not status1.last ? ',' : ''}
+		       		</c:forEach>
+		    }; --%>
 		    </script>

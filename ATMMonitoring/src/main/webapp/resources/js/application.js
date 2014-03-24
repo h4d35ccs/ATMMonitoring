@@ -510,7 +510,7 @@ function displayOnLoad(name, maxValue) {
 	}
 };
 function onLoadValueCB2(entity, maxNumber) {
-	for ( var number = 1; number <= maxNumber; number++) {
+	for (var number = 1; number <= maxNumber; number++) {
 		var value = $('#' + entity + 'Combo' + number + '1').val();
 		var $cb = $('#' + entity + 'Combo' + number + '2');
 		if (value == '') {
@@ -531,7 +531,7 @@ function onLoadValueCB2(entity, maxNumber) {
 	}
 };
 function onLoadValueCB3(entity, maxNumber) {
-	for ( var number = 1; number <= maxNumber; number++) {
+	for (var number = 1; number <= maxNumber; number++) {
 		var value1 = $('#' + entity + 'Combo' + number + '1').val();
 		var $cb2 = $('#' + entity + 'Combo' + number + '2');
 		var $cb3 = $('#' + entity + 'Combo' + number + '3');
@@ -716,7 +716,7 @@ function loadQueryOptions(optionType, fieldCombo) {
 		$(fieldCombo).append("<option></option>");
 		$.ajax({
 			url : "queries/combos/" + optionType + "/" + lang, // JQuery loads
-																// serverside.php
+			// serverside.php
 			type : "GET",// we post or get the value
 			dataType : 'json', // Choosing a JSON datatype
 			success : function(data) {
@@ -744,46 +744,89 @@ function loadQueryOptions(optionType, fieldCombo) {
  * @param comparisonCombo
  * @param checkbox
  */
-function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,checkbox) {
+function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,
+		checkbox) {
 
-		var lang = getLangFromUrl();
+	var lang = getLangFromUrl();
+	$(comparisonCombo).empty();
+	$(comparisonCombo).append("<option></option>");
+	var fieldName = $(fieldCombo).val();
+	if (fieldName != "") {
+
+		$(comparisonCombo).prop('disabled', false);
+		$(checkbox).prop('disabled', false);
+
+		$.ajax({
+			url : "queries/combos/comparison/" + optionType + "/" + fieldName
+					+ "/" + lang, // JQuery loads
+			// serverside.php
+			type : "GET",// we post or get the value
+			dataType : 'json', // Choosing a JSON datatype
+			success : function(data) {
+				savedOptions = data.selectoptions;
+
+				jQuery.each(savedOptions, function(key, data) {
+					var comboOption = "<option value=" + key + ">" + data
+							+ "</option>";
+					$(comparisonCombo).append(comboOption);
+
+				});
+
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+
+			}
+
+		});
+	} else {
+
 		$(comparisonCombo).empty();
 		$(comparisonCombo).append("<option></option>");
-		var fieldName = $(fieldCombo).val();
-		if (fieldName != "") {
-			
-			$(comparisonCombo).prop('disabled', false);
-			$(checkbox).prop('disabled', false);
+		$(comparisonCombo).prop('disabled', true);
+		$(checkbox).prop('disabled', true);
+	}
 
-			$.ajax({
-				url : "queries/combos/comparison/" + optionType + "/"
-						+ fieldName + "/" + lang, // JQuery loads
-													// serverside.php
-				type : "GET",// we post or get the value
-				dataType : 'json', // Choosing a JSON datatype
-				success : function(data) {
-					savedOptions = data.selectoptions;
+}
+/**
+ * Loads the options for the combobox of hardware device types
+ */
+function loadQueryHardwareFieldsOptions(deviceCombo, fieldCombo) {
 
-					jQuery.each(savedOptions, function(key, data) {
-						var comboOption = "<option value=" + key + ">" + data
-								+ "</option>";
-						$(comparisonCombo).append(comboOption);
+	var lang = getLangFromUrl();
 
-					});
+	var deviceType = $(deviceCombo).val();
+	
+	if (deviceType != "") {
+		$(fieldCombo).empty();
+		$(fieldCombo).append("<option></option>");
+		$(fieldCombo).prop('disabled', false);
 
-				},
-				error : function(xhr, ajaxOptions, thrownError) {
+		$.ajax({
+			url : "queries/combos/comparison/" + deviceType + "/" + lang, // JQuery loads
+			// serverside.php
+			type : "GET",// we post or get the value
+			dataType : 'json', // Choosing a JSON datatype
+			success : function(data) {
+				savedOptions = data.selectoptions;
 
-				}
+				jQuery.each(savedOptions, function(key, data) {
+					var comboOption = "<option value=" + key + ">" + data
+							+ "</option>";
+					$(fieldCombo).append(comboOption);
 
-			});
-		}else{
-			
-			$(comparisonCombo).empty();
-			$(comparisonCombo).append("<option></option>");
-			$(comparisonCombo).prop('disabled', true);
-			$(checkbox).prop('disabled', true);
-		}
+				});
+
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+
+			}
+
+		});
+	} else {
+
+		$(fieldCombo).empty();
+		$(fieldCombo).append("<option></option>");
+	}
 
 }
 /**
@@ -791,13 +834,13 @@ function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,chec
  * @param comparisonCombo
  * @param textField
  */
-function onChangeComparisonEnableDisableText(comparisonCombo,textField) {
+function onChangeComparisonEnableDisableText(comparisonCombo, textField) {
 	var comparisonValue = $(comparisonCombo).val();
 	if (comparisonValue != "" && comparisonValue != 'is_null') {
 		$(textField).prop('disabled', false);
-	}else{
+	} else {
 		$(textField).prop('disabled', true);
-		$(textField).attr('value',"");
+		$(textField).attr('value', "");
 	}
 }
 

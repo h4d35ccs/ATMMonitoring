@@ -23,19 +23,25 @@
 		</h4>
 	</c:if>
 	<c:if test="${success != null}">
-		<div class="notification">
+		<div id="terminalModifNotification" class="notification">
 			<p>
 				<spring:message code="${success}" />
 			</p>
 		</div>
+		<script type="text/javascript">
+			fadeNotification("terminalModifNotification", "notification");
+		</script>
 	</c:if>
 
 	<c:if test="${errors != null}">
-		<div class="alert">
+		<div id="terminalModifError" class="alert">
 			<p>
 				<spring:message code="label.error.form" />
 			</p>
 		</div>
+		<script type="text/javascript">
+			fadeNotification("terminalModifNotification", "alert");
+		</script>
 	</c:if>
 
 	<c:if test="${timeout != null}">
@@ -55,9 +61,9 @@
 		<div class="collapsible last">
 			<div class="model">
 				<div class="photo">
-					    <a id="clickeablePhoto" href="" class="colorbox"> 
-							<img id="atmPicture" src="" width="300">
-							<img id="imgLoader" src="resources/images/icons/icon_loader.gif" />
+					     <a id="clickeablePhoto" href="" class="colorbox"> 
+							<img id="atmPicture" src="resources/images/ejemplo/no_photo.png" width="300">
+							<img id="imgLoader" src="resources/images/icons/icon_loader.gif" style="display:none"  />
 							<div class="zoom"></div>
 						</a>
 				</div>
@@ -169,7 +175,9 @@
 
 										</form:label>
 								</strong> <form:select id="ModelsCombo" path="terminalModel.id"
-										onchange="ChangeModel()">
+										onchange="ChangeModel('#atmPicture',
+																		'GET','resources/images/logo/','resources/images/ejemplo/',
+																		'#imgLoader','#clickeablePhoto')">
 										<option value=""></option>
 										<c:forEach items="${values.get('allManufacturers')}"
 											var="model">
@@ -247,8 +255,8 @@
 							</ul>
 							<div class="botonera">
 
-								<input type="submit" class="btn"
-									value="<spring:message code="label.terminal.updateTerminal"/>" />
+								<button  class="btn" onclick="loadInnerSectionFromForm('#terminal', '#primary'); return false;" >
+									<spring:message code="label.terminal.updateTerminal"/> </button>
 									
 								<button class="btn update" onclick="callTask('terminals/request/${terminal.id}',{},'POST', '#ajaxMsg','notification','alert', terminalsUpdate,terminalsUpdateError)"><spring:message
 										code="label.terminal.requestSingleSnmpUpdate" /></button> <input
