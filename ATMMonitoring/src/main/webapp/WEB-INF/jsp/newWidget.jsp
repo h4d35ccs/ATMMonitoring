@@ -1,26 +1,6 @@
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@page pageEncoding="UTF-8"%>
-
-<t:osoco-wrapperWoMenu titleCode="label.terminalsManager" section="iframe">
-<script type="text/javascript">
-	$(function() {
-		$('.next').click(function() {
-			$(this).closest(".content").hide();
-			$('.graph_content').show();
-		});
-		// Cambio de estilo en tipo de grafica nuevo componente
-		$(".inputGraph").change(function() { 
-	            $(".inputGraph").parent().removeClass("current");
-	            $(this).parent().addClass("current");
-	    }); 
-	});
-</script>
-<div id="main">
-	<div id="primary">
+<%@include file="includes/JspImports.jsp"%>
+<div id="newWidgetComponent">
+	<div id="primaryNewComponent">
 		<article>
 			<h1>Nuevo componente</h1>
 			<div class="content fixed">
@@ -36,13 +16,13 @@
 					<label for="name">Nombre</label>
 					<input type="text" id="name">
 				</div>
-				<h2>Modelo gr√°fica</h2>
+				<h2>Modelo gr·fica</h2>
 				<div id="inputGraph" class="graph_component">
 					<label  class="graph graph_01"><span>Tabla</span><input type="radio" name="graph" class="inputGraph"></label>
-					<label  class="graph graph_02"><span>L√≠nea tiempo</span><input type="radio" name="graph" class="inputGraph"></label>
+					<label  class="graph graph_02"><span>LÌnea tiempo</span><input type="radio" name="graph" class="inputGraph"></label>
 					<label  class="graph graph_03"><span>Circular</span><input type="radio" name="graph" class="inputGraph"></label>
 					<label  class="graph graph_04"><span>Barras</span><input type="radio" name="graph" class="inputGraph"></label>
-					<label  class="graph graph_05"><span>Geogr√°fico</span><input type="radio" name="graph" class="inputGraph"></label>
+					<label  class="graph graph_05"><span>Geogr·fico</span><input type="radio" name="graph" class="inputGraph"></label>
 				</div>
 				<div class="row">
 					<label for="apquery">Aplicar Consulta</label><select><option>Seleccionar</option></select>
@@ -60,4 +40,16 @@
 		</article>
 	</div>
 </div>
-</t:osoco-wrapperWoMenu>
+<script type="text/javascript">
+	$(function() {
+		$('.next').click(function() {
+			$(this).closest(".content").hide();
+			$('.graph_content').show();
+		});
+		// Cambio de estilo en tipo de grafica nuevo componente
+		$(".inputGraph").change(function() { 
+	            $(".inputGraph").parent().removeClass("current");
+	            $(this).parent().addClass("current");
+	    }); 
+	});
+</script>

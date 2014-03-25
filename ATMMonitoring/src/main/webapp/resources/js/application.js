@@ -219,7 +219,7 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 				$(msgElementId).removeAttr("style");
 			}
 
-			console.log($(msgElementId));
+			
 			var msgClassToAdd = "";
 			var msgContent = "";
 
@@ -236,9 +236,9 @@ function callTask(url, data, methodType, msgElementId, msgClass, msgClassError,
 			// shows the notification
 			$(msgElementId).append("<p>" + msgContent + "<p>");
 			$(msgElementId).addClass(msgClassToAdd);
-			console.log($(msgElementId));
+			
 			fadeNotification(msgElementId, msgClassToAdd);
-			console.log($(msgElementId));
+		
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			$(msgElementId).append(errorMsg + " " + xhr.status);
@@ -285,7 +285,7 @@ function checkForError(data) {
 	var hasError = false;
 	if (errorContent.length > 0) {
 		hasError = true;
-		console.log(errorContent)
+	
 		showError(errorContent);
 	}
 	return hasError;
@@ -499,6 +499,22 @@ function getAtmModelPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
 /**
  * ******** queries functions **************************
  */
+/**
+ * Switches the value of the combobox
+ */
+function checkboxChangeValue(checkBoxId){
+	
+	
+	if($(checkBoxId).attr("value") =="false"){
+		$(checkBoxId).attr("value","true");
+		
+	}else{
+		
+		$(checkBoxId).attr("value","false");
+		
+	}
+}
+
 function displayOnLoad(name, maxValue) {
 	for (i = maxValue; i > 1; i--) {
 		if ($('#' + name + 'Combo' + i + '1').val() != '') {
@@ -701,6 +717,19 @@ function userQuerySelected() {
 	document.userQueriesForm.submit();
 }
 
+function removeDuplicatedValueFromCombobox(comboBox){
+	var usedValues = {};
+	$(comboBox).children().each(function() {
+		
+		if(usedValues[this.value]) {
+			  $(this).remove();
+		}else{
+			usedValues[this.value] = this.value;
+		}
+	    
+	});
+}
+
 /**
  * Fill the first combobox field from the query page
  * 
@@ -709,8 +738,7 @@ function userQuerySelected() {
  */
 function loadQueryOptions(optionType, fieldCombo) {
 
-	if ($(fieldCombo).find('option').length <= 1) {
-
+	if ($(fieldCombo).find('option').length <= 2) {
 		var lang = getLangFromUrl();
 		$(fieldCombo).empty();
 		$(fieldCombo).append("<option></option>");
@@ -736,20 +764,28 @@ function loadQueryOptions(optionType, fieldCombo) {
 
 		});
 	}
+	
+	removeDuplicatedValueFromCombobox(fieldCombo);
+	
 }
 /**
- * Loads the content of the comparision textbox based on the value get from the field combo
+ * Loads the content of the comparision textbox based on the value get from the
+ * field combo
+ * 
  * @param optionType
  * @param fieldCombo
  * @param comparisonCombo
  * @param checkbox
  */
 function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,
-		checkbox) {
+		checkbox,textValue) {
 
 	var lang = getLangFromUrl();
 	$(comparisonCombo).empty();
 	$(comparisonCombo).append("<option></option>");
+	$(checkbox).prop('checked', false);
+	$(textValue).attr("value","");
+	
 	var fieldName = $(fieldCombo).val();
 	if (fieldName != "") {
 
@@ -782,27 +818,34 @@ function loadQueryComparisonOptions(optionType, fieldCombo, comparisonCombo,
 
 		$(comparisonCombo).empty();
 		$(comparisonCombo).append("<option></option>");
+		$(textValue).attr("value","");
 		$(comparisonCombo).prop('disabled', true);
+		$(checkbox).prop('checked', false);
 		$(checkbox).prop('disabled', true);
+		$(textValue).prop('disabled', true);
+		
 	}
 
 }
 /**
  * Loads the options for the combobox of hardware device types
  */
-function loadQueryHardwareFieldsOptions(deviceCombo, fieldCombo) {
+function loadQueryHardwareFieldsOptions(deviceCombo, fieldCombo,checkbox,comparisionCombo,valueTextbox) {
 
 	var lang = getLangFromUrl();
 
 	var deviceType = $(deviceCombo).val();
-	
+
 	if (deviceType != "") {
 		$(fieldCombo).empty();
 		$(fieldCombo).append("<option></option>");
 		$(fieldCombo).prop('disabled', false);
+		$(checkbox).prop('checked', false);
+		$(valueTextbox).attr("value","");
 
 		$.ajax({
-			url : "queries/combos/comparison/" + deviceType + "/" + lang, // JQuery loads
+			url : "queries/combos/comparison/" + deviceType + "/" + lang, // JQuery
+			// loads
 			// serverside.php
 			type : "GET",// we post or get the value
 			dataType : 'json', // Choosing a JSON datatype
@@ -823,14 +866,121 @@ function loadQueryHardwareFieldsOptions(deviceCombo, fieldCombo) {
 
 		});
 	} else {
-
+		var emptyOption = "<option></option>";
+		
 		$(fieldCombo).empty();
-		$(fieldCombo).append("<option></option>");
+		$(comparisionCombo).empty();
+		$(fieldCombo).append(emptyOption);
+		$(comparisionCombo).append(emptyOption);
+		$(checkbox).prop('checked', false);
+		$(checkbox).prop('disabled', true);
+		$(valueTextbox).prop('disabled', true);
+		$(valueTextbox).attr("value","");
 	}
-
+	removeDuplicatedValueFromCombobox(deviceCombo);
 }
 /**
+ * Sets the query values in the page
+ * @param jsonValues
+ */
+function loadQueryValues(jsonValues) {
+	var comboFieldRegex = "Combo\\d1$";
+
+	jQuery
+			.each(
+					jsonValues,
+					function(key, data) {
+
+						var comboFieldPattern = new RegExp(comboFieldRegex);
+						//verify if the first combo has some values
+						if (comboFieldPattern.test(key) && data != "") {
+							var comboBaseName = jsonValues[key+"Group"];
+						
+							var comboNameBaseAndPosition = key.split("Combo");
+							var comboposition = comboNameBaseAndPosition[1];
+
+							var comboLabel = jsonValues[key + "Label"];
+							var comboRowPosition = comboposition.substring(0,1);
+//							
+							$("#" + key).click();
+							$("#" + key).append(
+									"<option value='" + data + "'selected>"
+											+ comboLabel + "</option>");
+							$("#" + key).prop('disabled', false);
+							$("#" + key).change();
+							
+							// combobox for negation
+							var checkboxName = comboBaseName + "CB"
+									+ comboRowPosition;
+							var checkboxValue = jsonValues[checkboxName];
+							var checkboxNot = $("#" + checkboxName);
+							checkboxNot.prop('disabled', false);
+							checkboxNot.attr("value", checkboxValue);
+							
+							if (checkboxValue == "true") {
+								checkboxNot.attr('checked', true);
+							}
+
+							// Combobox comparison
+							var comboboxComparisonName = comboBaseName
+									+ "Combo" + comboRowPosition + "2";
+							var comboboxComparisonValue = jsonValues[comboboxComparisonName];
+							var comboboxComparisonLable = jsonValues[comboboxComparisonName
+									+ "Label"];
+							$("#" + comboboxComparisonName).append(
+									"<option value='" + comboboxComparisonValue
+											+ "'selected>"
+											+ comboboxComparisonLable
+											+ "</option>");
+							$("#" + comboboxComparisonName).prop('disabled',
+									false);
+
+							// Value textfield
+
+							var textfieldName = comboBaseName + "Field"
+									+ comboRowPosition;
+							var textfieldValue = jsonValues[textfieldName];
+							$("#" + textfieldName)
+									.attr("value", textfieldValue);
+							//only remove the disable if the previous value is not equal to is_null
+							if(comboboxComparisonValue !="is_null"){
+								$("#" + textfieldName).prop('disabled', false);
+							}
+							// check for hardware values to handdle the 3rd
+							// combo
+							
+							if (new RegExp("hardware").test(comboBaseName)) {
+								
+								$("#" + comboboxComparisonName).change();
+								var comboboxComparisonHardwareName = comboBaseName
+										+ "Combo" + comboRowPosition + "3";
+								var comboboxComparisonHardwareValue = jsonValues[comboboxComparisonHardwareName];
+								var comboboxComparisonHardwareLable = jsonValues[comboboxComparisonHardwareName
+										+ "Label"];
+								
+								$("#" + comboboxComparisonHardwareName)
+										.append(
+												"<option value='"
+														+ comboboxComparisonHardwareValue
+														+ "'selected>"
+														+ comboboxComparisonHardwareLable
+														+ "</option>");
+								$("#" + comboboxComparisonHardwareName).prop(
+										'disabled', false);
+							}
+
+							// show the row
+							$("#"+comboBaseName+"ShowButton"+comboRowPosition).click();
+					
+						}
+					});
+	
+
+}
+
+/**
  * Enable or disable the value textbox after selecting some comparision
+ * 
  * @param comparisonCombo
  * @param textField
  */

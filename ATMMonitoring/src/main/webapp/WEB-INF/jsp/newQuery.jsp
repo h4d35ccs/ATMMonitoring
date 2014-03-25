@@ -40,7 +40,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="terminalRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('terminal','#'+this.id,'#terminalCombo${i}2','#terminalCB${i}')"
+										<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('terminal','#'+this.id,'#terminalCombo${i}2','#terminalCB${i}','#terminalField${i}')"
 											onClick="loadQueryOptions('terminal','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('terminal').keySet()}" var="value">
@@ -103,7 +103,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="hardwareDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryHardwareFieldsOptions('#'+this.id, '#hardwareDeviceCombo${i}2')"
+										<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryHardwareFieldsOptions('#'+this.id, '#hardwareDeviceCombo${i}2','#hardwareDeviceCB${i}','#hardwareDeviceCombo${i}3','#hardwareDeviceField${i}')"
 											onClick="loadQueryOptions('hardwareDevice','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('hardwareDevice').keySet()}" var="value">
@@ -164,7 +164,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="financialDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('financialDevice','#'+this.id,'#financialDeviceCombo${i}2','#financialDeviceCB${i}')"
+										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('financialDevice','#'+this.id,'#financialDeviceCombo${i}2','#financialDeviceCB${i}','#financialDeviceField${i}')"
 											onClick="loadQueryOptions('financialDevice','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('financialDevice').keySet()}" var="value">
@@ -218,7 +218,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="xfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsComponent','#'+this.id,'#xfsComponentCombo${i}2','#xfsComponentCB${i}')"
+										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsComponent','#'+this.id,'#xfsComponentCombo${i}2','#xfsComponentCB${i}','#xfsComponentField${i}')"
 											onClick="loadQueryOptions('xfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('xfsComponent').keySet()}" var="value">
@@ -272,7 +272,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="jxfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('jxfsComponent','#'+this.id,'#jxfsComponentCombo${i}2','#jxfsComponentCB${i}')"
+										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('jxfsComponent','#'+this.id,'#jxfsComponentCombo${i}2','#jxfsComponentCB${i}','#jxfsComponentField${i}')"
 											onClick="loadQueryOptions('jxfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('jxfsComponent').keySet()}" var="value">
@@ -331,7 +331,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="operatingSystemRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('operatingSystem','#'+this.id,'#operatingSystemCombo${i}2','#operatingSystemCB${i}')"
+										<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('operatingSystem','#'+this.id,'#operatingSystemCombo${i}2','#operatingSystemCB${i}','#operatingSystemField${i}')"
 										onClick="loadQueryOptions('operatingSystem','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('operatingSystem').keySet()}" var="value">
@@ -385,7 +385,7 @@
 							<c:forEach var="i" begin="1" end="2" varStatus="status">
 								<tr id="internetExplorerRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('internetExplorer','#'+this.id,'#internetExplorerCombo${i}2','#internetExplorerCB${i}')"
+										<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('internetExplorer','#'+this.id,'#internetExplorerCombo${i}2','#internetExplorerCB${i}','#internetExplorerField${i}')"
 									onClick="loadQueryOptions('internetExplorer','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('internetExplorer').keySet()}" var="value">
@@ -439,7 +439,7 @@
 				<c:forEach var="i" begin="1" end="5" varStatus="status">
 					<tr id="hotfixRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 						<td>
-							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1"  onchange="loadQueryComparisonOptions('hotfix','#'+this.id,'#hotfixCombo${i}2','#hotfixCB${i}')"
+							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1"  onchange="loadQueryComparisonOptions('hotfix','#'+this.id,'#hotfixCombo${i}2','#hotfixCB${i}','#hotfixField${i}')"
 								onClick="loadQueryOptions('hotfix','#'+this.id)">
 								<form:option value="" label=""/>
 								<%-- <c:forEach items="${values.get('hotfix').keySet()}" var="value">
@@ -494,7 +494,7 @@
 					<tr id="softwareRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 					>
 					<td>
-						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('software','#'+this.id,'#softwareCombo${i}2','#softwareCB${i}')"
+						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('software','#'+this.id,'#softwareCombo${i}2','#softwareCB${i}','#softwareField${i}')"
 								onClick="loadQueryOptions('software','#'+this.id)">
 							<form:option value="" label=""/>
 							<%-- <c:forEach items="${values.get('software').keySet()}" var="value">
@@ -549,7 +549,7 @@
 				<tr id="featSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 				>
 				<td>
-					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('featSw','#'+this.id,'#featSwCombo${i}2','#featSwCB${i}')"
+					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('featSw','#'+this.id,'#featSwCombo${i}2','#featSwCB${i}','#featSwField${i}')"
 							onClick="loadQueryOptions('featSw','#'+this.id)">
 						<form:option value="" label=""/>
 						<%-- <c:forEach items="${values.get('featSw').keySet()}" var="value">
@@ -604,7 +604,7 @@
 			<tr id="xfsSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 			>
 			<td>
-				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsSw','#'+this.id,'#xfsSwCombo${i}2','#xfsSwCB${i}')"
+				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsSw','#'+this.id,'#xfsSwCombo${i}2','#xfsSwCB${i}','#xfsSwField${i}')"
 					onClick="loadQueryOptions('xfsSw','#'+this.id)">
 					<form:option value="" label=""/>
 					<%-- <c:forEach items="${values.get('xfsSw').keySet()}" var="value">

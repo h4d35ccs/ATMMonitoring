@@ -50,7 +50,7 @@
 											<tr id="terminalRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 											>
 											<td>
-												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('terminal','#'+this.id,'#terminalCombo${i}2','#terminalCB${i}')" 
+												<form:select path="terminalCombo${i}1" id="terminalCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('terminal','#'+this.id,'#terminalCombo${i}2','#terminalCB${i}','#terminalField${i}')" 
 												onClick="loadQueryOptions('terminal','#'+this.id)">
 													<form:option value="" label=""/>
 													<%-- <c:forEach items="${values.get('terminal').keySet()}" var="value">
@@ -61,10 +61,10 @@
 												</form:select>
 											</td>
 											<td>
-												<form:checkbox path="terminalCB${i}" id="terminalCB${i}" disabled="true"/>
+												<form:checkbox path="terminalCB${i}" id="terminalCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 											</td>
 											<td>
-												<form:select path="terminalCombo${i}2" id="terminalCombo${i}2" class="query_selectors" size="1" disabled="true" onchange ="onChangeComparisonEnableDisableText('#'+this.id,'#terminalField${i}')">
+												<form:select path="terminalCombo${i}2" id="terminalCombo${i}2" class="query_selectors" size="1" disabled="true" onchange ="onChangeComparisonEnableDisableText('#'+this.id,'#terminalField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 													<form:option value="" label=""/>
 													<%-- -><c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 														<form:option value="${value}">
@@ -126,7 +126,7 @@
 										<tr id="hardwareDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 										>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryHardwareFieldsOptions('#'+this.id, '#hardwareDeviceCombo${i}2')"
+											<form:select path="hardwareDeviceCombo${i}1" id="hardwareDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryHardwareFieldsOptions('#'+this.id, '#hardwareDeviceCombo${i}2','#hardwareDeviceCB${i}','#hardwareDeviceCombo${i}3','#hardwareDeviceField${i}' )"
 											onClick="loadQueryOptions('hardwareDevice','#'+this.id)">
 												<form:option value="" label=""/>
 												<%-- <c:forEach items="${values.get('hardwareDevice').keySet()}" var="value">
@@ -139,7 +139,7 @@
 											</form:select>
 										</td>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}2" id="hardwareDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="loadQueryComparisonOptions('hardwareDevice','#'+this.id,'#hardwareDeviceCombo${i}3','#hardwareDeviceCB${i}')">
+											<form:select path="hardwareDeviceCombo${i}2" id="hardwareDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="loadQueryComparisonOptions('hardwareDevice','#'+this.id,'#hardwareDeviceCombo${i}3','#hardwareDeviceCB${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 												<form:option value="" label=""/>
 												<%--  <c:forEach items="${values.get('hardwareDevice').get('allHwDevices').keySet()}" var="value">
 													<form:option value="${value}">
@@ -149,10 +149,10 @@
 											</form:select>
 										</td>
 										<td>
-											<form:checkbox path="hardwareDeviceCB${i}" id="hardwareDeviceCB${i}" disabled="true"/>
+											<form:checkbox path="hardwareDeviceCB${i}" id="hardwareDeviceCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 										</td>
 										<td>
-											<form:select path="hardwareDeviceCombo${i}3" id="hardwareDeviceCombo${i}3" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hardwareDeviceField${i}')">
+											<form:select path="hardwareDeviceCombo${i}3" id="hardwareDeviceCombo${i}3" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hardwareDeviceField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 												<form:option value="" label=""/>
 												<%--  <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 													<form:option value="${value}">
@@ -194,7 +194,7 @@
 								<c:forEach var="i" begin="1" end="5" varStatus="status">
 									<tr id="financialDeviceRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('financialDevice','#'+this.id,'#financialDeviceCombo${i}2','#financialDeviceCB${i}')"
+										<form:select path="financialDeviceCombo${i}1" id="financialDeviceCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('financialDevice','#'+this.id,'#financialDeviceCombo${i}2','#financialDeviceCB${i}, '#financialDeviceField${i}')"
 										onClick="loadQueryOptions('financialDevice','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('financialDevice').keySet()}" var="value">
@@ -205,10 +205,10 @@
 										</form:select>
 									</td>
 									<td>
-										<form:checkbox path="financialDeviceCB${i}" id="financialDeviceCB${i}" disabled="true"/>
+										<form:checkbox path="financialDeviceCB${i}" id="financialDeviceCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 									</td>
 									<td>
-										<form:select path="financialDeviceCombo${i}2" id="financialDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#financialDeviceField${i}')">
+										<form:select path="financialDeviceCombo${i}2" id="financialDeviceCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#financialDeviceField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
@@ -251,7 +251,7 @@
 								<tr id="xfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
 										<form:select path="xfsComponentCombo${i}1" id="xfsComponentCombo${i}1" class="query_selectors" size="1" 
-										onchange="loadQueryComparisonOptions('xfsComponent','#'+this.id,'#xfsComponentCombo${i}2','#xfsComponentCB${i}')"
+										onchange="loadQueryComparisonOptions('xfsComponent','#'+this.id,'#xfsComponentCombo${i}2','#xfsComponentCB${i}','#xfsComponentField${i}')"
 											onClick="loadQueryOptions('xfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('xfsComponent').keySet()}" var="value">
@@ -262,10 +262,10 @@
 										</form:select>
 									</td>
 									<td>
-										<form:checkbox path="xfsComponentCB${i}" id="xfsComponentCB${i}" disabled="true"/>
+										<form:checkbox path="xfsComponentCB${i}" id="xfsComponentCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 									</td>
 									<td>
-										<form:select path="xfsComponentCombo${i}2" id="xfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsComponentField${i}')">
+										<form:select path="xfsComponentCombo${i}2" id="xfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsComponentField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
@@ -310,7 +310,7 @@
 							<c:forEach var="i" begin="1" end="5" varStatus="status">
 								<tr id="jxfsComponentRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>>
 									<td>
-										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('jxfsComponent','#'+this.id,'#jxfsComponentCombo${i}2','#jxfsComponentCB${i}')"
+										<form:select path="jxfsComponentCombo${i}1" id="jxfsComponentCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('jxfsComponent','#'+this.id,'#jxfsComponentCombo${i}2','#jxfsComponentCB${i}','#jxfsComponentField${i}')"
 											onClick="loadQueryOptions('jxfsComponent','#'+this.id)">
 											<form:option value="" label=""/>
 											
@@ -322,10 +322,10 @@
 										</form:select>
 									</td>
 									<td>
-										<form:checkbox path="jxfsComponentCB${i}" id="jxfsComponentCB${i}" disabled="true"/>
+										<form:checkbox path="jxfsComponentCB${i}" id="jxfsComponentCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 									</td>
 									<td>
-										<form:select path="jxfsComponentCombo${i}2" id="jxfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#jxfsComponentField${i}')">
+										<form:select path="jxfsComponentCombo${i}2" id="jxfsComponentCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#jxfsComponentField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 											<form:option value="" label=""/>
 											<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 												<form:option value="${value}">
@@ -377,7 +377,7 @@
 								<tr id="operatingSystemRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 								>
 								<td>
-									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('operatingSystem','#'+this.id,'#operatingSystemCombo${i}2','#operatingSystemCB${i}')"
+									<form:select path="operatingSystemCombo${i}1" id="operatingSystemCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('operatingSystem','#'+this.id,'#operatingSystemCombo${i}2','#operatingSystemCB${i}','#operatingSystemField${i}')"
 										onClick="loadQueryOptions('operatingSystem','#'+this.id)">
 										<form:option value="" label=""/>
 										
@@ -389,10 +389,10 @@
 									</form:select>
 								</td>
 								<td>
-									<form:checkbox path="operatingSystemCB${i}" id="operatingSystemCB${i}" disabled="true"/>
+									<form:checkbox path="operatingSystemCB${i}" id="operatingSystemCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 								</td>
 								<td>
-									<form:select path="operatingSystemCombo${i}2" id="operatingSystemCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#operatingSystemField${i}')">
+									<form:select path="operatingSystemCombo${i}2" id="operatingSystemCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#operatingSystemField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 										<form:option value="" label=""/>
 										<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 											<form:option value="${value}">
@@ -435,7 +435,7 @@
 							<tr id="internetExplorerRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 							>
 							<td>
-								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('internetExplorer','#'+this.id,'#internetExplorerCombo${i}2','#internetExplorerCB${i}')"
+								<form:select path="internetExplorerCombo${i}1" id="internetExplorerCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('internetExplorer','#'+this.id,'#internetExplorerCombo${i}2','#internetExplorerCB${i}','#internetExplorerField${i}')"
 									onClick="loadQueryOptions('internetExplorer','#'+this.id)">
 									<form:option value="" label=""/>
 									<%-- <c:forEach items="${values.get('internetExplorer').keySet()}" var="value">
@@ -446,10 +446,10 @@
 								</form:select>
 							</td>
 							<td>
-								<form:checkbox path="internetExplorerCB${i}" id="internetExplorerCB${i}" disabled="true"/>
+								<form:checkbox path="internetExplorerCB${i}" id="internetExplorerCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 							</td>
 							<td>
-								<form:select path="internetExplorerCombo${i}2" id="internetExplorerCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#internetExplorerField${i}')">
+								<form:select path="internetExplorerCombo${i}2" id="internetExplorerCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#internetExplorerField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 									<form:option value="" label=""/>
 									<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 										<form:option value="${value}">
@@ -492,7 +492,7 @@
 						<tr id="hotfixRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 						>
 						<td>
-							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('hotfix','#'+this.id,'#hotfixCombo${i}2','#hotfixCB${i}')"
+							<form:select path="hotfixCombo${i}1" id="hotfixCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('hotfix','#'+this.id,'#hotfixCombo${i}2','#hotfixCB${i}','#hotfixField${i}')"
 								onClick="loadQueryOptions('hotfix','#'+this.id)">
 								<form:option value="" label=""/>
 								<%-- <c:forEach items="${values.get('hotfix').keySet()}" var="value">
@@ -503,10 +503,10 @@
 							</form:select>
 						</td>
 						<td>
-							<form:checkbox path="hotfixCB${i}" id="hotfixCB${i}" disabled="true"/>
+							<form:checkbox path="hotfixCB${i}" id="hotfixCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 						</td>
 						<td>
-							<form:select path="hotfixCombo${i}2" id="hotfixCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hotfixField${i}')">
+							<form:select path="hotfixCombo${i}2" id="hotfixCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#hotfixField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 								<form:option value="" label=""/>
 								<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 									<form:option value="${value}">
@@ -549,7 +549,7 @@
 					<tr id="softwareRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 					>
 					<td>
-						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('software','#'+this.id,'#softwareCombo${i}2','#softwareCB${i}')"
+						<form:select path="softwareCombo${i}1" id="softwareCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('software','#'+this.id,'#softwareCombo${i}2','#softwareCB${i}','#softwareField${i}')"
 								onClick="loadQueryOptions('software','#'+this.id)">
 							<form:option value="" label=""/>
 							<%-- <c:forEach items="${values.get('software').keySet()}" var="value">
@@ -560,10 +560,10 @@
 						</form:select>
 					</td>
 					<td>
-						<form:checkbox path="softwareCB${i}" id="softwareCB${i}" disabled="true"/>
+						<form:checkbox path="softwareCB${i}" id="softwareCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 					</td>
 					<td>
-						<form:select path="softwareCombo${i}2" id="softwareCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#softwareField${i}')">
+						<form:select path="softwareCombo${i}2" id="softwareCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#softwareField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 							<form:option value="" label=""/>
 							<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 								<form:option value="${value}">
@@ -607,7 +607,7 @@
 				<tr id="featSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 				>
 				<td>
-					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('featSw','#'+this.id,'#featSwCombo${i}2','#featSwCB${i}')"
+					<form:select path="featSwCombo${i}1" id="featSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('featSw','#'+this.id,'#featSwCombo${i}2','#featSwCB${i}','#featSwField${i}')"
 							onClick="loadQueryOptions('featSw','#'+this.id)">
 						<form:option value="" label=""/>
 						<%-- <c:forEach items="${values.get('featSw').keySet()}" var="value">
@@ -618,10 +618,10 @@
 					</form:select>
 				</td>
 				<td>
-					<form:checkbox path="featSwCB${i}" id="featSwCB${i}" disabled="true"/>
+					<form:checkbox path="featSwCB${i}" id="featSwCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 				</td>
 				<td>
-					<form:select path="featSwCombo${i}2" id="featSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#featSwField${i}')">
+					<form:select path="featSwCombo${i}2" id="featSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#featSwField${i}')" onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 						<form:option value="" label=""/>
 						<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 							<form:option value="${value}">
@@ -664,7 +664,7 @@
 			<tr id="xfsSwRow${i}" <c:if test="${!status.first}">class="hidden"</c:if>
 			>
 			<td>
-				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsSw','#'+this.id,'#xfsSwCombo${i}2','#xfsSwCB${i}')"
+				<form:select path="xfsSwCombo${i}1" id="xfsSwCombo${i}1" class="query_selectors" size="1" onchange="loadQueryComparisonOptions('xfsSw','#'+this.id,'#xfsSwCombo${i}2','#xfsSwCB${i}','#xfsSwField${i}')"
 					onClick="loadQueryOptions('xfsSw','#'+this.id)">
 					<form:option value="" label=""/>
 					<%-- <c:forEach items="${values.get('xfsSw').keySet()}" var="value">
@@ -675,10 +675,10 @@
 				</form:select>
 			</td>
 			<td>
-				<form:checkbox path="xfsSwCB${i}" id="xfsSwCB${i}" disabled="true"/>
+				<form:checkbox path="xfsSwCB${i}" id="xfsSwCB${i}" disabled="true" onclick="checkboxChangeValue('#'+this.id)"/>
 			</td>
 			<td>
-				<form:select path="xfsSwCombo${i}2" id="xfsSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsSwField${i}')">
+				<form:select path="xfsSwCombo${i}2" id="xfsSwCombo${i}2" class="query_selectors" size="1" disabled="true" onchange="onChangeComparisonEnableDisableText('#'+this.id,'#xfsSwField${i}')"  onclick="removeDuplicatedValueFromCombobox('#'+this.id)">
 					<form:option value="" label=""/>
 					<%-- <c:forEach items="${values.get('allOperations').get('allOperations').keySet()}" var="value">
 						<form:option value="${value}">
@@ -748,6 +748,7 @@
 					onLoadValueCB2('xfsSw', 5);
 					onLoadValueCB2('internetExplorer', 2);
 					onLoadValueCB3('hardwareDevice', 5);
+					loadQueryValues(queryInitValues);
 				}
 		<%--   var valuesTree = {
 		        	<c:forEach items="${values.keySet()}" var="key" varStatus="status1">
