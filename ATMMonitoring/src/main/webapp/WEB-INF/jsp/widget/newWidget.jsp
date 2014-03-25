@@ -1,16 +1,7 @@
 <%@include file="../includes/JspImports.jsp"%>
 <%@taglib tagdir="/WEB-INF/tags/widget/" prefix="widget" %>
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <script src="resources/js/jquery-1.8.3.min.js"></script>
-        <script type='text/javascript' src="resources/js/jquery-ui.min.js"></script>
-		<script type='text/javascript' src="resources/js/initHelp.js"></script>
-		<script src="resources/js/windowLocationHenhancer.js"></script>
-	</head>
-<body id="iframe">
-  <div id="main">
-	<div id="primary1">
+	<div id="mainWidgets" class="mainWidgets">
+		<div id="widgetPrimary">
 			<article>
 				<h1><spring:message code="widget.create.title" /></h1>
 				<div class="content fixed">
@@ -37,5 +28,3 @@
 			loadInnerSection("#widgetPrimary",selectedOption.val());
 		});
 	</script>
-</body>
-</html>

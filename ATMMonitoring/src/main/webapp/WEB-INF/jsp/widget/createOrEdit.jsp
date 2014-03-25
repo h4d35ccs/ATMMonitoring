@@ -1,6 +1,5 @@
 <%@include file="../includes/JspImports.jsp"%>
 <%@taglib tagdir="/WEB-INF/tags/widget/" prefix="widget" %>
-<div id="addNewWidget" >
 	<div id="addWidgetPrimary">
 		<article>
 			<h1><spring:message code="widget.${operationType}.title" /></h1>
@@ -11,4 +10,8 @@
 			</div><!-- /content -->
 		</article>
 	</div>
-</div>
+<script type="text/javascript">
+function initPageJS() {
+
+}
+</script>

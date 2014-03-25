@@ -312,6 +312,16 @@ function getLangFromUrl() {
 	}
 	return lang;
 }
+/********************widget *************/
+
+function postNewWidgetRequestResponse(formId,closeButtonId) {
+	var url = $(formId).attr("action");
+	var formValues =  $(formId).serializeArray();
+	console.log(formValues);
+	$.post(url,formValues);
+	$(closeButtonId).click();
+	$("#dashboardMenu").click();
+}
 
 /**
  * ****************terminals functions **********************************
