@@ -191,11 +191,11 @@ public class TerminalController extends GenericController {
 		// redirectAttributes.addFlashAttribute("success",
 		// "success.snmpUpdateTerminal");
 		// } catch (SnmpTimeOutException e) {
-		// String userMsg = "";
+		// String // userMsg = "";
 		// Locale locale = RequestContextUtils.getLocale(request);
 		// if (principal != null) {
 		// User loggedUser = userService.getUserByUsername(principal.getName());
-		// userMsg = loggedUser.getHtmlWelcomeMessage(locale);
+		// // userMsg = loggedUser.getHtmlWelcomeMessage(locale);
 		// Set<BankCompany> bankCompanies = loggedUser
 		// .getManageableBankCompanies();
 		// if ((terminal.getBankCompany() != null)
@@ -204,7 +204,7 @@ public class TerminalController extends GenericController {
 		// return "redirect:/terminals/list";
 		// }
 		// }
-		// map.put("userMsg", userMsg);
+		// ////map.put("userMsg", userMsg)
 		// map.put("ips", e.getIpsHtmlList());
 		// redirectAttributes.addFlashAttribute("timeout",
 		// "timeout.snmpUpdateTerminal");
@@ -244,7 +244,7 @@ public class TerminalController extends GenericController {
 	@RequestMapping(value = "/terminals/list", method = RequestMethod.GET)
 	public String listTerminals(Map<String, Object> map, Principal principal,
 			String p, String sort, String order, HttpServletRequest request) {
-		String userMsg = "";
+		// String // userMsg = "";
 
 		List<Terminal> terminals = new ArrayList<Terminal>();
 		PagedListHolder<Terminal> pagedListHolder = new PagedListHolder<Terminal>();
@@ -253,7 +253,7 @@ public class TerminalController extends GenericController {
 		String sortValue = (sort == null) ? DEFAULT_SORT : sort;
 		String orderValue = (order == null) ? DEFAULT_ORDER : order;
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// // //userMsg = this.getUserGreeting(principal, request);
 			bankCompanies = this.bankCompanyService
 					.getUserManageableBankCompanies(principal.getName());
 			terminals = this.atmservice.listATMByBanks(bankCompanies, sort,
@@ -266,7 +266,7 @@ public class TerminalController extends GenericController {
 		map.put("banksList", bankCompanies);
 		map.put("installationsList", this.atmservice.listATMInstallations());
 		map.put("userQueries", userQueries);
-		map.put("userMsg", userMsg);
+		// ////map.put("userMsg", userMsg)
 		map.put("terminal", new Terminal());
 		map.put("sort", sortValue);
 		map.put("order", orderValue);
@@ -323,11 +323,11 @@ public class TerminalController extends GenericController {
 			map.clear();
 			return "redirect:/terminals/list";
 		}
-		String userMsg = "";
+		// String // userMsg = "";
 		Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 		if (principal != null) {
 
-			userMsg = this.getUserGreeting(principal, request);
+			// //userMsg = this.getUserGreeting(principal, request);
 			bankCompanies = this.bankCompanyService
 					.getUserManageableBankCompanies(principal.getName());
 			if ((terminal.getBankCompany() != null)
@@ -345,7 +345,7 @@ public class TerminalController extends GenericController {
 		map.put("installationsList", this.atmservice.listATMInstallations());
 		map.put("values", this.atmservice.listATMModelsByManufacturer());
 		map.put("date", date);
-		map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg)
 		map.put("terminal", terminal);
 		map.put("preselectedTab", preselectedTab);
 
@@ -409,10 +409,10 @@ public class TerminalController extends GenericController {
 	@RequestMapping(value = "/terminals/new", method = RequestMethod.GET)
 	public String viewNewTerminal(Map<String, Object> map,
 			HttpServletRequest request, Principal principal) {
-		String userMsg = "";
+		// String // userMsg = "";
 		Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// //userMsg = this.getUserGreeting(principal, request);
 			bankCompanies = this.bankCompanyService
 					.getUserManageableBankCompanies(principal.getName());
 		}
@@ -420,7 +420,7 @@ public class TerminalController extends GenericController {
 		map.put("values", this.atmservice.listATMModelsByManufacturer());
 		map.put("banksList", bankCompanies);
 		map.put("terminal", new Terminal());
-		map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg)
 
 		return "newTerminal";
 	}
@@ -456,12 +456,12 @@ public class TerminalController extends GenericController {
 				&& (terminal.getTerminalModel().getId() == null)) {
 			terminal.setTerminalModel(null);
 		}
-		String userMsg = "";
+		// String // userMsg = "";
 		PagedListHolder<Terminal> pagedListHolder = new PagedListHolder<Terminal>();
 		Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// //userMsg = this.getUserGreeting(principal, request);
 			Set<Query> userQueries = this.queryService
 					.getQueriesByUser(principal.getName());
 			map.put("userQueries", userQueries);
@@ -490,7 +490,7 @@ public class TerminalController extends GenericController {
 			map.put("pagedListHolder", pagedListHolder);
 			map.put("banksList", bankCompanies);
 			map.put("installationsList", this.atmservice.listATMInstallations());
-			map.put("userMsg", userMsg);
+			// //map.put("userMsg", userMsg)
 			return "terminals";
 		}
 
@@ -539,11 +539,11 @@ public class TerminalController extends GenericController {
 				&& (terminal.getTerminalModel().getId() == null)) {
 			terminal.setTerminalModel(null);
 		}
-		String userMsg = "";
+		// String // userMsg = "";
 		List<Terminal> terminals = new ArrayList<Terminal>();
 		Set<BankCompany> bankCompanies = new HashSet<BankCompany>();
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// //userMsg = this.getUserGreeting(principal, request);
 			bankCompanies = this.bankCompanyService
 					.getUserManageableBankCompanies(principal.getName());
 			terminals = this.atmservice.listATMByBanks(bankCompanies, null,
@@ -552,7 +552,7 @@ public class TerminalController extends GenericController {
 		map.put("banksList", bankCompanies);
 		map.put("installationsList", this.atmservice.listATMInstallations());
 		map.put("terminalsList", terminals);
-		map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg)
 		if (result.hasErrors()) {
 			map.put("errors", true);
 			return "terminalDetails";
@@ -599,19 +599,19 @@ public class TerminalController extends GenericController {
 	public String listTerminalsByQuery(Map<String, Object> map,
 			Integer queryId, Principal principal, String p, String sort,
 			String order, HttpServletRequest request, Date queryDate) {
-		String userMsg = "";
+		// String // userMsg = "";
 		Locale locale = RequestContextUtils.getLocale(request);
 		Set<Query> userQueries = null;
 		String sortValue = (sort == null) ? DEFAULT_SORT : sort;
 		String orderValue = (order == null) ? DEFAULT_ORDER : order;
 
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// //userMsg = this.getUserGreeting(principal, request);
 			userQueries = this.queryService.getQueriesByUser(principal
 					.getName());
 		}
 		map.put("userQueries", userQueries);
-		map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg)
 		Query query = null;
 		List<Terminal> terminals = null;
 		if (queryId != null) {
@@ -674,13 +674,13 @@ public class TerminalController extends GenericController {
 	@RequestMapping(value = "/terminals/models/list", method = RequestMethod.GET)
 	public String listTerminalModels(Map<String, Object> map,
 			Principal principal, String p, HttpServletRequest request) {
-		String userMsg = "";
-		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
-		}
+		// String // userMsg = "";
+		// if (principal != null) {
+		// // //userMsg = this.getUserGreeting(principal, request);
+		// }
 		PagedListHolder<TerminalModel> pagedListHolder = new PagedListHolder<TerminalModel>(
 				this.atmservice.listATMModels());
-		map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg)
 		map.put("terminalModel", new TerminalModel());
 		int page = 0;
 		if (p != null) {
@@ -728,14 +728,14 @@ public class TerminalController extends GenericController {
 		}
 
 		if (result.hasErrors()) {
-			String userMsg = "";
-			if (principal != null) {
-				userMsg = this.getUserGreeting(principal, request);
-			}
+			// String // userMsg = "";
+			// if (principal != null) {
+			// // //userMsg = this.getUserGreeting(principal, request);
+			// }
 
 			PagedListHolder<TerminalModel> pagedListHolder = new PagedListHolder<TerminalModel>(
 					this.atmservice.listATMModels());
-			map.put("userMsg", userMsg);
+			// //map.put("userMsg", userMsg)
 			int page = 0;
 			if (p != null) {
 				try {
@@ -747,7 +747,7 @@ public class TerminalController extends GenericController {
 			pagedListHolder.setPage(page);
 			pagedListHolder.setPageSize(terminalModelsPageSize);
 			map.put("pagedListHolder", pagedListHolder);
-			map.put("userMsg", userMsg);
+			// //map.put("userMsg", userMsg)
 			return "terminalModels";
 		}
 
@@ -788,11 +788,11 @@ public class TerminalController extends GenericController {
 			map.clear();
 			return "redirect:/terminals/models/list";
 		}
-		String userMsg = "";
-		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
-		}
-		map.put("userMsg", userMsg);
+		// String // userMsg = "";
+		// if (principal != null) {
+		// // //userMsg = this.getUserGreeting(principal, request);
+		// }
+		// //map.put("userMsg", userMsg)
 		map.put("terminalModel", terminalModel);
 
 		return "terminalModelDetails";
@@ -826,11 +826,11 @@ public class TerminalController extends GenericController {
 		}
 
 		if (result.hasErrors()) {
-			String userMsg = "";
-			if (principal != null) {
-				userMsg = this.getUserGreeting(principal, request);
-			}
-			map.put("userMsg", userMsg);
+			// String // userMsg = "";
+			// if (principal != null) {
+			// // //userMsg = this.getUserGreeting(principal, request);
+			// }
+			// //map.put("userMsg", userMsg)
 			return "terminalModelDetails";
 		}
 

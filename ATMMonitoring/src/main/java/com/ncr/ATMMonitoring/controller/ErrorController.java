@@ -25,7 +25,7 @@ public class ErrorController extends GenericController {
 	/** The logger. */
 	static private Logger logger = Logger.getLogger(ErrorController.class
 			.getName());
-	//KEY FOR ERRORS
+	// KEY FOR ERRORS
 	private static final String ERROR_ATTRIBUTE_KEY = "error";
 
 	/**
@@ -45,8 +45,7 @@ public class ErrorController extends GenericController {
 			HttpServletResponse response, RedirectAttributes redirectAttr) {
 
 		redirectAttr.addFlashAttribute(ERROR_ATTRIBUTE_KEY, "404");
-		logger.debug("error 404 on: "
-				+ getPreviousRequest(request));
+		logger.debug("error 404 on: " + getPreviousRequest(request));
 		return "redirect:main";
 	}
 
@@ -111,14 +110,17 @@ public class ErrorController extends GenericController {
 
 	/**
 	 * Gets the previous request that generate the call to one of the errors
-	 * @param request HttpServletRequest
+	 * 
+	 * @param request
+	 *            HttpServletRequest
 	 * @return String
 	 */
-	private static String getPreviousRequest(HttpServletRequest request){
+	private static String getPreviousRequest(HttpServletRequest request) {
 		String prevoiusRequest = "";
-		
-		if(request.getAttribute("javax.servlet.forward.request_uri") != null){
-			prevoiusRequest = request.getAttribute("javax.servlet.forward.request_uri").toString();
+
+		if (request.getAttribute("javax.servlet.forward.request_uri") != null) {
+			prevoiusRequest = request.getAttribute(
+					"javax.servlet.forward.request_uri").toString();
 		}
 		return prevoiusRequest;
 	}

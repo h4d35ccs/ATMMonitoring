@@ -34,11 +34,11 @@ public class HelpController extends GenericController {
 	 */
 	@RequestMapping(value = "/help", method = RequestMethod.GET)
 	public String showHelp() {
-		// String userMsg = "";
+		// //String userMsg = "";
 		// if (principal != null) {
-		// userMsg = this.getUserGreeting(principal, request);
+		// //userMsg = this.getUserGreeting(principal, request);
 		// }
-		// map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg);
 		return "helpTemplate";
 	}
 
@@ -57,11 +57,11 @@ public class HelpController extends GenericController {
 	// public String showDashboardHelp(@PathVariable("section") String section,
 	// Map<String, Object> map, Principal principal,
 	// HttpServletRequest request) {
-	// String userMsg = "";
+	// //String userMsg = "";
 	// if (principal != null) {
-	// userMsg = this.getUserGreeting(principal, request);
+	// //userMsg = this.getUserGreeting(principal, request);
 	// }
-	// map.put("userMsg", userMsg);
+	// //map.put("userMsg", userMsg);
 	// map.put("section", section);
 	// return "helpTemplate";
 	// }

@@ -149,12 +149,18 @@ public abstract class GenericController {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(response);
 	}
+
 	/**
 	 * Encodes a image to be send inside a JSON message
-	 * @param imagename name to give to the image
-	 * @param imageType arbitrary type given
-	 * @param imageBytes byte array 
-	 * @param aditionalParams aditional params to send
+	 * 
+	 * @param imagename
+	 *            name to give to the image
+	 * @param imageType
+	 *            arbitrary type given
+	 * @param imageBytes
+	 *            byte array
+	 * @param aditionalParams
+	 *            aditional params to send
 	 * @return String
 	 */
 	protected String generatelImageForJson(String imagename, String imageType,
@@ -181,7 +187,7 @@ public abstract class GenericController {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(response);
 	}
-	
+
 	/**
 	 * Generate a json for comboboxes
 	 * 

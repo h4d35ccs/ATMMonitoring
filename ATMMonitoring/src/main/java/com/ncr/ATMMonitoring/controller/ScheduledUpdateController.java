@@ -95,10 +95,10 @@ public class ScheduledUpdateController extends GenericController {
 	@RequestMapping(value = "/terminals/schedules/list", method = RequestMethod.GET)
 	public String listSchedules(Map<String, Object> map,
 			HttpServletRequest request, Principal principal) {
-		String userMsg = "";
+		// String userMsg = "";
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
-			map.put("userMsg", userMsg);
+			// userMsg = this.getUserGreeting(principal, request);
+			// map.put("userMsg", userMsg);
 			map.put("weeklyScheduledUpdates",
 					this.atmService.listScheduledUpdates(ATMFacade.WEEKLY));
 			map.put("monthlyScheduledUpdates",
@@ -123,13 +123,13 @@ public class ScheduledUpdateController extends GenericController {
 	@RequestMapping(value = "/terminals/schedules/new", method = RequestMethod.GET)
 	public String newScheduledUpdate(Map<String, Object> map, String queryId,
 			HttpServletRequest request, Principal principal) {
-		String userMsg = "";
+		// String userMsg = "";
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// userMsg = this.getUserGreeting(principal, request);
 			Set<Query> userQueries = this.queryService
 					.getQueriesByUser(principal.getName());
 			map.put("userQueries", userQueries);
-			map.put("userMsg", userMsg);
+			// map.put("userMsg", userMsg);
 			map.put("scheduledUpdate", new ScheduledUpdate());
 		}
 		if (queryId != null) {
@@ -194,13 +194,13 @@ public class ScheduledUpdateController extends GenericController {
 			@Valid @ModelAttribute("scheduledUpdate") ScheduledUpdate scheduledUpdate,
 			Map<String, Object> map, HttpServletRequest request,
 			Principal principal, RedirectAttributes redirectAttributes) {
-		String userMsg = "";
+		// String userMsg = "";
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// userMsg = this.getUserGreeting(principal, request);
 			Set<Query> userQueries = this.queryService
 					.getQueriesByUser(principal.getName());
 			map.put("userQueries", userQueries);
-			map.put("userMsg", userMsg);
+			// map.put("userMsg", userMsg);
 		}
 
 		logger.debug("update's query': " + scheduledUpdate.getQuery().getId());

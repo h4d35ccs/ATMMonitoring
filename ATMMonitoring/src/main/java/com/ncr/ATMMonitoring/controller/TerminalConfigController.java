@@ -29,59 +29,59 @@ import com.ncr.ATMMonitoring.servicefacade.ATMFacade;
 @Controller
 public class TerminalConfigController extends GenericController {
 
-    /** The atm service facade. */
-    @Autowired
-    private ATMFacade atmService;
+	/** The atm service facade. */
+	@Autowired
+	private ATMFacade atmService;
 
-    /** The software service. */
-    @Autowired
-    private SoftwareService softwareService;
+	/** The software service. */
+	@Autowired
+	private SoftwareService softwareService;
 
-    /**
-     * Binds custom property editors.
-     * 
-     * @param binder
-     *            the binder
-     * @throws Exception
-     *             the exception
-     */
-    @InitBinder
-    protected void binder(WebDataBinder binder) throws Exception {
-	binder.registerCustomEditor(Software.class, new SoftwarePropertyEditor(
-		softwareService));
-    }
-
-    /**
-     * Terminal config details URL.
-     * 
-     * @param terminalConfigId
-     *            the terminal config id
-     * @param map
-     *            the map
-     * @param request
-     *            the request
-     * @param principal
-     *            the principal
-     * @return the petition response
-     */
-    @RequestMapping("/terminals/swConfigs/details/{configId}")
-    public String terminalConfigDetails(
-	    @PathVariable("configId") Integer terminalConfigId,
-	    Map<String, Object> map, HttpServletRequest request,
-	    Principal principal) {
-	TerminalConfig terminalConfig = this.atmService
-		.getATMMachine(terminalConfigId);
-	if (terminalConfig == null) {
-	    return "redirect:/terminals/list";
+	/**
+	 * Binds custom property editors.
+	 * 
+	 * @param binder
+	 *            the binder
+	 * @throws Exception
+	 *             the exception
+	 */
+	@InitBinder
+	protected void binder(WebDataBinder binder) throws Exception {
+		binder.registerCustomEditor(Software.class, new SoftwarePropertyEditor(
+				softwareService));
 	}
-	String userMsg = "";
-	if (principal != null) {
-	    userMsg = this.getUserGreeting(principal, request);
-	}
-	map.put("userMsg", userMsg);
-	map.put("config", terminalConfig);
 
-	return "terminalConfigDetails";
-    }
+	/**
+	 * Terminal config details URL.
+	 * 
+	 * @param terminalConfigId
+	 *            the terminal config id
+	 * @param map
+	 *            the map
+	 * @param request
+	 *            the request
+	 * @param principal
+	 *            the principal
+	 * @return the petition response
+	 */
+	@RequestMapping("/terminals/swConfigs/details/{configId}")
+	public String terminalConfigDetails(
+			@PathVariable("configId") Integer terminalConfigId,
+			Map<String, Object> map, HttpServletRequest request,
+			Principal principal) {
+		TerminalConfig terminalConfig = this.atmService
+				.getATMMachine(terminalConfigId);
+		if (terminalConfig == null) {
+			return "redirect:/terminals/list";
+		}
+		// String userMsg = "";
+		// if (principal != null) {
+		// userMsg = this.getUserGreeting(principal, request);
+		// }
+		// map.put("userMsg", userMsg);
+		map.put("config", terminalConfig);
+
+		return "terminalConfigDetails";
+	}
 
 }

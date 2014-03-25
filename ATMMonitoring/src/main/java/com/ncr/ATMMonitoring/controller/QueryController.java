@@ -110,12 +110,12 @@ public class QueryController extends GenericController {
 	@RequestMapping(value = "/queries/create", method = RequestMethod.GET)
 	public String createQuery(Map<String, Object> map,
 			HttpServletRequest request, Principal principal) {
-		String userMsg = "";
+		// String userMsg = "";
 		Locale locale = RequestContextUtils.getLocale(request);
 
-		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
-		}
+		// if (principal != null) {
+		// userMsg = this.getUserGreeting(principal, request);
+		// }
 
 		String datePattern = ((SimpleDateFormat) DateFormat.getDateInstance(
 				DateFormat.SHORT, locale)).toLocalizedPattern();
@@ -124,7 +124,7 @@ public class QueryController extends GenericController {
 			datePattern = datePattern.replace("d", "dd");
 		}
 
-		map.put("userMsg", userMsg);
+		// map.put("userMsg", userMsg);
 		map.put("query", new Query());
 		map.put("values", Query.getComboboxes());
 
@@ -149,7 +149,7 @@ public class QueryController extends GenericController {
 	public String showUserQuery(Integer queryId, Map<String, Object> map,
 			HttpServletRequest request, Principal principal) {
 
-		String userMsg = "";
+		// String userMsg = "";
 		Query query = null;
 
 		if (queryId != null) {
@@ -157,15 +157,15 @@ public class QueryController extends GenericController {
 		}
 		Locale locale = RequestContextUtils.getLocale(request);
 		// if (principal != null) {
-		// userMsg = this.getUserGreeting(principal, request);
+		// //userMsg = this.getUserGreeting(principal, request);
 		// }
 		Gson gson = new GsonBuilder().create();
-		map.put("userMsg", userMsg);
+		// map.put("userMsg", userMsg);
 		map.put("query", query);
-		 map.put("queryJson",
-		 (gson.toJson(getQueryCombosActualValues(query, locale))));
-		 
-//		map.put("values", Query.getComboboxes());
+		map.put("queryJson",
+				(gson.toJson(getQueryCombosActualValues(query, locale))));
+
+		// map.put("values", Query.getComboboxes());
 		return "queries";
 
 	}
@@ -205,7 +205,7 @@ public class QueryController extends GenericController {
 		}
 		return "redirect:/queries/list";
 		// if (principal != null) {
-		// userMsg = this.getUserGreeting(principal, request);
+		// //userMsg = this.getUserGreeting(principal, request);
 		// }
 		// PagedListHolder<Query> pagedListHolder = new PagedListHolder<Query>(
 		// new ArrayList<Query>(userQueries));
@@ -215,7 +215,7 @@ public class QueryController extends GenericController {
 		// pagedListHolder.setPageSize(pageSize);
 		// map.put("pagedListHolder", pagedListHolder);
 		//
-		// map.put("userMsg", userMsg);
+		// //map.put("userMsg", userMsg);
 		//
 		// return "queryList";
 
@@ -239,7 +239,7 @@ public class QueryController extends GenericController {
 			Map<String, Object> map, HttpServletRequest request,
 			Principal principal) {
 		Set<Query> userQueries = null;
-		String userMsg = "";
+		// String userMsg = "";
 
 		Locale locale = RequestContextUtils.getLocale(request);
 
@@ -253,9 +253,9 @@ public class QueryController extends GenericController {
 			query = new Query();
 		}
 
-		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
-		}
+		// if (principal != null) {
+		// userMsg = this.getUserGreeting(principal, request);
+		// }
 
 		String datePattern = ((SimpleDateFormat) DateFormat.getDateInstance(
 				DateFormat.SHORT, locale)).toLocalizedPattern();
@@ -264,7 +264,7 @@ public class QueryController extends GenericController {
 			datePattern = datePattern.replace("d", "dd");
 		}
 
-		map.put("userMsg", userMsg);
+		// map.put("userMsg", userMsg);
 		map.put("query", query);
 		map.put("userQueries", userQueries);
 		map.put("datePattern", datePattern);
@@ -302,10 +302,10 @@ public class QueryController extends GenericController {
 	public String listQueries(Map<String, Object> map,
 			HttpServletRequest request, Principal principal, String p) {
 		Set<Query> userQueries = null;
-		String userMsg = "";
+		// String userMsg = "";
 
 		if (principal != null) {
-			userMsg = this.getUserGreeting(principal, request);
+			// userMsg = this.getUserGreeting(principal, request);
 			userQueries = this.queryService.getQueriesByUser(principal
 					.getName());
 		}
@@ -323,7 +323,7 @@ public class QueryController extends GenericController {
 		pagedListHolder.setPage(page);
 		pagedListHolder.setPageSize(pageSize);
 		map.put("pagedListHolder", pagedListHolder);
-		map.put("userMsg", userMsg);
+		// map.put("userMsg", userMsg);
 		return "queryList";
 	}
 
@@ -507,7 +507,7 @@ public class QueryController extends GenericController {
 			@PathVariable("locale") String localeParam) {
 
 		Map<String, String> options = null;
-		
+
 		Locale locale = getLocale(localeParam);
 
 		switch (comboType) {
@@ -520,16 +520,15 @@ public class QueryController extends GenericController {
 					comboType, locale);
 			break;
 		case COMBO_TYPE_XFSCOMPONENT:
-			options = generateFieldComboOptions(XfsComponent.class,
-					comboType, locale);
+			options = generateFieldComboOptions(XfsComponent.class, comboType,
+					locale);
 			break;
 		case COMBO_TYPE_JXFSCOMPONENT:
-			options = generateFieldComboOptions(JxfsComponent.class,
-					comboType, locale);
+			options = generateFieldComboOptions(JxfsComponent.class, comboType,
+					locale);
 			break;
 		case COMBO_TYPE_HOTFIX:
-			options = generateFieldComboOptions(Hotfix.class, comboType,
-					locale);
+			options = generateFieldComboOptions(Hotfix.class, comboType, locale);
 			break;
 		case COMBO_TYPE_IEXPLORER:
 			options = generateFieldComboOptions(InternetExplorer.class,
@@ -622,8 +621,9 @@ public class QueryController extends GenericController {
 					locale);
 			break;
 		case COMBO_TYPE_HWDEVICE:
-			 options = generateComboOptionsByDataType(HardwareDevice.class,fieldname,locale);
-	
+			options = generateComboOptionsByDataType(HardwareDevice.class,
+					fieldname, locale);
+
 			break;
 
 		default:
@@ -644,59 +644,60 @@ public class QueryController extends GenericController {
 		Map<String, String> options = null;
 		Locale locale = getLocale(localeParam);
 
-		options = generateDeviceTypeFieldComboOptions(HardwareDevice.class,deviceType, locale);
-//		switch (deviceType) {
-//		case ComboQueryOption.GROUP_HARDWARE_1394_CONTROLLER:
-//			generateDeviceTypeFieldComboOptions(HardwareDevice.class,deviceType)
-			
-//			break;
-//
-//		case ComboQueryOption.GROUP_HARDWARE_BASE_BOARD:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_BIOS:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_CDROM_DRIVE:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_COMPUTER_SYSTEM:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_DESKTOP_MONITOR:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_DISK_DRIVE:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_DISPLAY_CONFIGURATION:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_FLOPPY_DRIVE:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_KEYBOARD:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_LOGICAL_DISK:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_NETWORK_ADAPTER:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_PARALLEL_PORT:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_PHYSICAL_MEMORY:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_POINTING_DEVICE:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_PROCESSOR:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_SCSI_CONTROLLER:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_SERIAL_PORT:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_SOUND_DEVICE:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_SYSTEM_SLOT:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_USB_CONTROLLER:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_USB_HUB:
-//			break;
-//		case ComboQueryOption.GROUP_HARDWARE_VIDEO_CONTROLLER:
-//			break;
-//
-//		}
+		options = generateDeviceTypeFieldComboOptions(HardwareDevice.class,
+				deviceType, locale);
+		// switch (deviceType) {
+		// case ComboQueryOption.GROUP_HARDWARE_1394_CONTROLLER:
+		// generateDeviceTypeFieldComboOptions(HardwareDevice.class,deviceType)
+
+		// break;
+		//
+		// case ComboQueryOption.GROUP_HARDWARE_BASE_BOARD:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_BIOS:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_CDROM_DRIVE:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_COMPUTER_SYSTEM:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_DESKTOP_MONITOR:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_DISK_DRIVE:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_DISPLAY_CONFIGURATION:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_FLOPPY_DRIVE:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_KEYBOARD:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_LOGICAL_DISK:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_NETWORK_ADAPTER:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_PARALLEL_PORT:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_PHYSICAL_MEMORY:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_POINTING_DEVICE:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_PROCESSOR:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_SCSI_CONTROLLER:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_SERIAL_PORT:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_SOUND_DEVICE:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_SYSTEM_SLOT:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_USB_CONTROLLER:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_USB_HUB:
+		// break;
+		// case ComboQueryOption.GROUP_HARDWARE_VIDEO_CONTROLLER:
+		// break;
+		//
+		// }
 		return this.generateComboboxOptionsJSON(this
 				.sortHashMapByValues(options));
 	}
@@ -718,6 +719,7 @@ public class QueryController extends GenericController {
 		}
 		return locale;
 	}
+
 	/**
 	 * Sorts the contents of a map based on the values
 	 * 
@@ -755,6 +757,5 @@ public class QueryController extends GenericController {
 		}
 		return sortedMap;
 	}
-
 
 }
