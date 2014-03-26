@@ -27,17 +27,8 @@
 		</li>
 	</ul>
 </div>
-
 <script>
-    var Timeline_urlPrefix = 'resources/timeline/api/';
-    var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js';       
-</script>
-<script src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
-<script src="resources/js/elementClusterer.js" type="text/javascript"></script>
-
-<script>
-    /* window.onload = function() { executeOnTimelineLoaded(loadTimeline) }; */
-   	executeOnTimelineLoaded(loadTimeline);  
+  
     var tl;
     
     function loadTimeline() {

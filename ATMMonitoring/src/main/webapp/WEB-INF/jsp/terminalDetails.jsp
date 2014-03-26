@@ -295,11 +295,11 @@
 
 		</div>
 		<!-- HISTORY                    -->
-	     <h2 class="txt last content_hide" onclick="loadInnerSection('#historicalData', 'terminals/details/historical/${terminal.id}')" >
+	     <h2 class="txt last content_hide" >
 			<spring:message code="label.terminal.history"/>
 		</h2>
 		<div class="collapsible hide">	
-					 <div id="historicalData"></div>
+					<terminal:historical historicalChanges="${historicalChanges}" timelineDates="${historicalChangesTimelineDates}" />
 		</div>
 		<!-- characteristics               -->
 		<h2 class="txt last content_hide" id="features">Características
@@ -1775,6 +1775,7 @@
 					"resources/images/logo/",
 					"resources/images/ejemplo/",
 					"#imgLoader","#clickeablePhoto");
+			executeOnTimelineLoaded(loadTimeline); 
 		
 	 	 }
 
