@@ -7,6 +7,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib tagdir="/WEB-INF/tags/utils/" prefix="utils"%>
 <%@taglib tagdir="/WEB-INF/tags/terminal/" prefix="terminal" %>
  <c:set var="req" value="${pageContext.request}" />
  <c:set var="url">${req.requestURL}</c:set>

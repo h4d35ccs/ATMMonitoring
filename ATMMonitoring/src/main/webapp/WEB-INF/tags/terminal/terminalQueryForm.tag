@@ -44,7 +44,7 @@
 						<spring:message code="label.calendar.open"/>
 					</span>
 				</a>
-				<input type="button" value="<spring:message code="label.apply"/>" class="btn" onclick="loadInnerSectionFromForm('#userQueriesForm','#contentparent');">
+				<input type="button" value="<spring:message code="label.apply"/>" class="btn" onclick="loadInnerSectionFromForm('#userQueriesForm','#primary');">
 			</form>
 		</c:if>
 	</div>

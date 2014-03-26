@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1161,6 +1162,9 @@ public class TerminalController extends GenericController {
 							+ ".png";
 				}
 
+			} else if ((atm != null) && (atm.getTerminalVendor() != null)) {
+				imageType = "manufacturer";
+				imagename = atm.getTerminalVendor().toLowerCase() + ".png";
 			}
 		} catch (Exception e) {
 			// if an error occurs, i will not crash the user interface, i show
@@ -1169,12 +1173,19 @@ public class TerminalController extends GenericController {
 					+ "due an error " + e.getMessage()
 					+ ". The Atm will show no picture image", e);
 		}
-
+		logger.debug("Image: " + imagename + "imageType:" + imageType);
 		return this.generatelImageForJson(imagename, imageType, imageBytes,
 				null);
 
 	}
 
+	/**
+	 * Returns the picture associated to the ATM model in JSON format ( String
+	 * base 64)
+	 * 
+	 * @param modelId
+	 * @return String JSON
+	 */
 	@RequestMapping("/terminals/model/photo/{modelId}")
 	@ResponseBody
 	public String getTerminalModelImage(@PathVariable("modelId") Integer modelId) {

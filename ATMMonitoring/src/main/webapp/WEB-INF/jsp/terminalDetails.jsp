@@ -1,7 +1,7 @@
 <%@include file="includes/JspImports.jsp"%>
 <%@taglib uri="http://www.ncr.com/tags" prefix="ncr"%>
 <div id="header_g">
-	<nav id="breadcrumb">
+	<%-- <nav id="breadcrumb">
 		<ul>
 			<li><a href="dashboard"><spring:message
 						code="breadcrumb.home" /></a></li>
@@ -9,7 +9,12 @@
 						code="breadcrumb.terminals" /></a></li>
 			<li><spring:message code="label.terminal" /> ${terminal.mac}</li>
 		</ul>
-	</nav>
+	</nav> --%>
+	<c:set var="navigationBackMain" scope="request" >home,terminals</c:set>
+	<c:set var="navigationActual" value="label.terminal" scope="request" />
+	<c:set var="navigationActualExtra" value="${terminal.mac}" scope="request" />
+	
+	<jsp:include page="includes/navigation.jsp" />
 </div>
 <div class="content">
 	<h1>
@@ -294,7 +299,7 @@
 			<spring:message code="label.terminal.history"/>
 		</h2>
 		<div class="collapsible hide">	
-					 <div id="historicalData" style="background-color:white"></div>
+					 <div id="historicalData"></div>
 		</div>
 		<!-- characteristics               -->
 		<h2 class="txt last content_hide" id="features">Características
@@ -1762,6 +1767,7 @@
 		};
 		
 		function initPageJS() {
+
 			loadElements();
 			callInit();
 			getAtmPic("terminals/details/photo/${terminal.id}",

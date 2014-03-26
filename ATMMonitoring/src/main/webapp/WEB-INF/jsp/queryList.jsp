@@ -2,13 +2,16 @@
 	 <div>
 	  <div id="queryList">
 	  <div id="header_g">
-	    <nav id="breadcrumb">
+	    <%-- nav id="breadcrumb">
 	      <ul>
 	        <li><a href="dashboard"><spring:message code="breadcrumb.home"/></a></li>
 	        <li><a href="terminals"><spring:message code="breadcrumb.terminals"/></a></li>
 	        <li><spring:message code="label.queries.mine"/></li>
 	      </ul>
-	    </nav>
+	    </nav> --%>
+	    <c:set var="navigationBackMain" scope="request" >home,terminals</c:set>
+		<c:set var="navigationActual" value="label.queries.mine" scope="request" />
+		<jsp:include page="includes/navigation.jsp" />
 	  </div>
 	  <div class="content">
 	    <h1><spring:message code="label.queries.mine"/></h1>

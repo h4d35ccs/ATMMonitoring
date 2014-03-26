@@ -60,11 +60,15 @@ public class LoginController extends GenericController {
 	public String login(Map<String, Object> map,HttpServletRequest request, Principal principal) {
 		String redirect = "login";
 		String userMsg = "";
+		long loginTime = 0;
 		if (principal != null) {
 			userMsg = this.getUserGreeting(principal, request);
+			 getUserLastLogin( principal,
+						 request);
 			redirect = "mainFrame";
 		}
 		map.put("userMsg", userMsg);
+		map.put("loginTime", loginTime);
 		return redirect;
 	}
 
@@ -98,5 +102,11 @@ public class LoginController extends GenericController {
 		}
 		map.put("userMsg", userMsg);
 		return redirect;
+	}
+	
+	
+	@RequestMapping(value = "/mapTest", method = RequestMethod.GET)
+	public String mapTest() {
+		return "mapTest";
 	}
 }

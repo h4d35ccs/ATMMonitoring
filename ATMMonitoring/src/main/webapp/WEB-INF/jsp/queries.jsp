@@ -1,7 +1,7 @@
 <%@include file="includes/JspImports.jsp"%>
 
 						<div id="header_g">
-							<nav id="breadcrumb">
+							<%-- <nav id="breadcrumb">
 								<ul>
 									<li>
 										<a href="dashboard"><spring:message code="breadcrumb.home"/></a>
@@ -12,14 +12,18 @@
 									<li><a href="queries/list"><spring:message code="label.queries.mine"/></a></li>
 									<li><spring:message code="label.query"/>: ${query.name}</li>
 								</ul>
-							</nav>
+							</nav> --%>
+							<c:set var="navigationBackMain" scope="request" >home,terminals,queries</c:set>
+							<c:set var="navigationActual" value="label.query" scope="request" />
+							<c:set var="navigationActualExtra" value=": ${query.name}" scope="request" />
+							<jsp:include page="includes/navigation.jsp" />
 						</div>
 						<div class="content">
 							<h1>
 		
 								<spring:message code="label.query"/>:  ${query.name}
 							</h1>
-							<div class="botonera"><a href="queries" class="btn back left"><spring:message code="label.query.return"/></a></div>
+							<div class="botonera"><a onclick="loadInnerSection('#primary', 'queries') " class="btn back left"><spring:message code="label.query.return"/></a></div>
 							<div class="action_box desplegable">
 								
 							<form:form method="post" action="queries/results" commandName="query">

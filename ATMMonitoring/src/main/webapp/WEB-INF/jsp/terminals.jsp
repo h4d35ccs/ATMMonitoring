@@ -1,12 +1,15 @@
 <%@include file="includes/JspImports.jsp"%>
   <fmt:formatDate value="${queryDate}" pattern="dd/MM/yyyy" var="stringQueryDate"/>
 		<div id="header_g">
-			<nav id="breadcrumb">
+			<%-- <nav id="breadcrumb">
 				<ul>
 					<li><a href="dashboard"> <spring:message code="breadcrumb.home"/> </a> </li>
 					<li> <spring:message code="breadcrumb.terminals"/> </li>
 				</ul>
-			</nav>
+			</nav> --%>
+			<c:set var="navigationBackMain" scope="request" >home</c:set>
+			<c:set var="navigationActual" value="breadcrumb.terminals" scope="request" />
+			<jsp:include page="includes/navigation.jsp" />
 			<div class="botonera">
 				<ul>
 					<sec:authorize access="hasAnyRole(${terminalsManagementAllowedRoles})">
@@ -59,8 +62,8 @@
 									<li class="lista">
 										<a href=#><span><spring:message code="terminals.show.list.label" /></span></a>
 									</li>
-									<li class="mapa" data-on-show="terminalMap.paintIfNecessary()">
-										<a href=#> <span><spring:message code="terminals.show.map.label" /></span></a>
+									<li class="mapa" data-on-show="terminalMap.paintIfNecessary()" >
+										<a href=# > <span><spring:message code="terminals.show.map.label" /></span></a>
 									</li>
 								</ul>
 							</nav>
@@ -71,7 +74,7 @@
 							<div class="content_tab">
 								<terminal:terminalsTable terminals="${pagedListHolder.pageList}" stringQueryDate="${stringQueryDate}"
 						                             baseUrl="${query != null ? 'terminals/byQuery' : 'terminals/list'}"
-						                             query="${selectedQuery}"/>
+						                             query="${selectedQuery}"/> 
 							</div>
 							<div class="content_tab">
 								<terminal:terminalsMap/>
@@ -87,7 +90,9 @@
 			</div>
 		</div>
 <script type="text/javascript">
-		 function initPageJS() {; 
-			 defaultInitTabs();  
+		 function initPageJS() { 
+			defaultInitTabs();
+			terminalMap = new TerminalsMap();
+			terminalMap.initialize();   
 		 }
 </script>

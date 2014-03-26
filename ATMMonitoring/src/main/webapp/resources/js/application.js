@@ -182,6 +182,56 @@ function clock() {
 		clock();
 	}, 500);
 }
+/**
+ * Shows elapsed time since the user login
+ * @param loggedTimeMilisec
+ */
+ function loggedTimeUser(loggedTimeMilisec){
+	var loggedTime = null;
+	
+	if(loggedTimeMilisec != '0'){
+		
+		loggedTime = new Date(loggedTimeMilisec);
+	}else{
+		
+		loggedTime = new Date();
+	}
+	 var now = new Date();
+	 var diff = now.getTime() - loggedTime.getTime();  
+	 $("#welcomeDate").empty().append(splitTime(diff/1000));
+	 t = setTimeout(function() {
+		 loggedTimeUser((loggedTime.getTime()));
+		}, 500);
+ }
+ 
+/**
+ * Transforms a milisec into hours minutes and seconds
+ * @param a
+ * @returns {String}
+ */
+ function splitTime(a) {
+	var hours = Math.floor(a / 3600);
+	var minutes = Math.floor(a / 60) - (hours * 60);
+	var seconds = Math.round( a - (hours * 3600) - (minutes * 60));
+
+	var hs = ':';
+	var ms = ':';
+	
+	if(hours < 10){
+		hours = "0"+hours
+	}
+	
+	if(minutes < 10){
+		minutes = "0"+minutes;
+	}
+	
+	if(seconds < 10){
+		seconds = "0"+seconds;
+	}
+	
+	
+	return hours + hs + minutes + ms  + seconds; 
+}  
 
 function checkTime(i) {
 	if (i < 10) {
@@ -317,7 +367,6 @@ function getLangFromUrl() {
 function postNewWidgetRequestResponse(formId,closeButtonId) {
 	var url = $(formId).attr("action");
 	var formValues =  $(formId).serializeArray();
-	console.log(formValues);
 	$.post(url,formValues);
 	$(closeButtonId).click();
 	$("#dashboardMenu").click();
@@ -436,6 +485,7 @@ function requestSnmpUpdate() {
 function getAtmPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
 		imgLoaderId, zoomClick) {
 	var noPhoto = "no_photo.png";
+
 	$(imgLoaderId).show();
 	$.ajax({
 		url : url, // JQuery loads serverside.php
@@ -454,8 +504,9 @@ function getAtmPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
 						"data:image/png;base64," + data.imagebinary);
 
 			} else if (data.imagetype == "manufacturer") {
-
+				
 				$(imgElementId).attr("src", manFPicPath + data.imagename);
+				$(zoomClick).attr("href",manFPicPath + data.imagename);
 
 			} else if (data.imagetype == "nophoto") {
 
@@ -505,6 +556,29 @@ function getAtmModelPic(url, imgElementId, methodType, manFPicPath, noFotoPath,
 		}
 
 	});
+}
+/**
+ * Gets the manufacturer image
+ * @param imgElementId
+ * @param manFPicPath
+ * @param manufacturerName
+ */
+function getManufacturerPic(imgElementId, comboManufacturerId ,imgLoaderId,zoomClick,manFPicPath,noPhotoPath){
+
+	var manufacturerName = $(comboManufacturerId).val().toLowerCase();
+	var photo = "";
+	if(manufacturerName != ""){
+		photo =manFPicPath+manufacturerName+".png";
+	}else{
+		photo = noPhotoPath+"no_photo.png";
+	}
+	
+	$(imgLoaderId).show();
+	$(imgElementId).attr("src", "");
+	$(zoomClick).attr("href", "");
+	$(imgElementId).attr("src",photo);
+	$(zoomClick).attr("href",photo);
+	$(imgLoaderId).hide();
 }
 /**
  * ******** queries functions **************************

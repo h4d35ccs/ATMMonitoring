@@ -31,7 +31,7 @@ function initPageJS() {;
     };
 </script>
 <div id="header_g">
-	<nav id="breadcrumb">
+	<%-- <nav id="breadcrumb">
 		<ul>
 			<li>
 				<a href="dashboard"><spring:message code="breadcrumb.home"/></a>
@@ -39,7 +39,10 @@ function initPageJS() {;
 
 			<li><spring:message code="breadcrumb.reports"/></li>
 		</ul>
-	</nav>
+	</nav> --%>
+	<c:set var="navigationBackMain" scope="request" >home</c:set>
+	<c:set var="navigationActual" value="breadcrumb.reports" scope="request" />
+	<jsp:include page="includes/navigation.jsp" />
 </div>
 <h1>
   <spring:message code="label.externalreportsMan"/>

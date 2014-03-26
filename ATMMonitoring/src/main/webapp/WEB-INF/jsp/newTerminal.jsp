@@ -1,6 +1,6 @@
 <%@include file="includes/JspImports.jsp"%>
 				<div id="header_g">
-					<nav id="breadcrumb">
+					<%-- nav id="breadcrumb">
 						<ul>
 							<li>
 								<a href="dashboard"><spring:message code="breadcrumb.home"/></a>
@@ -10,7 +10,10 @@
 							</li>
 							<li><spring:message code="label.terminal.new"/></li>
 						</ul>
-					</nav>
+					</nav> --%>
+					<c:set var="navigationBackMain" scope="request" >home,terminals</c:set>
+					<c:set var="navigationActual" value="label.terminal.new" scope="request" />
+					<jsp:include page="includes/navigation.jsp" />
 				</div>
 				<div class="content">
 					<h1><spring:message code="label.terminal.new"/></h1>
@@ -101,7 +104,8 @@
 
 														</form:label>
 													</strong>
-													<form:select id="ManufacturerCombo" path="terminalVendor" onchange="ChangeManufacturer()">
+													<form:select id="ManufacturerCombo" path="terminalVendor" onchange="ChangeManufacturer();
+													getManufacturerPic('#atmPicture','#'+this.id,'#imgLoader','#clickeablePhoto','resources/images/logo/','resources/images/ejemplo/')">
 														<option value=""><spring:message code="label.select.default"/></option>
 														<c:forEach items="${values.keySet()}" var="key" varStatus="status1">
 														  <c:if test="${key != 'allManufacturers'}">

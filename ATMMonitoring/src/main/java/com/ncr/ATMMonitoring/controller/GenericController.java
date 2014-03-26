@@ -1,6 +1,7 @@
 package com.ncr.ATMMonitoring.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -34,6 +35,7 @@ public abstract class GenericController {
 
 	/** The user greeting session parameter id. */
 	private static final String USER_GREETING = "userGreeting";
+	private static final String USER_LOGINTIME = "logintime";
 
 	/**
 	 * Obtains the greeting for the user from the current session (or from DB if
@@ -57,6 +59,33 @@ public abstract class GenericController {
 			greeting = this.getUserGreetingFromUser(user, request);
 		}
 		return greeting;
+	}
+	
+	/**
+	 * Gets the last login time for the user
+	 * @param principal
+	 * @param request
+	 * @return
+	 */
+	protected long getUserLastLogin(Principal principal,
+			HttpServletRequest request) {
+
+		Long lastLogin = (Long) request.getSession().getAttribute(
+				USER_LOGINTIME);
+
+		if (lastLogin == null) {
+
+			User user = this.userService.getUserByUsername(principal.getName());
+			if(user.getLastLogin() != null){
+			
+				lastLogin = user.getLastLogin().getTime();
+				
+			}else{
+				lastLogin = new Date().getTime();
+			}
+			request.getSession().setAttribute(USER_LOGINTIME, lastLogin);
+		}
+		return lastLogin;
 	}
 
 	/**

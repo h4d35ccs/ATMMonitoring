@@ -35,7 +35,8 @@
         <script type='text/javascript' src='resources/js/jsapi.js'></script> 
         <script type="text/javascript" src="resources/js/fullcalendar.min.js"></script>
     	<script type="text/javascript" src="resources/js/scheduled.js"></script>
-
+    	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<script src="resources/js/markerClusterer.js"></script>
 	 	<script type="text/javascript">
 	 	 	google.load('visualization', '1', {'packages': ['corechart', 'geochart', 'table']});   
 	 	 	var Timeline_urlPrefix = 'resources/timeline/api/';

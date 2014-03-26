@@ -9,7 +9,7 @@
 			var mainContent ="#dashboardMenu";
 				$( document ).ready(function() {
 					 $(mainContent).click();
-					 clock();
+					 loggedTimeUser('${loginTime}');
 				}); 
 		</script> 
 	</c:if>
@@ -18,6 +18,7 @@
 			<%-- an 404 or 403 has occur so i load the content--%>
 				$( document ).ready(function() {
 					loadInnerSection("#primary","show${error}");
+					loggedTimeUser('${loginTime}');
 				});
 			</script>
 	</c:if>
@@ -31,12 +32,12 @@
             <div id="rButton" class="hide btn_close">
             </div>
             <h1>
-	                <a href="dashboard"><img src="resources/images/general/logo.png"/></a>
+	                <a onclick="$('#dashboardMenu').click();"><img src="resources/images/general/logo.png"/></a>
 	                <div id="headName"><span><acronym title="Hardware and Software Asset Management">HSAM</acronym></span></div>
             </h1>
             <div id="user_info">
-               <div class="welcome"><spring:message code="label.welcomeMessage"/> ${userMsg}</div>-
-               <div class="date" id="welcomeDate"></div>
+               <div class="welcome" style="cursor: default;"><spring:message code="label.welcomeMessage"/> ${userMsg}</div>-
+               <div class="date" id="welcomeDate" title="logged time h:m:s" style="cursor: default;"></div>
                 <div id="lang" class="desplegable autofold">
                     <div class="txt content_hide">
                         <span><spring:message code="language.${pageContext.response.locale}"/></span>

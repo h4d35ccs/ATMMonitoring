@@ -1,12 +1,15 @@
 <%@include file="includes/JspImports.jsp"%>
 <div id="scheduledContent">
 <div id="header_g">
-  <nav id="breadcrumb">
+  <%-- <nav id="breadcrumb">
     <ul>
       <li><a href="dashboard"><spring:message code="breadcrumb.home"/></a></li>
       <li><spring:message code="label.scheduler"/></li>
     </ul>
-  </nav>
+  </nav> --%>
+  	<c:set var="navigationBackMain" scope="request" >home</c:set>
+			<c:set var="navigationActual" value="label.scheduler" scope="request" />
+			<jsp:include page="includes/navigation.jsp" />
   <div class="botonera">
     <ul>
       <li><button onclick="loadInnerSection('#primary','terminals/schedules/new')" class="btn add"><spring:message code="label.schedule.new"/></button></li>

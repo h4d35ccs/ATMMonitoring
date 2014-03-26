@@ -1,12 +1,15 @@
 <%@include file="includes/JspImports.jsp"%>
 <div id="header_g">
-  <nav id="breadcrumb">
+  <%-- <nav id="breadcrumb">
     <ul>
       <li><a href="#"><spring:message code="breadcrumb.home"/></a></li>
       <li><a href="terminals/schedules/list"><spring:message code="label.scheduler"/></a></li>
       <li><spring:message code="label.schedule.new"/></li>
     </ul>
-  </nav>
+  </nav> --%>
+  	<c:set var="navigationBackMain" scope="request" >home,schedulers</c:set>
+	<c:set var="navigationActual" value="label.schedule.new" scope="request" />
+	<jsp:include page="includes/navigation.jsp" />
 </div>
 <h1><spring:message code="label.schedule.new"/></h1>
 <div class="content">
