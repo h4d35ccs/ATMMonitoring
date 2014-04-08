@@ -105,22 +105,7 @@ function loadInnerSectionFromForm(formId, elementID) {
 		}
 
 	});
-	// Send the data using post
-	// $.post(url, term, function(data) {
-	// if( !checkForError(data)){
-	// // Put the results in a div
-	// var content = "";
-	// if(otherElementID != null){
-	// // content = $(data).filter(otherElementID);
-	// content = $(otherElementID, data);
-	// console.log(content);
-	// }else{
-	// content = data;
-	// }
-	// $(elementID).empty();
-	// $(elementID).append(content);
-	// }
-	// });
+	
 }
 /**
  * Calls a controller and do not expect an answer
@@ -189,16 +174,21 @@ function clock() {
  function loggedTimeUser(loggedTimeMilisec){
 	var loggedTime = null;
 	
-	if(loggedTimeMilisec != '0'){
+	if(loggedTimeMilisec != 0){
 		
 		loggedTime = new Date(loggedTimeMilisec);
+		console.log(loggedTime);
 	}else{
 		
 		loggedTime = new Date();
 	}
 	 var now = new Date();
-	 var diff = now.getTime() - loggedTime.getTime();  
-	 $("#welcomeDate").empty().append(splitTime(diff/1000));
+	 var diff = now.getTime() - loggedTime.getTime(); 
+	 console.log(diff);
+	 if(diff > 0){
+		diff = (diff/1000);
+	 }
+	 $("#welcomeDate").empty().append(splitTime(diff));
 	 t = setTimeout(function() {
 		 loggedTimeUser((loggedTime.getTime()));
 		}, 500);

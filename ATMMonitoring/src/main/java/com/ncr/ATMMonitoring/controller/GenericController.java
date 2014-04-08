@@ -62,7 +62,7 @@ public abstract class GenericController {
 	}
 	
 	/**
-	 * Gets the last login time for the user
+	 * Gets the last login time for the user and put it ito the session 
 	 * @param principal
 	 * @param request
 	 * @return

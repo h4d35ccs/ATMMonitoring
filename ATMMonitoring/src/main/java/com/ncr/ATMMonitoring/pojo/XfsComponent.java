@@ -1173,31 +1173,31 @@ public class XfsComponent {
 		extra = Utils.unescapeJsonChain(xfs.getExtra());
 		guidlights = xfs.getGuidlights();
 		logical = xfs.getLogical();
-		// maxBills = xfs.getMaxbills();
-		// maxCoins = xfs.getMaxcoins();
+		 maxBills = xfs.getMaxbills();
+		maxCoins = xfs.getMaxcoins();
 		maxDispenseItems = xfs.getMaxdispenseitems();
 		moveItems = xfs.getMoveitems();
-		// outputPositions = xfs.getOutputpositions();
+		outputPositions = xfs.getOutputpositions();
 		positions = xfs.getPositions();
 		provider = xfs.getProvider();
 		retractAreas = xfs.getRetractareas();
 		retractStackerActions = xfs.getRetractstackeractions();
 		retractTransportActions = xfs.getRetracttransportactions();
 		type = xfs.getType();
-		// autodeposit = xfs.isAutodeposit();
+		autodeposit = xfs.isAutodeposit();
 		hasCashBox = xfs.isCashbox();
-		// coins = xfs.isCoins();
+		coins = xfs.isCoins();
 		compound = xfs.isCompound();
-		// cylinders = xfs.isCylinders();
+		cylinders = xfs.isCylinders();
 		isIntermediateStacker = xfs.isIntermediatestacker();
 		hasTakenSensor = xfs.isItemstakensensor();
 		powerSaveControl = xfs.isPowersavecontrol();
 		isPrepareDispense = xfs.isPreparedispense();
-		// refill = xfs.isRefill();
+		refill = xfs.isRefill();
 		isSafeDoor = xfs.isSafedoor();
 		hasShutter = xfs.isShutter();
 		shutterControl = xfs.isShuttercontrol();
-		// vandalCheck = xfs.isVandalcheck();
+		vandalCheck = xfs.isVandalcheck();
 	}
 
 	/**
@@ -1235,7 +1235,7 @@ public class XfsComponent {
 		guidlights = xfs.getGuidlights();
 		imagecapture = xfs.getImagecapture();
 		logical = xfs.getLogical();
-		// pockets = xfs.getPockets();
+		pockets = xfs.getPockets();
 		provider = xfs.getProvider();
 		stamp = xfs.getStamp();
 		type = xfs.getType();
@@ -1322,7 +1322,7 @@ public class XfsComponent {
 		powerSaveControl = xfs.isPowersavecontrol();
 		printer = xfs.isPrinter();
 		printOnRetracts = xfs.isPrintonretracts();
-		// retractToDeposit = xfs.isRetracttodeposit();
+		retractToDeposit = xfs.isRetracttodeposit();
 		hasShutter = xfs.isShutter();
 		toner = xfs.isToner();
 	}
@@ -1454,7 +1454,7 @@ public class XfsComponent {
 		imageType = xfs.getImagetype();
 		logical = xfs.getLogical();
 		maxMediaOnStacker = xfs.getMaxmediaonstacker();
-		// max2Retract = xfs.getMax2retract();
+		max2Retract = xfs.getMax2retract();
 		paperSources = xfs.getPapersources();
 		provider = xfs.getProvider();
 		readForm = xfs.getReadform();
@@ -1505,7 +1505,7 @@ public class XfsComponent {
 		xfsClass = "TTU";
 		charSupport = xfs.getCharsupport();
 		extra = Utils.unescapeJsonChain(xfs.getExtra());
-		// keys = xfs.getKeys();
+		 keys = xfs.getKeys();
 		logical = xfs.getLogical();
 		numLeds = xfs.getNumofleds();
 		provider = xfs.getProvider();
