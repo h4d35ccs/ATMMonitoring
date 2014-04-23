@@ -28,10 +28,16 @@
 	</ul>
 </div>
 <script>
-  
+var Timeline_urlPrefix = 'resources/timeline/api/';
+var Timeline_ajax_url= 'resources/timeline/ajax/simile-ajax-api.js'; 
+</script>
+<script src="resources/timeline/api/timeline-api.js" type="text/javascript"></script>
+<script src="resources/js/elementClusterer.js" type="text/javascript"></script> 
+<script>
     var tl;
-    
+   
     function loadTimeline() {
+
     	var elementsSize = 16;
     	var eventSource = new Timeline.DefaultEventSource();
 
@@ -99,7 +105,9 @@
         
         tl = Timeline.create(document.getElementById("timeline"), bandInfos, Timeline.HORIZONTAL);
         addOnEventPaintFinished(elementsSize);
-        eventSource.loadJSON(buildEventsJSONData(), '');
+
+            eventSource.loadJSON(buildEventsJSONData(), '');
+       
         
         Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
             window.location.assign(document.location.pathname + evt.getDescription());
@@ -123,7 +131,7 @@
 			
 			tl.zoom(zoomIn, tl.getCenterPixel(0) ,1,target);
 		});
-
+	
 	}
     function addOnEventPaintFinished(elementsSize) {
 		tl._bands[0].addOnEventPaintFinished(function(event,op) { 
