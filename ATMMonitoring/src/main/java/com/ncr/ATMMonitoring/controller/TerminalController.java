@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1089,13 +1088,19 @@ public class TerminalController extends GenericController {
 	 * @return
 	 */
 	@RequestMapping("/terminals/details/historical/{terminalId}")
-	public String showTerminalHistorical(
+	public String showTerminalHistoricaAndCharacteristics(
 			@PathVariable("terminalId") Integer terminalId,
-			Map<String, Object> map) {
+			Map<String, Object> map,Long dateTime, String preselectedTab) {
+	    
 		Terminal terminal = this.atmservice.getATMById(terminalId);
 		Map<Class<? extends Auditable>, Map<Date, Integer>> historicalChanges = terminal
 				.buildHistoricalChanges();
+		Date date = dateTime == null ? null : new Date(dateTime);
+		
 		map.put("historicalChanges", historicalChanges);
+		map.put("terminal", terminal);
+		map.put("date", date);
+		map.put("preselectedTab", preselectedTab);
 		return "terminalHistorical";
 	}
 
